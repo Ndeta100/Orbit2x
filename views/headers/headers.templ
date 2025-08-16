@@ -1,0 +1,236 @@
+// views/headers/headers.templ
+package headers
+
+import "strings"
+
+type HeaderResult struct {
+	URL     string
+	Headers map[string][]string
+	Error   string
+}
+
+templ Index() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>HTTP Headers Analyzer</title>
+			<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+			<style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                color: #333;
+            }
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+            h1 {
+                color: #0e4174;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .description {
+                text-align: center;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            .form-container {
+                margin-bottom: 20px;
+            }
+            input[type="text"] {
+                width: 70%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            button {
+                padding: 10px 15px;
+                background-color: #0e4174;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0a325e;
+            }
+            .loading {
+                text-align: center;
+                padding: 20px;
+                display: none;
+            }
+            .htmx-request .loading {
+                display: block;
+            }
+            .results {
+                margin-top: 20px;
+            }
+            .header-group {
+                margin-bottom: 20px;
+                border-left: 4px solid #0e4174;
+                padding-left: 15px;
+            }
+            .header-group h3 {
+                margin-top: 0;
+                color: #0e4174;
+            }
+            .header-row {
+                display: flex;
+                margin-bottom: 8px;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 8px;
+            }
+            .header-name {
+                font-weight: bold;
+                width: 200px;
+                color: #555;
+            }
+            .header-value {
+                flex-grow: 1;
+                word-break: break-all;
+            }
+        </style>
+		</head>
+		<body>
+			<div class="card">
+				<h1>HTTP Headers Analyzer</h1>
+				<p class="description">Analyze HTTP headers for any website to check security, caching, and server information.</p>
+				<div class="form-container">
+					<form hx-post="/headers/analyze" hx-target="#results" hx-indicator=".loading">
+						<input type="text" name="url" placeholder="https://example.com" required/>
+						<button type="submit">Analyze Headers</button>
+					</form>
+				</div>
+				<div class="loading">
+					<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#0e4174">
+						<g fill="none" fill-rule="evenodd">
+							<g transform="translate(1 1)" stroke-width="2">
+								<circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
+								<path d="M36 18c0-9.94-8.06-18-18-18">
+									<animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
+								</path>
+							</g>
+						</g>
+					</svg>
+				</div>
+				<div id="results">
+					<!-- Results will be loaded here -->
+				</div>
+			</div>
+		</body>
+	</html>
+}
+
+templ HeadersResult(result HeaderResult) {
+	<div class="results">
+		if result.Error != "" {
+			<div class="error">
+				<p>Error: { result.Error }</p>
+			</div>
+		} else {
+			<h2>Headers for { result.URL }</h2>
+			<div class="header-group">
+				<h3>Security Headers</h3>
+				@headerGroup(result.Headers, []string{
+					"Content-Security-Policy",
+					"Strict-Transport-Security",
+					"X-Content-Type-Options",
+					"X-Frame-Options",
+					"X-XSS-Protection",
+					"Referrer-Policy",
+					"Permissions-Policy",
+				})
+			</div>
+			<div class="header-group">
+				<h3>Caching Headers</h3>
+				@headerGroup(result.Headers, []string{
+					"Cache-Control",
+					"Expires",
+					"ETag",
+					"Last-Modified",
+					"Vary",
+				})
+			</div>
+			<div class="header-group">
+				<h3>Server Information</h3>
+				@headerGroup(result.Headers, []string{
+					"Server",
+					"X-Powered-By",
+					"Via",
+				})
+			</div>
+			<div class="header-group">
+				<h3>Content Headers</h3>
+				@headerGroup(result.Headers, []string{
+					"Content-Type",
+					"Content-Length",
+					"Content-Encoding",
+					"Content-Language",
+				})
+			</div>
+			<div class="header-group">
+				<h3>Other Headers</h3>
+				@otherHeaders(result.Headers, []string{
+					"Content-Security-Policy",
+					"Strict-Transport-Security",
+					"X-Content-Type-Options",
+					"X-Frame-Options",
+					"X-XSS-Protection",
+					"Referrer-Policy",
+					"Permissions-Policy",
+					"Cache-Control",
+					"Expires",
+					"ETag",
+					"Last-Modified",
+					"Vary",
+					"Server",
+					"X-Powered-By",
+					"Via",
+					"Content-Type",
+					"Content-Length",
+					"Content-Encoding",
+					"Content-Language",
+				})
+			</div>
+		}
+	</div>
+}
+
+templ headerGroup(headers map[string][]string, headerNames []string) {
+	for _, name := range headerNames {
+		if values, ok := headers[name]; ok && len(values) > 0 {
+			<div class="header-row">
+				<div class="header-name">{ name }</div>
+				<div class="header-value">{ strings.Join(values, ", ") }</div>
+			</div>
+		}
+	}
+}
+
+templ otherHeaders(headers map[string][]string, skipHeaders []string) {
+	for name, values := range headers {
+		if !contains(skipHeaders, name) && len(values) > 0 {
+			<div class="header-row">
+				<div class="header-name">{ name }</div>
+				<div class="header-value">{ strings.Join(values, ", ") }</div>
+			</div>
+		}
+	}
+}
+
+func contains(slice []string, item string) bool {
+	for _, s := range slice {
+		if s == item {
+			return true
+		}
+	}
+	return false
+}

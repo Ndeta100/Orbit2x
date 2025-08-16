@@ -1,0 +1,21 @@
+package components
+
+templ ToolCard(href, title, description string, iconPath string) {
+	<a href={ templ.SafeURL(href) } class="group">
+		<div class="tool-card bg-white rounded-lg border border-gray-200 p-6 flex flex-col h-full hover:border-blue-500">
+			<div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+				<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ iconPath }></path>
+				</svg>
+			</div>
+			<h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{ title }</h3>
+			<p class="text-gray-600 flex-grow">{ description }</p>
+			<div class="mt-4 flex items-center text-blue-600 font-medium">
+				<span>Try it now</span>
+				<svg class="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+				</svg>
+			</div>
+		</div>
+	</a>
+}

@@ -1,0 +1,66 @@
+// File: views/layout/base.templ
+package layout
+
+templ Base(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title } | DevToolsHub</title>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"/>
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+            body {
+                font-family: 'Inter', system-ui, sans-serif;
+            }
+
+            .tool-card {
+                transition: all 0.2s ease-in-out;
+            }
+
+            .tool-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-link {
+                position: relative;
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -2px;
+                left: 0;
+                background-color: #3B82F6;
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after, .nav-link.active::after {
+                width: 100%;
+            }
+
+            .btn-primary {
+                transition: all 0.2s ease;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+            }
+        </style>
+		</head>
+		<body class="bg-gray-50 min-h-screen flex flex-col">
+			@Header()
+			<main class="flex-grow">
+				{ children... }
+			</main>
+			@Footer()
+		</body>
+	</html>
+}

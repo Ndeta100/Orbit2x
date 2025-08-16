@@ -1,0 +1,299 @@
+// views/formatter/formatter.templ
+package formatter
+
+import "fmt"
+
+type FormatterResult struct {
+	OriginalText  string
+	FormattedText string
+	Error         string
+	Format        string // "json" or "yaml"
+}
+
+templ Index() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>JSON & YAML Formatter</title>
+			<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+			<style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                color: #333;
+            }
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+            h1 {
+                color: #0e4174;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .description {
+                text-align: center;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            .form-container {
+                margin-bottom: 20px;
+            }
+            textarea {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                min-height: 180px;
+                font-family: monospace;
+                resize: vertical;
+                margin-bottom: 10px;
+            }
+            .buttons {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            button {
+                padding: 10px 15px;
+                background-color: #0e4174;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                flex-grow: 1;
+            }
+            button:hover {
+                background-color: #0a325e;
+            }
+            .loading {
+                text-align: center;
+                padding: 20px;
+                display: none;
+            }
+            .htmx-request .loading {
+                display: block;
+            }
+            .results {
+                margin-top: 20px;
+            }
+            .result-section {
+                background-color: #f5f5f5;
+                border-radius: 4px;
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            .result-title {
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .result-content {
+                background-color: white;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 10px;
+                font-family: monospace;
+                white-space: pre-wrap;
+                word-break: break-all;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+            .error {
+                background-color: #ffebee;
+                border-left: 5px solid #f44336;
+                padding: 15px;
+                border-radius: 5px;
+            }
+            .copy-button {
+                margin-top: 10px;
+                background-color: #eee;
+                color: #333;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            .copy-button:hover {
+                background-color: #ddd;
+            }
+            .tab-container {
+                margin-bottom: 20px;
+            }
+            .tabs {
+                display: flex;
+                border-bottom: 1px solid #ddd;
+            }
+            .tab {
+                padding: 10px 15px;
+                cursor: pointer;
+                border: 1px solid transparent;
+                border-bottom: none;
+                border-radius: 4px 4px 0 0;
+                margin-right: 5px;
+            }
+            .tab.active {
+                background-color: #f5f5f5;
+                border-color: #ddd;
+                border-bottom-color: #f5f5f5;
+            }
+            .tab-content {
+                display: none;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-top: none;
+                background-color: #f5f5f5;
+            }
+            .tab-content.active {
+                display: block;
+            }
+            .options {
+                margin-bottom: 15px;
+            }
+            .option-group {
+                margin-bottom: 10px;
+            }
+            .option-label {
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+            .option-controls {
+                display: flex;
+                gap: 10px;
+            }
+            .option-controls select {
+                padding: 5px;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+            }
+        </style>
+		</head>
+		<body>
+			<div class="card">
+				<h1>JSON & YAML Formatter</h1>
+				<p class="description">Format, validate, and prettify JSON and YAML data.</p>
+				<div class="tab-container">
+					<div class="tabs">
+						<div class="tab active" onclick="switchTab('json-tab', this)">JSON</div>
+						<div class="tab" onclick="switchTab('yaml-tab', this)">YAML</div>
+					</div>
+					<div id="json-tab" class="tab-content active">
+						<div class="form-container">
+							<div class="options">
+								<div class="option-group">
+									<div class="option-label">Indentation:</div>
+									<div class="option-controls">
+										<select name="indent" form="json-form">
+											<option value="2">2 spaces</option>
+											<option value="4" selected>4 spaces</option>
+											<option value="8">8 spaces</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<form id="json-form" hx-post="/formatter/json" hx-target="#results" hx-indicator=".loading">
+								<textarea name="text" placeholder="Paste your JSON data here..." required></textarea>
+								<button type="submit">Format JSON</button>
+							</form>
+						</div>
+					</div>
+					<div id="yaml-tab" class="tab-content">
+						<div class="form-container">
+							<div class="options">
+								<div class="option-group">
+									<div class="option-label">Indentation:</div>
+									<div class="option-controls">
+										<select name="indent" form="yaml-form">
+											<option value="2" selected>2 spaces</option>
+											<option value="4">4 spaces</option>
+											<option value="8">8 spaces</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<form id="yaml-form" hx-post="/formatter/yaml" hx-target="#results" hx-indicator=".loading">
+								<textarea name="text" placeholder="Paste your YAML data here..." required></textarea>
+								<button type="submit">Format YAML</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="loading">
+					<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#0e4174">
+						<g fill="none" fill-rule="evenodd">
+							<g transform="translate(1 1)" stroke-width="2">
+								<circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
+								<path d="M36 18c0-9.94-8.06-18-18-18">
+									<animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
+								</path>
+							</g>
+						</g>
+					</svg>
+				</div>
+				<div id="results">
+					<!-- Results will be loaded here -->
+				</div>
+			</div>
+			<script>
+            function switchTab(tabId, tabElement) {
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Show the selected tab content
+                document.getElementById(tabId).classList.add('active');
+
+                // Add active class to the clicked tab
+                tabElement.classList.add('active');
+            }
+
+            function copyToClipboard(elementId) {
+                const element = document.getElementById(elementId);
+                const text = element.textContent;
+
+                navigator.clipboard.writeText(text).then(() => {
+                    const button = document.querySelector(`button[onclick="copyToClipboard('${elementId}')"]`);
+                    const originalText = button.textContent;
+                    button.textContent = "Copied!";
+
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 2000);
+                });
+            }
+        </script>
+		</body>
+	</html>
+}
+
+templ Results(result FormatterResult) {
+	<div class="results">
+		if result.Error != "" {
+			<div class="error">
+				<p>Error: { result.Error }</p>
+			</div>
+		} else {
+			<div class="result-section">
+				<div class="result-title">Formatted { result.Format }:</div>
+				<div id="formatted-text" class="result-content">{ result.FormattedText }</div>
+				<button class="copy-button" onclick="copyToClipboard('formatted-text')">Copy Formatted { result.Format }</button>
+			</div>
+			<p style="text-align: center; margin-top: 20px; color: #666;">
+				{ fmt.Sprintf("Your %s has been successfully formatted and validated.", result.Format) }
+			</p>
+		}
+	</div>
+}

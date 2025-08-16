@@ -1,0 +1,145 @@
+package home
+
+import "github.com/Ndeta100/orbit2x/internal/resolver"
+
+templ Results(domain string, results resolver.DNSLookupResults) {
+	<div>
+		<h2>DNS Lookup Results for: { domain }</h2>
+		<!-- A Records -->
+		if aRecords, ok := results.Results["A"]; ok {
+			<div class="record-section">
+				<h3>A Records (IPv4)</h3>
+				if aRecords.Error != "" {
+					<p class="error">Error: { aRecords.Error }</p>
+				} else if len(aRecords.Records) == 0 {
+					<p>No A records found</p>
+				} else {
+					<ul>
+						for _, record := range aRecords.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- AAAA Records -->
+		if aaaaRecords, ok := results.Results["AAAA"]; ok {
+			<div class="record-section">
+				<h3>AAAA Records (IPv6)</h3>
+				if aaaaRecords.Error != "" {
+					<p class="error">Error: { aaaaRecords.Error }</p>
+				} else if len(aaaaRecords.Records) == 0 {
+					<p>No AAAA records found</p>
+				} else {
+					<ul>
+						for _, record := range aaaaRecords.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- CNAME Record -->
+		if cnameRecord, ok := results.Results["CNAME"]; ok {
+			<div class="record-section">
+				<h3>CNAME Record</h3>
+				if cnameRecord.Error != "" {
+					<p class="error">Error: { cnameRecord.Error }</p>
+				} else if len(cnameRecord.Records) == 0 {
+					<p>No CNAME record found</p>
+				} else {
+					<ul>
+						for _, record := range cnameRecord.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- MX Records -->
+		if mxRecords, ok := results.Results["MX"]; ok {
+			<div class="record-section">
+				<h3>MX Records (Mail Servers)</h3>
+				if mxRecords.Error != "" {
+					<p class="error">Error: { mxRecords.Error }</p>
+				} else if len(mxRecords.Records) == 0 {
+					<p>No MX records found</p>
+				} else {
+					<ul>
+						for _, record := range mxRecords.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- NS Records -->
+		if nsRecords, ok := results.Results["NS"]; ok {
+			<div class="record-section">
+				<h3>NS Records (Name Servers)</h3>
+				if nsRecords.Error != "" {
+					<p class="error">Error: { nsRecords.Error }</p>
+				} else if len(nsRecords.Records) == 0 {
+					<p>No NS records found</p>
+				} else {
+					<ul>
+						for _, record := range nsRecords.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- TXT Records -->
+		if txtRecords, ok := results.Results["TXT"]; ok {
+			<div class="record-section">
+				<h3>TXT Records</h3>
+				if txtRecords.Error != "" {
+					<p class="error">Error: { txtRecords.Error }</p>
+				} else if len(txtRecords.Records) == 0 {
+					<p>No TXT records found</p>
+				} else {
+					<ul>
+						for _, record := range txtRecords.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- SOA Record -->
+		if soaRecord, ok := results.Results["SOA"]; ok {
+			<div class="record-section">
+				<h3>SOA Record</h3>
+				if soaRecord.Error != "" {
+					<p class="error">Error: { soaRecord.Error }</p>
+				} else if len(soaRecord.Records) == 0 {
+					<p>No SOA record found</p>
+				} else {
+					<ul>
+						for _, record := range soaRecord.Records {
+							<li>{ record }</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+		<!-- WHOIS Information -->
+		if whoisInfo, ok := results.Results["WHOIS"]; ok {
+			<div class="record-section">
+				<h3>WHOIS Information</h3>
+				if whoisInfo.Error != "" {
+					<p class="error">Error: { whoisInfo.Error }</p>
+				} else if len(whoisInfo.Records) == 0 {
+					<p>No WHOIS information found</p>
+				} else {
+					<pre>
+						for _, line := range whoisInfo.Records {
+							{ line }
+						}
+					</pre>
+				}
+			</div>
+		}
+	</div>
+}

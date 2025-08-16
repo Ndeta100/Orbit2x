@@ -1,0 +1,289 @@
+// views/subnet/subnet.templ
+package subnet
+
+import "fmt"
+
+type SubnetResult struct {
+	NetworkAddress   string
+	BroadcastAddress string
+	FirstUsableIP    string
+	LastUsableIP     string
+	TotalHosts       int
+	UsableHosts      int
+	SubnetMaskDec    string
+	SubnetMaskBin    string
+	CIDR             int
+	Error            string
+}
+
+templ Index() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Subnet Calculator</title>
+			<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+			<style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                color: #333;
+            }
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+            h1 {
+                color: #0e4174;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .description {
+                text-align: center;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            .form-container {
+                margin-bottom: 20px;
+            }
+            input[type="text"] {
+                width: 70%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            .input-row {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+            .input-label {
+                width: 120px;
+                font-weight: bold;
+            }
+            button {
+                padding: 10px 15px;
+                background-color: #0e4174;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+            button:hover {
+                background-color: #0a325e;
+            }
+            .loading {
+                text-align: center;
+                padding: 20px;
+                display: none;
+            }
+            .htmx-request .loading {
+                display: block;
+            }
+            .results {
+                margin-top: 20px;
+            }
+            .result-section {
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            .result-row {
+                display: flex;
+                margin-bottom: 10px;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+            .result-label {
+                font-weight: bold;
+                width: 200px;
+                color: #555;
+            }
+            .result-value {
+                flex-grow: 1;
+            }
+            .error {
+                background-color: #ffebee;
+                border-left: 5px solid #f44336;
+                padding: 15px;
+                border-radius: 5px;
+            }
+            .helper-text {
+                font-size: 12px;
+                color: #666;
+                margin-top: 4px;
+            }
+            .tab-container {
+                margin-bottom: 20px;
+            }
+            .tabs {
+                display: flex;
+                border-bottom: 1px solid #ddd;
+            }
+            .tab {
+                padding: 10px 15px;
+                cursor: pointer;
+                border: 1px solid transparent;
+                border-bottom: none;
+                border-radius: 4px 4px 0 0;
+                margin-right: 5px;
+            }
+            .tab.active {
+                background-color: #f9f9f9;
+                border-color: #ddd;
+                border-bottom-color: #f9f9f9;
+            }
+            .tab-content {
+                display: none;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-top: none;
+                background-color: #f9f9f9;
+            }
+            .tab-content.active {
+                display: block;
+            }
+        </style>
+		</head>
+		<body>
+			<div class="card">
+				<h1>Subnet Calculator</h1>
+				<p class="description">Calculate IP subnets, network addresses, and host ranges.</p>
+				<div class="tab-container">
+					<div class="tabs">
+						<div class="tab active" onclick="switchTab('cidr-tab', this)">CIDR Notation</div>
+						<div class="tab" onclick="switchTab('mask-tab', this)">IP and Subnet Mask</div>
+					</div>
+					<div id="cidr-tab" class="tab-content active">
+						<div class="form-container">
+							<form hx-post="/subnet/calculate-cidr" hx-target="#results" hx-indicator=".loading">
+								<div class="input-row">
+									<div class="input-label">CIDR Notation:</div>
+									<div>
+										<input type="text" name="cidr" placeholder="192.168.1.0/24" required/>
+										<div class="helper-text">Example: 192.168.1.0/24 or 10.0.0.0/8</div>
+									</div>
+								</div>
+								<button type="submit">Calculate</button>
+							</form>
+						</div>
+					</div>
+					<div id="mask-tab" class="tab-content">
+						<div class="form-container">
+							<form hx-post="/subnet/calculate-mask" hx-target="#results" hx-indicator=".loading">
+								<div class="input-row">
+									<div class="input-label">IP Address:</div>
+									<div>
+										<input type="text" name="ip" placeholder="192.168.1.0" required/>
+										<div class="helper-text">Example: 192.168.1.0</div>
+									</div>
+								</div>
+								<div class="input-row">
+									<div class="input-label">Subnet Mask:</div>
+									<div>
+										<input type="text" name="mask" placeholder="255.255.255.0" required/>
+										<div class="helper-text">Example: 255.255.255.0 or 255.255.0.0</div>
+									</div>
+								</div>
+								<button type="submit">Calculate</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="loading">
+					<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#0e4174">
+						<g fill="none" fill-rule="evenodd">
+							<g transform="translate(1 1)" stroke-width="2">
+								<circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
+								<path d="M36 18c0-9.94-8.06-18-18-18">
+									<animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
+								</path>
+							</g>
+						</g>
+					</svg>
+				</div>
+				<div id="results">
+					<!-- Results will be loaded here -->
+				</div>
+			</div>
+			<script>
+            function switchTab(tabId, tabElement) {
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Show the selected tab content
+                document.getElementById(tabId).classList.add('active');
+
+                // Add active class to the clicked tab
+                tabElement.classList.add('active');
+            }
+        </script>
+		</body>
+	</html>
+}
+
+templ SubnetResults(result SubnetResult) {
+	<div class="results">
+		if result.Error != "" {
+			<div class="error">
+				<p>Error: { result.Error }</p>
+			</div>
+		} else {
+			<div class="result-section">
+				<h3>Subnet Information</h3>
+				<div class="result-row">
+					<div class="result-label">CIDR Notation:</div>
+					<div class="result-value">{ fmt.Sprintf("/%d", result.CIDR) }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Subnet Mask:</div>
+					<div class="result-value">{ result.SubnetMaskDec }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Subnet Mask (Binary):</div>
+					<div class="result-value"><code>{ result.SubnetMaskBin }</code></div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Network Address:</div>
+					<div class="result-value">{ result.NetworkAddress }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Broadcast Address:</div>
+					<div class="result-value">{ result.BroadcastAddress }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">First Usable IP:</div>
+					<div class="result-value">{ result.FirstUsableIP }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Last Usable IP:</div>
+					<div class="result-value">{ result.LastUsableIP }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Total Hosts:</div>
+					<div class="result-value">{ fmt.Sprintf("%d", result.TotalHosts) }</div>
+				</div>
+				<div class="result-row">
+					<div class="result-label">Usable Hosts:</div>
+					<div class="result-value">{ fmt.Sprintf("%d", result.UsableHosts) }</div>
+				</div>
+			</div>
+		}
+	</div>
+}

@@ -1,0 +1,6 @@
+.env
+bin
+node_modules
+./node_modules
+*_templ.go*
+.idea/

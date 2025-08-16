@@ -1,0 +1,16 @@
+package components
+
+templ PrimaryButton(href string, text string) {
+	<a href={ templ.SafeURL(href) } class="btn-primary inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+		{ text }
+		<svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+		</svg>
+	</a>
+}
+
+templ SecondaryButton(href string, text string) {
+	<a href={ templ.SafeURL(href) } class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+		{ text }
+	</a>
+}
