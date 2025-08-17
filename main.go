@@ -1,13 +1,15 @@
 package main
 
 import (
-	"github.com/Ndeta100/orbit2x/handlers"
-	"github.com/go-chi/chi/v5"
-	"github.com/joho/godotenv"
 	"log"
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
+
+	"github.com/Ndeta100/orbit2x/handlers"
+	"github.com/go-chi/chi/v5"
+	"github.com/joho/godotenv"
 )
 
 type ViewData struct {
@@ -16,7 +18,8 @@ type ViewData struct {
 
 func main() {
 	if err := loadEnv(); err != nil {
-		log.Fatal("Error loading .env file")
+		// Don't fatal on missing .env in production
+		log.Println("No .env file found, using environment variables")
 	}
 	router := chi.NewMux()
 	router.Get("/", handlers.Make(handlers.HandleHomeIndex))
@@ -50,7 +53,18 @@ func main() {
 	router.Post("/color/convert", handlers.Make(handlers.HandleColorConvert))
 	router.Get("/color/random", handlers.Make(handlers.HandleRandomColor))
 	port := os.Getenv("HTTP_LISTEN_ADR")
-	slog.Info("Application is running on port %s", port)
+	if port == "" {
+		port = os.Getenv("HTTP_LISTEN_ADR")
+		if port == "" {
+			port = ":8080"
+		}
+	}
+
+	// Make sure port starts with ":"
+	if !strings.HasPrefix(port, ":") {
+		port = ":" + port
+	}
+	slog.Info("Application is running", "port", port)
 	log.Fatal(http.ListenAndServe(port, router))
 
 }
