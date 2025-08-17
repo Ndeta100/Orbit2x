@@ -35,13 +35,22 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
+          go mod tidy
           npm ci
 
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@latest
 
+      - name: Clean generated files
+        run: find . -name "*_templ.go" -delete
+
       - name: Generate templ files
         run: templ generate
+
+      - name: Verify templ generation
+        run: |
+          echo "Generated templ files:"
+          find . -name "*_templ.go" -type f
 
       - name: Build frontend assets
         run: npm run build
@@ -63,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -79,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-build
     if: github.event_name == 'release'
-    
+
     strategy:
       matrix:
         goos: [linux, windows, darwin]
@@ -106,13 +115,22 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
+          go mod tidy
           npm ci
 
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@latest
 
+      - name: Clean generated files
+        run: find . -name "*_templ.go" -delete
+
       - name: Generate templ files
         run: templ generate
+
+      - name: Verify templ generation
+        run: |
+          echo "Generated templ files:"
+          find . -name "*_templ.go" -type f
 
       - name: Build frontend assets
         run: npm run build
