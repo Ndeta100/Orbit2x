@@ -2,7 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "chmod +x build.sh && ./build.sh"
+    "buildCommand": "go install github.com/a-h/templ/cmd/templ@latest && export PATH=$PATH:$(go env GOPATH)/bin && find . -name '*_templ.go' -delete && $(go env GOPATH)/bin/templ generate && go mod tidy && npm ci && npm run build && go build -o orbit2x ."
   },
   "deploy": {
     "startCommand": "./orbit2x"
