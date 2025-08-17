@@ -1,5 +1,6 @@
+# nixpacks.toml - Railway build configuration
 [phases.setup]
-nixPkgs = ["go_1_23", "nodejs_18"]
+nixPkgs = ["go", "nodejs-18_x"]
 
 [phases.install]
 cmds = [
