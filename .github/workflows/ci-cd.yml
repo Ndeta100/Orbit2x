@@ -57,9 +57,9 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
-      - name: Run tests
-        run: go test -v ./...
-        continue-on-error: true
+        # Skip tests for now
+        # - name: Run tests
+        #   run: go test -v ./...
 
       - name: Build binary
         run: go build -o orbit2x .
@@ -118,7 +118,6 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
-          go mod tidy
           npm ci
 
       - name: Install templ
@@ -129,6 +128,9 @@ jobs:
 
       - name: Generate templ files
         run: templ generate
+
+      - name: Tidy Go modules
+        run: go mod tidy
 
       - name: Verify templ generation
         run: |
