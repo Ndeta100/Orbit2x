@@ -1,0 +1,20 @@
+[phases.setup]
+nixPkgs = ["go_1_23", "nodejs_18"]
+
+[phases.install]
+cmds = [
+    "npm ci",
+    "go install github.com/a-h/templ/cmd/templ@latest"
+]
+
+[phases.build]
+cmds = [
+    "find . -name '*_templ.go' -delete",
+    "templ generate",
+    "go mod tidy",
+    "npm run build",
+    "go build -o orbit2x ."
+]
+
+[start]
+cmd = "./orbit2x"
