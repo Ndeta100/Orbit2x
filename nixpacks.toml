@@ -5,7 +5,7 @@ nixPkgs = ["go", "nodejs-18_x"]
 [phases.install]
 cmds = [
     "npm ci",
-    "go install github.coq  Am/a-h/templ/cmd/templ@latest"
+    "go install github.com/a-h/templ/cmd/templ@latest"
 ]
 
 [phases.build]
