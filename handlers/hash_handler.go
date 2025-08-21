@@ -13,7 +13,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Ndeta100/orbit2x/views/hashgen" // Adjust to your actual path
+	"github.com/Ndeta100/orbit2x/views/hashgen"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/md4"

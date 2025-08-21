@@ -1,0 +1,298 @@
+package dns
+
+import (
+	"github.com/Ndeta100/orbit2x/internal/resolver"
+	"github.com/Ndeta100/orbit2x/views/components"
+	"github.com/Ndeta100/orbit2x/views/layout"
+)
+
+templ DNSResults(domain string, results resolver.DNSLookupResults) {
+	@layout.Base("DNS Results for " + domain + " | Orbit2x") {
+		@DNSResultsContent(domain, results)
+	}
+}
+
+templ DNSResultsContent(domain string, results resolver.DNSLookupResults) {
+	<section class="bg-white py-16 md:py-20 relative overflow-hidden min-h-screen">
+		<!-- Glassmorphism background elements -->
+		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+
+		<!-- Floating orbital elements -->
+		<div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
+		<div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+		<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gray-150/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+		<div class="absolute bottom-20 right-1/3 w-28 h-28 bg-gray-100/25 rounded-full blur-2xl animate-pulse" style="animation-delay: 0.5s;"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<!-- Header -->
+			<div class="text-center mb-12">
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl max-w-4xl mx-auto">
+					<h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">DNS Lookup Results</h1>
+					<div class="inline-block backdrop-blur-sm bg-black/90 text-white px-6 py-3 rounded-2xl font-mono text-lg shadow-lg">
+						{ domain }
+					</div>
+				</div>
+			</div>
+
+			<div class="grid gap-8 max-w-7xl mx-auto">
+				<!-- A Records -->
+				if aRecords, ok := results.Results["A"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">A Records (IPv4)</h3>
+						</div>
+						if aRecords.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { aRecords.Error }</p>
+							</div>
+						} else if len(aRecords.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No A records found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range aRecords.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- AAAA Records -->
+				if aaaaRecords, ok := results.Results["AAAA"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">AAAA Records (IPv6)</h3>
+						</div>
+						if aaaaRecords.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { aaaaRecords.Error }</p>
+							</div>
+						} else if len(aaaaRecords.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No AAAA records found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range aaaaRecords.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- CNAME Record -->
+				if cnameRecord, ok := results.Results["CNAME"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">CNAME Record</h3>
+						</div>
+						if cnameRecord.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { cnameRecord.Error }</p>
+							</div>
+						} else if len(cnameRecord.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No CNAME record found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range cnameRecord.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- MX Records -->
+				if mxRecords, ok := results.Results["MX"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">MX Records (Mail Servers)</h3>
+						</div>
+						if mxRecords.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { mxRecords.Error }</p>
+							</div>
+						} else if len(mxRecords.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No MX records found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range mxRecords.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- NS Records -->
+				if nsRecords, ok := results.Results["NS"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v4a2 2 0 01-2 2H5z"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">NS Records (Name Servers)</h3>
+						</div>
+						if nsRecords.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { nsRecords.Error }</p>
+							</div>
+						} else if len(nsRecords.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No NS records found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range nsRecords.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- TXT Records -->
+				if txtRecords, ok := results.Results["TXT"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">TXT Records</h3>
+						</div>
+						if txtRecords.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { txtRecords.Error }</p>
+							</div>
+						} else if len(txtRecords.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No TXT records found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range txtRecords.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono text-sm break-all font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- SOA Record -->
+				if soaRecord, ok := results.Results["SOA"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">SOA Record</h3>
+						</div>
+						if soaRecord.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { soaRecord.Error }</p>
+							</div>
+						} else if len(soaRecord.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No SOA record found</p>
+							</div>
+						} else {
+							<div class="space-y-2">
+								for _, record := range soaRecord.Records {
+									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+										<code class="text-black font-mono text-sm break-all font-medium">{ record }</code>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+
+				<!-- WHOIS Information -->
+				if whoisInfo, ok := results.Results["WHOIS"]; ok {
+					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
+						<div class="flex items-center mb-4">
+							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+								</svg>
+							</div>
+							<h3 class="text-2xl font-bold text-black">WHOIS Information</h3>
+						</div>
+						if whoisInfo.Error != "" {
+							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-red-800 font-medium">Error: { whoisInfo.Error }</p>
+							</div>
+						} else if len(whoisInfo.Records) == 0 {
+							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
+								<p class="text-yellow-800 font-medium">No WHOIS information found</p>
+							</div>
+						} else {
+							<div class="bg-white/50 rounded-xl p-4 border border-gray-200/50 backdrop-blur-sm max-h-96 overflow-y-auto">
+								<pre class="text-black font-mono text-sm whitespace-pre-wrap">
+									for _, line := range whoisInfo.Records {
+										{ line }
+									}
+								</pre>
+							</div>
+						}
+					</div>
+				}
+			</div>
+
+			<!-- Actions -->
+			<div class="text-center mt-12 space-y-4">
+				<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl max-w-2xl mx-auto">
+					<h3 class="text-xl font-bold text-black mb-4">Perform Another Lookup</h3>
+					<div class="flex flex-col sm:flex-row justify-center gap-4">
+						@components.PrimaryButton("/lookup", "New DNS Lookup")
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}

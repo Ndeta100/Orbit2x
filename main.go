@@ -23,7 +23,8 @@ func main() {
 	}
 	router := chi.NewMux()
 	router.Get("/", handlers.Make(handlers.HandleHomeIndex))
-	router.Post("/lookup", handlers.HandleDNSLookup)
+	router.Get("/lookup", handlers.Make(handlers.HandleDNSLookupIndex))
+	router.Post("/lookup", handlers.Make(handlers.HandleDNSLookup))
 	router.Get("/myip", handlers.Make(handlers.HandleMyIP))
 	router.Get("/headers", handlers.Make(handlers.HandleHeadersIndex))
 	router.Post("/headers/analyze", handlers.Make(handlers.HandleHeadersAnalyze))
@@ -52,6 +53,10 @@ func main() {
 	router.Get("/color", handlers.Make(handlers.HandleColorIndex))
 	router.Post("/color/convert", handlers.Make(handlers.HandleColorConvert))
 	router.Get("/color/random", handlers.Make(handlers.HandleRandomColor))
+
+	// This will catch ALL 404s - any route not defined above
+	router.NotFound(handlers.Make(handlers.HandleComingSoon))
+
 	port := os.Getenv("HTTP_LISTEN_ADR")
 	if port == "" {
 		port = os.Getenv("HTTP_LISTEN_ADR")
