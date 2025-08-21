@@ -54,7 +54,7 @@ func HandleDNSLookup(w http.ResponseWriter, r *http.Request) error {
 	domain = strings.TrimPrefix(domain, "www.")
 	domain = strings.Split(domain, "/")[0]
 
-	// Create resolver and perform lookups
+	// Create a resolver and perform lookups
 	dnsResolver := &resolver.DefaultResolver{}
 	results := resolver.PerformAllLookups(dnsResolver, domain)
 

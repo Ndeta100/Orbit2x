@@ -54,7 +54,7 @@ func HandleHeadersIndex(w http.ResponseWriter, r *http.Request) error {
 	return headers.Index().Render(r.Context(), w)
 }
 
-// HandleHeadersAnalyze analyzes HTTP headers for a given URL
+// HandleHeadersAnalyze analyzes HTTP _headers for a given URL
 func HandleHeadersAnalyze(w http.ResponseWriter, r *http.Request) error {
 	// Parse form data
 	if err := r.ParseForm(); err != nil {

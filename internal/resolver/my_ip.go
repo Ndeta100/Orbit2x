@@ -43,7 +43,7 @@ var (
 
 // getRealIP determines the client's real IPv4 address
 func GetRealIP(r *http.Request) string {
-	// Check common headers that might contain the real IP
+	// Check common _headers that might contain the real IP
 	headersToCheck := []string{
 		"CF-Connecting-IP", // Cloudflare
 		"X-Forwarded-For",  // Standard proxy header
@@ -69,7 +69,7 @@ func GetRealIP(r *http.Request) string {
 		}
 	}
 
-	// Fall back to RemoteAddr if no valid IP in headers
+	// Fall back to RemoteAddr if no valid IP in _headers
 	ipPort := r.RemoteAddr
 	ip, _, err := net.SplitHostPort(ipPort)
 	if err != nil {

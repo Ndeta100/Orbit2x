@@ -54,6 +54,17 @@ func main() {
 	router.Post("/color/convert", handlers.Make(handlers.HandleColorConvert))
 	router.Get("/color/random", handlers.Make(handlers.HandleRandomColor))
 
+	// Category routes
+	router.Get("/dns-tools", handlers.Make(handlers.HandleDNSToolsCategory))
+	router.Get("/dev-tools", handlers.Make(handlers.HandleDeveloperToolsCategory))
+	router.Get("/design-tools", handlers.Make(handlers.HandleDesignerToolsCategory))
+	router.Get("/webmaster-tools", handlers.Make(handlers.HandleWebmasterToolsCategory))
+	router.Get("/network-tools", handlers.Make(handlers.HandleNetworkToolsCategory))
+	router.Get("/security-tools", handlers.Make(handlers.HandleSecurityToolsCategory))
+	router.Get("/productivity-tools", handlers.Make(handlers.HandleProductivityToolsCategory))
+	router.Get("/gaming-tools", handlers.Make(handlers.HandleGamingToolsCategory))
+	router.Get("/more-tools", handlers.Make(handlers.HandleMoreCategoriesCategory))
+
 	// This will catch ALL 404s - any route not defined above
 	router.NotFound(handlers.Make(handlers.HandleComingSoon))
 

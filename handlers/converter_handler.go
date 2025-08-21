@@ -49,7 +49,7 @@ func HandleCSVToJSON(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	hasHeaders := r.FormValue("headers") != ""
+	hasHeaders := r.FormValue("_headers") != ""
 
 	// Parse CSV
 	reader := csv.NewReader(strings.NewReader(text))
@@ -76,7 +76,7 @@ func HandleCSVToJSON(w http.ResponseWriter, r *http.Request) error {
 	var result []interface{}
 
 	if hasHeaders && len(records) > 1 {
-		// First row contains headers
+		// First row contains _headers
 		headers := records[0]
 
 		// Process data rows
@@ -103,7 +103,7 @@ func HandleCSVToJSON(w http.ResponseWriter, r *http.Request) error {
 			result = append(result, item)
 		}
 	} else {
-		// No headers, convert each row to an array
+		// No _headers, convert each row to an array
 		for _, row := range records {
 			rowData := make([]interface{}, len(row))
 
@@ -214,12 +214,12 @@ func HandleJSONToCSV(w http.ResponseWriter, r *http.Request) error {
 	writer := csv.NewWriter(&buf)
 	writer.Comma = []rune(delimiter)[0]
 
-	// For array of objects, extract headers
+	// For array of objects, extract _headers
 	//if firstItem, ok := jsonData[0].(map[string]interface{}); ok {
 	if _, ok := jsonData[0].(map[string]interface{}); ok {
 		// Array of objects
 
-		// Get all possible headers
+		// Get all possible _headers
 		headers := make(map[string]bool)
 		for _, item := range jsonData {
 			if obj, ok := item.(map[string]interface{}); ok {
@@ -229,17 +229,17 @@ func HandleJSONToCSV(w http.ResponseWriter, r *http.Request) error {
 			}
 		}
 
-		// Convert headers map to slice
+		// Convert _headers map to slice
 		headerSlice := make([]string, 0, len(headers))
 		for key := range headers {
 			headerSlice = append(headerSlice, key)
 		}
 
-		// Write headers
+		// Write _headers
 		if includeHeaders {
 			if err := writer.Write(headerSlice); err != nil {
 				return converter.Results(converter.ConversionResult{
-					Error:        "Failed to write CSV headers: " + err.Error(),
+					Error:        "Failed to write CSV _headers: " + err.Error(),
 					OriginalText: text,
 					SourceFormat: "JSON",
 					TargetFormat: "CSV",

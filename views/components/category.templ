@@ -1,0 +1,203 @@
+package components
+
+import (
+	"strings"
+	"github.com/Ndeta100/orbit2x/types"
+	"github.com/Ndeta100/orbit2x/views/layout"
+)
+
+templ CategoryPage(category types.CategoryData) {
+	@layout.Base(category.Name + " | Orbit2x") {
+		@CategoryHeader(category)
+		if len(category.Tools) > 0 {
+			@CategoryToolsGrid(category)
+		} else {
+			@CategoryComingSoon(category)
+		}
+		@CategoryCTA()
+	}
+}
+
+templ CategoryHeader(category types.CategoryData) {
+	<section class="bg-white py-16 md:py-20 relative overflow-hidden">
+		<!-- Glassmorphism background elements -->
+		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+
+		<!-- Floating orbital elements -->
+		<div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
+		<div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+		<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gray-150/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<!-- Breadcrumb -->
+			<div class="mb-8">
+				<div class="backdrop-blur-sm bg-white/30 px-4 py-2 rounded-full border border-gray-200/50 inline-flex items-center text-sm">
+					<a href="/" class="text-black/60 hover:text-black transition-colors">Home</a>
+					<svg class="mx-2 h-4 w-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+					</svg>
+					<span class="text-black font-medium">{ category.Name }</span>
+				</div>
+			</div>
+
+			<div class="max-w-4xl mx-auto text-center">
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl">
+					<!-- Category Icon -->
+					<div class="w-20 h-20 bg-black rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+						<svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ category.Icon }></path>
+						</svg>
+					</div>
+
+					<h1 class="text-4xl sm:text-5xl font-extrabold text-black mb-4">
+						{ category.Name }
+					</h1>
+					<p class="text-xl text-black/80 mb-6">
+						{ category.Description }
+					</p>
+
+					<!-- Tool count badge -->
+					<div class="inline-block backdrop-blur-sm bg-black/90 text-white px-6 py-2 rounded-full font-medium">
+						{ category.ToolCount }
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ CategoryToolsGrid(category types.CategoryData) {
+	<section class="py-16 bg-white relative overflow-hidden">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<!-- Search and Filters -->
+			<div class="max-w-2xl mx-auto mb-12">
+				<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+					<div class="relative">
+						<input
+							type="text"
+							placeholder={ "Search " + category.SearchHint + "..." }
+							class="w-full px-6 py-4 pl-12 rounded-xl backdrop-blur-sm bg-white/60 border border-gray-200/50 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/20"
+						/>
+						<svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+						</svg>
+					</div>
+				</div>
+			</div>
+
+			<!-- Tools Grid -->
+			<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+				for _, tool := range category.Tools {
+					@CategoryToolCard(tool)
+				}
+			</div>
+		</div>
+	</section>
+}
+
+templ CategoryToolCard(tool types.CategoryTool) {
+	<a href={ templ.SafeURL(tool.URL) } class="group block transform hover:scale-105 transition-all duration-300">
+		<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 flex flex-col h-full hover:bg-white/50 hover:border-gray-300/60 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+			<!-- Badges -->
+			<div class="absolute top-4 right-4 flex gap-2">
+				if tool.IsNew {
+					<span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">NEW</span>
+				}
+				if tool.IsPopular {
+					<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">POPULAR</span>
+				}
+			</div>
+
+			<!-- Tool Icon -->
+			<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+				<svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ tool.Icon }></path>
+				</svg>
+			</div>
+
+			<h3 class="text-lg font-bold text-black mb-2 group-hover:text-gray-800 transition-colors duration-300">{ tool.Name }</h3>
+			<p class="text-black/70 flex-grow text-sm mb-4 group-hover:text-black/80 transition-colors duration-300">{ tool.Description }</p>
+
+			<!-- Tags -->
+			if len(tool.Tags) > 0 {
+				<div class="flex flex-wrap gap-2 mb-4">
+					for _, tag := range tool.Tags {
+						<span class="bg-white/50 text-black/70 px-2 py-1 rounded text-xs">{ tag }</span>
+					}
+				</div>
+			}
+
+			<!-- CTA -->
+			<div class="flex items-center text-black font-medium group-hover:text-gray-800 transition-colors duration-300">
+				<span>Use Tool</span>
+				<svg class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+				</svg>
+			</div>
+		</div>
+	</a>
+}
+
+templ CategoryComingSoon(category types.CategoryData) {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+			<div class="max-w-2xl mx-auto">
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl">
+					<div class="w-16 h-16 bg-black/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+						<svg class="h-8 w-8 text-black/40" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+						</svg>
+					</div>
+
+					<h2 class="text-3xl font-bold text-black mb-4">Tools Coming Soon</h2>
+					<p class="text-lg text-black/70 mb-8">
+						We're working hard to bring you the best { strings.ToLower(category.Name) }. Check back soon for new additions!
+					</p>
+
+					<!-- Progress indicator -->
+					<div class="max-w-md mx-auto mb-8">
+						<div class="flex justify-between text-sm text-black/60 mb-2">
+							<span>Development Progress</span>
+							<span>25%</span>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 rounded-full h-2 border border-gray-200/50">
+							<div class="bg-black h-full rounded-full transition-all duration-1000" style="width: 25%"></div>
+						</div>
+					</div>
+
+					<p class="text-sm text-black/60 mb-8">
+						Want to be notified when new tools are added?
+					</p>
+
+					<div class="flex flex-col sm:flex-row gap-4 justify-center">
+						<a href={ templ.SafeURL("mailto:notify@orbit2x.com?subject=Notify me about " + category.Name + " tools") } class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition-colors">
+                            Get Notified
+                        </a>
+						<a href="/" class="px-6 py-3 backdrop-blur-xl bg-white/60 hover:bg-white/80 border border-gray-200/50 text-black rounded-xl font-medium transition-colors">
+							Browse Other Tools
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ CategoryCTA() {
+	<section class="py-16 bg-white relative overflow-hidden">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+			<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-8 shadow-xl max-w-2xl mx-auto">
+				<h3 class="text-2xl font-bold text-black mb-4">
+					Need a specific tool?
+				</h3>
+				<p class="text-black/70 mb-6">
+					Let us know what tools you'd like to see and we'll prioritize them.
+				</p>
+				<div class="flex flex-col sm:flex-row justify-center gap-4">
+					@SecondaryButton("/", "Back to Home")
+					@PrimaryButton("/request-tool", "Request a Tool")
+				</div>
+			</div>
+		</div>
+	</section>
+}

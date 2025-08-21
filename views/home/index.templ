@@ -35,7 +35,7 @@ templ Hero() {
 						Your Complete <span class="text-black">Digital Toolkit</span>
 					</h1>
 					<p class="mt-6 text-xl md:text-2xl text-black/80 max-w-3xl mx-auto leading-relaxed">
-						500+ professional tools across 9 categories. Everything you need in one orbit.
+						50+ professional tools across 9 categories. Everything you need in one orbit.
 					</p>
 
 					<!-- Tool counter with glass effect -->
@@ -117,16 +117,21 @@ templ PopularToolsSection() {
 			</div>
 
 			<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-				@components.ToolCard("/whois", "Whois Lookup", "Get detailed domain registration and ownership information", "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z")
-				@components.ToolCard("/json-formatter", "JSON Formatter", "Format, validate and beautify JSON data instantly", "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4")
-				@components.ToolCard("/password-generator", "Password Generator", "Generate secure, customizable passwords for any purpose", "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z")
-				@components.ToolCard("/qr-generator", "QR Code Generator", "Create QR codes for URLs, text, WiFi and more", "M4 4h6v6H4V4zM14 4h6v6h-6V4zM4 14h6v6H4v-6z")
-				@components.ToolCard("/color-picker", "Color Picker", "Extract colors, generate palettes, convert formats", "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4z")
-				@components.ToolCard("/url-shortener", "URL Shortener", "Create short, shareable links with analytics", "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1")
+			    @components.ToolCard("/lookup", "DNS Lookup", "Check domain information, DNS records, and perform comprehensive domain lookups", "M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9")
+
+				@components.ToolCard("/formatter", "JSON Formatter", "Format, validate and beautify JSON data instantly", "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4")
+
+				@components.ToolCard("/myip", "My IP Address", "View your current IP address and connection details", "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7")
+
+                @components.ToolCard("/ssl", "SSL Checker", "Verify SSL certificates and check for security vulnerabilities", "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z")
+
+                @components.ToolCard("/color", "Color Converter", "Convert colors between different formats and generate palettes", "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4z")
+
+                @components.ToolCard("/encoder", "Text Encoder", "Encode and decode text in various formats including Base64, URL, and more", "M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z")
 			</div>
 
 			<div class="mt-16 text-center">
-				@components.PrimaryButton("/all-tools", "Browse All 500+ Tools")
+				@components.PrimaryButton("/all-tools", "Browse All 50+ Tools")
 			</div>
 		</div>
 	</section>
@@ -178,7 +183,7 @@ templ FeaturesSection() {
 						</svg>
 					</div>
 					<h3 class="text-xl font-bold text-black mb-3">All-in-One Platform</h3>
-					<p class="text-black/70 leading-relaxed">500+ tools across 9 categories. No need to bookmark multiple sites anymore.</p>
+					<p class="text-black/70 leading-relaxed">20+ tools across 9 categories. No need to bookmark multiple sites anymore.</p>
 				</div>
 
 				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 hover:bg-white/50 transition-all duration-300">
@@ -221,7 +226,7 @@ templ StatsSection() {
 			<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl">
 				<div class="grid gap-8 grid-cols-2 md:grid-cols-4 text-center">
 					<div>
-						<div class="text-3xl md:text-4xl font-bold text-black mb-2">100+</div>
+						<div class="text-3xl md:text-4xl font-bold text-black mb-2">10+</div>
 						<div class="text-black/70 font-medium">Tools Available</div>
 					</div>
 					<div>
@@ -229,7 +234,7 @@ templ StatsSection() {
 						<div class="text-black/70 font-medium">Categories</div>
 					</div>
 					<div>
-						<div class="text-3xl md:text-4xl font-bold text-black mb-2">1M+</div>
+						<div class="text-3xl md:text-4xl font-bold text-black mb-2">1K+</div>
 						<div class="text-black/70 font-medium">Tools Used</div>
 					</div>
 					<div>

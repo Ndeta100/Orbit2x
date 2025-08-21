@@ -50,24 +50,50 @@ templ Header() {
              <div class="lg:hidden">
                 <button
                    type="button"
+                   id="mobile-menu-button"
                    class="glass-button p-2 rounded-xl backdrop-blur-lg bg-white/50 border border-gray-200/50 text-black hover:bg-white/70 transition-all duration-300 shadow-lg hover:shadow-xl"
-                   hx-get="/mobile-menu"
-                   hx-target="#mobile-menu"
-                   hx-swap="innerHTML"
-                   onclick="this.classList.toggle('active')"
+                   onclick="toggleMobileMenu()"
                 >
-                   <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <svg id="menu-icon" class="h-6 w-6 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                   </svg>
+                   <svg id="close-icon" class="h-6 w-6 hidden transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                    </svg>
                 </button>
              </div>
           </div>
        </div>
 
-       <!-- Mobile menu container with glass liquid -->
-       <div id="mobile-menu" class="lg:hidden border-t border-gray-200/50">
-          <!-- Content loaded via HTMX -->
+       <!-- Mobile menu container with smooth transitions -->
+       <div id="mobile-menu" class="lg:hidden border-t border-gray-200/50 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+          @MobileMenu()
        </div>
+
+       <script>
+          function toggleMobileMenu() {
+             const menu = document.getElementById('mobile-menu');
+             const menuIcon = document.getElementById('menu-icon');
+             const closeIcon = document.getElementById('close-icon');
+             const button = document.getElementById('mobile-menu-button');
+
+             if (menu.style.maxHeight === '0px' || menu.style.maxHeight === '') {
+                // Show menu
+                menu.style.maxHeight = '400px';
+                menu.style.opacity = '1';
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                button.classList.add('rotate-90');
+             } else {
+                // Hide menu
+                menu.style.maxHeight = '0px';
+                menu.style.opacity = '0';
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                button.classList.remove('rotate-90');
+             }
+          }
+       </script>
     </header>
 
     <!-- Add padding to body to account for fixed header -->
