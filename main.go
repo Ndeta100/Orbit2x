@@ -56,6 +56,7 @@ func main() {
 
 	//home page routes and others
 	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
+	router.Get("/about", handlers.Make(handlers.AboutHandler))
 
 	// Category routes
 	router.Get("/dns-tools", handlers.Make(handlers.HandleDNSToolsCategory))

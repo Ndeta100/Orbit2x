@@ -1,1 +1,563 @@
 package about
+
+import (
+	"github.com/Ndeta100/orbit2x/views/layout"
+	"github.com/Ndeta100/orbit2x/views/components"
+)
+
+templ About() {
+	@layout.Base("About Orbit2x - Your Complete Digital Toolkit") {
+		@AboutHero()
+		@MissionSection()
+		@StorySection()
+		@ValuesSection()
+		@TechSection()
+		@TeamSection()
+		@FutureSection()
+		@ContactSection()
+	}
+}
+
+templ AboutHero() {
+	<section class="bg-white py-20 md:py-28 relative overflow-hidden">
+		<!-- Background orbital elements -->
+		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+		<div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
+		<div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+		<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gray-150/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="max-w-5xl mx-auto text-center">
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 md:p-16 shadow-2xl">
+					<h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-black leading-tight mb-6">
+						Built for <span class="text-black">Digital Professionals</span>
+					</h1>
+					<p class="mt-6 text-xl md:text-2xl text-black/80 max-w-3xl mx-auto leading-relaxed">
+						We believe in creating tools that respect your privacy, work instantly, and solve real problems.
+					</p>
+
+					<!-- Key stats -->
+					<div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+						<div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+							<div class="text-2xl font-bold text-black">50+</div>
+							<div class="text-sm text-black/70">Tools</div>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+							<div class="text-2xl font-bold text-black">9</div>
+							<div class="text-sm text-black/70">Categories</div>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+							<div class="text-2xl font-bold text-black">100%</div>
+							<div class="text-sm text-black/70">Free</div>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+							<div class="text-2xl font-bold text-black">0ms</div>
+							<div class="text-sm text-black/70">Data Storage</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ MissionSection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute top-10 right-1/4 w-64 h-64 bg-gray-100/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="max-w-4xl mx-auto text-center mb-16">
+				<div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+					<h2 class="text-3xl md:text-5xl font-extrabold text-black mb-6">
+						Our Mission
+					</h2>
+					<p class="text-xl md:text-2xl text-black/80 leading-relaxed">
+						To provide every digital professional with a comprehensive toolkit that prioritizes privacy, speed, and simplicity.
+					</p>
+				</div>
+			</div>
+
+			<div class="grid gap-8 grid-cols-1 md:grid-cols-3">
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Privacy First</h3>
+					<p class="text-black/70">Your data never leaves your browser. No tracking, no storage, no surveillance.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Lightning Fast</h3>
+					<p class="text-black/70">Instant results, no loading screens. Built for professionals who value their time.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Always Free</h3>
+					<p class="text-black/70">No premium tiers, no paywalls. Essential tools should be accessible to everyone.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ StorySection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute bottom-10 left-1/4 w-80 h-80 bg-gray-200/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="max-w-6xl mx-auto">
+				<div class="grid gap-12 items-center grid-cols-1 lg:grid-cols-2">
+					<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-xl">
+						<h2 class="text-3xl md:text-4xl font-extrabold text-black mb-6">
+							Why We Built Orbit2x
+						</h2>
+						<div class="space-y-6 text-black/80">
+							<p class="text-lg">
+								As developers and digital professionals, we were tired of bookmarking dozens of different tool websites.
+								Each had their own interface, privacy policy, and often questionable data practices.
+							</p>
+							<p class="text-lg">
+								We wanted a single place for all our digital tools—DNS lookups, JSON formatting, color conversion,
+								text encoding, and more. But most importantly, we wanted tools that respect user privacy.
+							</p>
+							<p class="text-lg">
+								That's why everything in Orbit2x runs locally in your browser. Your data never touches our servers.
+								No accounts required, no data collection, no tracking of your tool usage.
+							</p>
+							<p class="text-lg font-semibold">
+								Just professional tools that work instantly and respect your privacy.
+							</p>
+						</div>
+					</div>
+
+					<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-xl">
+						<h3 class="text-2xl font-bold text-black mb-6">The Problem We Solved</h3>
+						<div class="space-y-4">
+							<div class="flex items-start space-x-4">
+								<div class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+										<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+									</svg>
+								</div>
+								<div>
+									<h4 class="font-semibold text-black">Multiple Bookmarks</h4>
+									<p class="text-black/70">Juggling 20+ different tool websites</p>
+								</div>
+							</div>
+							<div class="flex items-start space-x-4">
+								<div class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+										<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+									</svg>
+								</div>
+								<div>
+									<h4 class="font-semibold text-black">Privacy Concerns</h4>
+									<p class="text-black/70">Unknown data collection and storage</p>
+								</div>
+							</div>
+							<div class="flex items-start space-x-4">
+								<div class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+										<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+									</svg>
+								</div>
+								<div>
+									<h4 class="font-semibold text-black">Slow Performance</h4>
+									<p class="text-black/70">Loading delays and server dependencies</p>
+								</div>
+							</div>
+							<div class="flex items-start space-x-4">
+								<div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+										<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+									</svg>
+								</div>
+								<div>
+									<h4 class="font-semibold text-black">Orbit2x Solution</h4>
+									<p class="text-black/70">One platform, complete privacy, instant results</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ ValuesSection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute top-20 right-10 w-72 h-72 bg-gray-100/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="text-center max-w-4xl mx-auto mb-16">
+				<div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+					<h2 class="text-3xl md:text-5xl font-extrabold text-black mb-4">
+						Our Core Values
+					</h2>
+					<p class="text-xl text-black/70">
+						The principles that guide everything we build
+					</p>
+				</div>
+			</div>
+
+			<div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50">
+					<div class="flex items-start space-x-4">
+						<div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+							</svg>
+						</div>
+						<div>
+							<h3 class="text-xl font-bold text-black mb-3">Transparency</h3>
+							<p class="text-black/70">Open about our data practices, technology choices, and business model. No hidden agendas.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50">
+					<div class="flex items-start space-x-4">
+						<div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+							</svg>
+						</div>
+						<div>
+							<h3 class="text-xl font-bold text-black mb-3">Accessibility</h3>
+							<p class="text-black/70">Essential tools should be free and available to everyone, regardless of budget or background.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50">
+					<div class="flex items-start space-x-4">
+						<div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+							</svg>
+						</div>
+						<div>
+							<h3 class="text-xl font-bold text-black mb-3">Innovation</h3>
+							<p class="text-black/70">Constantly improving and adding new tools based on real user needs and industry trends.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50">
+					<div class="flex items-start space-x-4">
+						<div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center flex-shrink-0">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+							</svg>
+						</div>
+						<div>
+							<h3 class="text-xl font-bold text-black mb-3">Reliability</h3>
+							<p class="text-black/70">Building robust tools that work consistently, with minimal downtime and maximum performance.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ TechSection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute bottom-20 left-10 w-80 h-80 bg-gray-200/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="text-center max-w-4xl mx-auto mb-16">
+				<div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+					<h2 class="text-3xl md:text-5xl font-extrabold text-black mb-4">
+						Built with Modern Technology
+					</h2>
+					<p class="text-xl text-black/70">
+						Fast, secure, and privacy-focused architecture
+					</p>
+				</div>
+			</div>
+
+			<div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-xl flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Go + Templ</h3>
+					<p class="text-black/70">Lightning-fast backend with type-safe templating for reliable performance.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-xl flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Client-Side Processing</h3>
+					<p class="text-black/70">All tools run in your browser using vanilla JavaScript for maximum privacy.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-xl flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Cloudflare Edge</h3>
+					<p class="text-black/70">Global CDN ensures fast loading times worldwide with built-in security.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-xl flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">HTTPS Everywhere</h3>
+					<p class="text-black/70">End-to-end encryption for all data transmissions with modern security headers.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-xl flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Mobile-First</h3>
+					<p class="text-black/70">Responsive design is optimized for all devices with progressive web app features.</p>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50 text-center">
+					<div class="w-16 h-16 bg-black text-white rounded-xl flex items-center justify-center mx-auto mb-6">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-bold text-black mb-4">Zero Database</h3>
+					<p class="text-black/70">No user data storage means any data breaches, leaks, or privacy violations.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ TeamSection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute top-10 left-1/3 w-96 h-96 bg-gray-100/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="text-center max-w-4xl mx-auto mb-16">
+				<div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+					<h2 class="text-3xl md:text-5xl font-extrabold text-black mb-4">
+						Built by Developers, for Developers
+					</h2>
+					<p class="text-xl text-black/70">
+						A small team is passionate about creating tools that we ourselves use daily
+					</p>
+				</div>
+			</div>
+
+			<div class="max-w-3xl mx-auto text-center">
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl">
+					<div class="mb-8">
+						<div class="w-24 h-24 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+							<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+							</svg>
+						</div>
+						<h3 class="text-2xl font-bold text-black mb-4">The Orbit2x Team</h3>
+						<p class="text-lg text-black/80 mb-6">
+							We're a small, focused team of developers and designers who believe that great tools should be simple,
+							fast, and respect user privacy. Every tool on Orbit2x is built with the same attention to detail we'd
+							want in tools we use ourselves.
+						</p>
+						<p class="text-black/70">
+							<strong>Our backgrounds:</strong> Full-stack development, cybersecurity, UI/UX design, and DevOps.
+							We've worked at startups and enterprises, but we're united by a shared vision of better digital tools.
+						</p>
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+						<div class="text-center">
+							<div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+								<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+								</svg>
+							</div>
+							<h4 class="font-semibold text-black mb-2">Engineering</h4>
+							<p class="text-sm text-black/70">Backend systems, performance optimization, security</p>
+						</div>
+						<div class="text-center">
+							<div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+								<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3H5a2 2 0 00-2 2v12a4 4 0 004 4h2a2 2 0 002-2V5a2 2 0 00-2-2z"></path>
+								</svg>
+							</div>
+							<h4 class="font-semibold text-black mb-2">Design</h4>
+							<p class="text-sm text-black/70">User experience, interface design, accessibility</p>
+						</div>
+						<div class="text-center">
+							<div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+								<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+								</svg>
+							</div>
+							<h4 class="font-semibold text-black mb-2">Security</h4>
+							<p class="text-sm text-black/70">Privacy protection, secure architecture, compliance</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ FutureSection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute bottom-10 right-1/3 w-72 h-72 bg-gray-200/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<div class="text-center max-w-4xl mx-auto mb-16">
+				<div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+					<h2 class="text-3xl md:text-5xl font-extrabold text-black mb-4">
+						What's Next for Orbit2x
+					</h2>
+					<p class="text-xl text-black/70">
+						Our roadmap for making digital work even better
+					</p>
+				</div>
+			</div>
+
+			<div class="grid gap-8 grid-cols-1 md:grid-cols-2">
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50">
+					<h3 class="text-2xl font-bold text-black mb-6">Coming Soon</h3>
+					<div class="space-y-4">
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-green-500 rounded-full"></div>
+							<span class="text-black/80">Advanced text processing tools</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-green-500 rounded-full"></div>
+							<span class="text-black/80">API testing and debugging suite</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-green-500 rounded-full"></div>
+							<span class="text-black/80">Enhanced color and design tools</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-green-500 rounded-full"></div>
+							<span class="text-black/80">Cryptocurrency and blockchain tools</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-green-500 rounded-full"></div>
+							<span class="text-black/80">Progressive Web App features</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="backdrop-blur-xl bg-white/40 p-8 rounded-2xl shadow-xl border border-gray-200/50">
+					<h3 class="text-2xl font-bold text-black mb-6">Long-term Vision</h3>
+					<div class="space-y-4">
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+							<span class="text-black/80">100+ tools across all categories</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+							<span class="text-black/80">Offline-first capabilities</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+							<span class="text-black/80">Community-driven tool requests</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+							<span class="text-black/80">Open-source components</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+							<span class="text-black/80">Global accessibility standards</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-12 text-center">
+				<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-8 shadow-xl max-w-3xl mx-auto">
+					<h3 class="text-xl font-bold text-black mb-4">Have an idea for a tool?</h3>
+					<p class="text-black/70 mb-6">
+						We're always looking to add tools that solve real problems. Let us know what you need!
+					</p>
+					@components.PrimaryButton("/contact", "Suggest a Tool")
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ ContactSection() {
+	<section class="py-20 bg-white relative overflow-hidden">
+		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+		<div class="absolute top-10 left-1/3 w-96 h-96 bg-gray-100/20 rounded-full blur-3xl"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+			<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-16 shadow-2xl max-w-5xl mx-auto">
+				<h2 class="text-3xl md:text-5xl font-extrabold text-black mb-6">
+					Get in Touch
+				</h2>
+				<p class="text-xl md:text-2xl text-black/70 mb-10 max-w-3xl mx-auto">
+					Questions about our tools? Want to suggest a feature? We'd love to hear from you.
+				</p>
+
+				<div class="grid gap-8 grid-cols-1 md:grid-cols-3 mb-12">
+					<div class="backdrop-blur-sm bg-white/30 p-6 rounded-2xl border border-gray-200/50">
+						<div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+							</svg>
+						</div>
+						<h3 class="font-semibold text-black mb-2">Email</h3>
+						<p class="text-black/70 text-sm">stoo-to-come@orbit2x.com</p>
+					</div>
+					<div class="backdrop-blur-sm bg-white/30 p-6 rounded-2xl border border-gray-200/50">
+						<div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+							</svg>
+						</div>
+						<h3 class="font-semibold text-black mb-2">Feedback</h3>
+						<p class="text-black/70 text-sm">still-to-come@orbit2x.com</p>
+					</div>
+					<div class="backdrop-blur-sm bg-white/30 p-6 rounded-2xl border border-gray-200/50">
+						<div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+							</svg>
+						</div>
+						<h3 class="font-semibold text-black mb-2">Privacy</h3>
+						<p class="text-black/70 text-sm">still-to-come@orbit2x.com</p>
+					</div>
+				</div>
+
+				<div class="flex flex-col sm:flex-row justify-center gap-4">
+					@components.PrimaryButton("/contact", "Contact Form")
+					@components.SecondaryButton("/#categories", "Explore Tools")
+				</div>
+			</div>
+		</div>
+	</section>
+}
