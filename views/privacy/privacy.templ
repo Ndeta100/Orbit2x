@@ -1,0 +1,302 @@
+package privacy
+
+
+import (
+	"github.com/Ndeta100/orbit2x/views/layout"
+)
+
+templ Privacy() {
+	@layout.Base("Privacy Policy - Orbit2x") {
+		<div class="min-h-screen bg-white py-16">
+			<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="max-w-4xl mx-auto">
+					<!-- Header -->
+					<div class="text-center mb-12">
+						<h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">
+							Privacy Policy
+						</h1>
+						<p class="text-xl text-black/70">
+							How we protect your privacy while you use Orbit2x
+						</p>
+						<div class="mt-4 text-sm text-black/60">
+							<p><strong>Effective Date:</strong> August 24, 2025</p>
+							<p><strong>Last Updated:</strong> August 24, 2025</p>
+						</div>
+					</div>
+
+					<div class="prose prose-lg max-w-none">
+						<!-- Quick Summary -->
+						<div class="backdrop-blur-xl bg-green-50/50 border border-green-200/50 rounded-2xl p-8 mb-12">
+							<h2 class="text-2xl font-bold text-green-800 mb-4 flex items-center">
+								<svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+								</svg>
+								Privacy at a Glance
+							</h2>
+							<ul class="space-y-2 text-green-700">
+								<li><strong>✅ Your tool data stays in your browser</strong> - We never see or store what you process</li>
+								<li><strong>✅ No user accounts</strong> - No personal information required</li>
+								<li><strong>✅ Standard web analytics only</strong> - Just to improve the site</li>
+								<li><strong>✅ You can opt-out</strong> - Analytics are optional</li>
+							</ul>
+						</div>
+
+						<!-- 1. Information We Collect -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">1. Information We Collect</h2>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Tool Usage Data (Stays Local)</h3>
+							<div class="backdrop-blur-xl bg-blue-50/50 border border-blue-200/50 rounded-xl p-6 mb-6">
+								<p class="text-black/80 mb-2"><strong>What happens:</strong> When you use our tools (JSON formatter, DNS lookup, etc.), all processing happens directly in your web browser.</p>
+								<p class="text-black/80"><strong>What we collect:</strong> Nothing. This data never leaves your device or reaches our servers.</p>
+							</div>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Website Analytics Data</h3>
+							<p class="text-black/80 mb-4">To improve our website, we collect standard web analytics:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80 mb-6">
+								<li>Pages you visit on our site</li>
+								<li>How long you spend on pages</li>
+								<li>Your country/region (not precise location)</li>
+								<li>Browser type and device information</li>
+								<li>How you found our site (referrer)</li>
+								<li>IP addresses (for technical purposes)</li>
+							</ul>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Server Logs</h3>
+							<p class="text-black/80 mb-4">Our hosting provider (Railway) automatically logs:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80">
+								<li>IP addresses</li>
+								<li>Access timestamps</li>
+								<li>Requested pages</li>
+								<li>Browser information (user agent)</li>
+								<li>Error logs for technical maintenance</li>
+							</ul>
+						</section>
+
+						<!-- 2. How We Use Information -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">2. How We Use Information</h2>
+							<p class="text-black/80 mb-4">We use the limited data we collect to:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80">
+								<li>Improve website performance and user experience</li>
+								<li>Understand which tools are most popular</li>
+								<li>Fix technical issues and bugs</li>
+								<li>Prevent abuse and ensure security</li>
+								<li>Analyze traffic patterns to optimize our services</li>
+							</ul>
+						</section>
+
+						<!-- 3. Third-Party Services -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">3. Third-Party Services</h2>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Google Analytics</h3>
+							<p class="text-black/80 mb-4">We use Google Analytics to understand website usage. Google may:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80 mb-4">
+								<li>Set cookies in your browser</li>
+								<li>Collect data about your site usage</li>
+								<li>Process data in the United States</li>
+							</ul>
+							<p class="text-black/80 mb-6">
+								Learn more: <a href="https://policies.google.com/privacy" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Google Privacy Policy</a>
+							</p>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Cloudflare</h3>
+							<p class="text-black/80 mb-4">We use Cloudflare for performance and security:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80 mb-4">
+								<li>Protects against malicious traffic</li>
+								<li>Improves website loading speed</li>
+								<li>May set security-related cookies</li>
+								<li>Processes data according to their privacy policy</li>
+							</ul>
+							<p class="text-black/80 mb-6">
+								Learn more: <a href="https://www.cloudflare.com/privacy/" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Cloudflare Privacy Policy</a>
+							</p>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Our Custom Analytics</h3>
+							<p class="text-black/80">We also collect basic analytics data directly to reduce dependence on third parties. This data is processed according to this privacy policy.</p>
+						</section>
+
+						<!-- 4. Cookies and Tracking -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">4. Cookies and Tracking</h2>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Types of Cookies Used</h3>
+							<div class="overflow-x-auto mb-6">
+								<table class="w-full border-collapse border border-gray-300">
+									<thead>
+										<tr class="bg-gray-50">
+											<th class="border border-gray-300 px-4 py-2 text-left">Cookie</th>
+											<th class="border border-gray-300 px-4 py-2 text-left">Purpose</th>
+											<th class="border border-gray-300 px-4 py-2 text-left">Duration</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="border border-gray-300 px-4 py-2">_ga</td>
+											<td class="border border-gray-300 px-4 py-2">Google Analytics - distinguish users</td>
+											<td class="border border-gray-300 px-4 py-2">2 years</td>
+										</tr>
+										<tr>
+											<td class="border border-gray-300 px-4 py-2">_gid</td>
+											<td class="border border-gray-300 px-4 py-2">Google Analytics - distinguish users</td>
+											<td class="border border-gray-300 px-4 py-2">24 hours</td>
+										</tr>
+										<tr>
+											<td class="border border-gray-300 px-4 py-2">__cf_bm</td>
+											<td class="border border-gray-300 px-4 py-2">Cloudflare - bot management</td>
+											<td class="border border-gray-300 px-4 py-2">30 minutes</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<p class="text-black/80 mb-4">You can control cookies through your browser settings or opt-out of analytics below.</p>
+						</section>
+
+						<!-- 5. Your Rights and Choices -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">5. Your Rights and Choices</h2>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Analytics Opt-Out</h3>
+							<div class="backdrop-blur-xl bg-white/50 border border-gray-200/50 rounded-xl p-6 mb-6">
+								<p class="text-black/80 mb-4">You can opt-out of analytics tracking:</p>
+								<div class="flex flex-col sm:flex-row gap-4">
+									<button id="opt-out-analytics" class="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+										Opt-Out of Analytics
+									</button>
+									<button id="opt-in-analytics" class="px-6 py-3 bg-gray-200 text-black rounded-lg hover:bg-gray-300 transition-colors">
+										Enable Analytics
+									</button>
+								</div>
+								<p id="analytics-status" class="mt-4 text-sm text-black/60"></p>
+							</div>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Browser Controls</h3>
+							<ul class="list-disc pl-6 space-y-2 text-black/80 mb-6">
+								<li>Clear cookies and browsing data</li>
+								<li>Block third-party cookies</li>
+								<li>Use private/incognito browsing</li>
+								<li>Install ad/tracking blockers</li>
+							</ul>
+
+							<h3 class="text-xl font-semibold text-black mb-4">Your Legal Rights (EU/GDPR)</h3>
+							<p class="text-black/80 mb-4">If you're in the EU, you have the right to:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80">
+								<li>Access your personal data</li>
+								<li>Correct inaccurate data</li>
+								<li>Delete your data</li>
+								<li>Object to processing</li>
+								<li>Data portability</li>
+								<li>Withdraw consent</li>
+							</ul>
+						</section>
+
+						<!-- 6. Data Security -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">6. Data Security</h2>
+							<p class="text-black/80 mb-4">We protect your data through:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80">
+								<li>HTTPS encryption for all data transmission</li>
+								<li>Secure hosting infrastructure</li>
+								<li>Regular security updates and monitoring</li>
+								<li>Limited data collection and retention</li>
+								<li>No storage of sensitive personal information</li>
+							</ul>
+						</section>
+
+						<!-- 7. International Data Transfers -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">7. International Data Transfers</h2>
+							<p class="text-black/80 mb-4">Your data may be processed in:</p>
+							<ul class="list-disc pl-6 space-y-2 text-black/80">
+								<li><strong>United States</strong> - Our hosting (Railway) and Google Analytics</li>
+								<li><strong>Various countries</strong> - Cloudflare's global network</li>
+							</ul>
+							<p class="text-black/80">These transfers are protected by appropriate safeguards including standard contractual clauses and adequacy decisions.</p>
+						</section>
+
+						<!-- 8. Data Retention -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">8. Data Retention</h2>
+							<ul class="list-disc pl-6 space-y-2 text-black/80">
+								<li><strong>Server logs:</strong> 30 days</li>
+								<li><strong>Analytics data:</strong> 26 months (Google Analytics default)</li>
+								<li><strong>Custom analytics:</strong> 12 months</li>
+								<li><strong>Error logs:</strong> 90 days</li>
+							</ul>
+						</section>
+
+						<!-- 9. Children's Privacy -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">9. Children's Privacy</h2>
+							<p class="text-black/80">Our service is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us.</p>
+						</section>
+
+						<!-- 10. Changes to This Policy -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">10. Changes to This Policy</h2>
+							<p class="text-black/80">We may update this privacy policy from time to time. We will notify you of any material changes by posting the new policy on this page with an updated "Last Modified" date.</p>
+						</section>
+
+						<!-- 11. Contact Us -->
+						<section class="mb-12">
+							<h2 class="text-3xl font-bold text-black mb-6">11. Contact Us</h2>
+							<div class="backdrop-blur-xl bg-white/50 border border-gray-200/50 rounded-xl p-6">
+								<p class="text-black/80 mb-4">If you have questions about this privacy policy or our practices:</p>
+								<ul class="space-y-2 text-black/80">
+									<li><strong>Email:</strong> privacy@orbit2x.com</li>
+									<li><strong>Website:</strong> <a href="https://orbit2x.com/contact" class="text-blue-600 hover:text-blue-800 underline">Contact Form</a></li>
+									<li><strong>Response Time:</strong> We'll respond within 30 days</li>
+								</ul>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Analytics Opt-out Script -->
+		<script>
+			// Check current analytics status
+			function updateAnalyticsStatus() {
+				const optedOut = localStorage.getItem('analytics-opted-out') === 'true';
+				const statusEl = document.getElementById('analytics-status');
+				if (statusEl) {
+					statusEl.textContent = optedOut ?
+						'✅ Analytics disabled - No tracking data is collected' :
+						'📊 Analytics enabled - Helping us improve the site';
+				}
+			}
+
+			// Opt-out handler
+			document.getElementById('opt-out-analytics')?.addEventListener('click', function() {
+				localStorage.setItem('analytics-opted-out', 'true');
+				// Disable Google Analytics if present
+				if (window.gtag) {
+					window.gtag('consent', 'update', {
+						analytics_storage: 'denied'
+					});
+				}
+				updateAnalyticsStatus();
+				alert('Analytics have been disabled. You may need to clear cookies and refresh the page.');
+			});
+
+			// Opt-in handler
+			document.getElementById('opt-in-analytics')?.addEventListener('click', function() {
+				localStorage.removeItem('analytics-opted-out');
+				// Enable Google Analytics if present
+				if (window.gtag) {
+					window.gtag('consent', 'update', {
+						analytics_storage: 'granted'
+					});
+				}
+				updateAnalyticsStatus();
+				alert('Analytics have been enabled. Thank you for helping us improve!');
+			});
+
+			// Initialize status on page load
+			updateAnalyticsStatus();
+		</script>
+	}
+}

@@ -1,6 +1,10 @@
 // views/colorconverter/colorconverter.templ
 package colorconverter
 
+import (
+	"github.com/Ndeta100/orbit2x/views/components"
+)
+
 type ConversionResult struct {
 	InputColor   string
 	InputType    string
@@ -17,429 +21,481 @@ templ Index() {
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>Color Converter</title>
+			<title>Color Converter | Orbit2x</title>
 			<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+			<script src="https://cdn.tailwindcss.com"></script>
 			<style>
-			body {
-				font-family: Arial, sans-serif;
-				max-width: 800px;
-				margin: 0 auto;
-				padding: 20px;
-				color: #333;
-			}
-			.card {
-				background-color: white;
-				border-radius: 8px;
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-				padding: 30px;
-				margin-bottom: 30px;
-			}
-			h1 {
-				color: #0e4174;
-				text-align: center;
-				margin-bottom: 10px;
-			}
-			.description {
-				text-align: center;
-				color: #666;
-				margin-bottom: 20px;
-			}
-			.form-container {
-				margin-bottom: 20px;
-			}
-			input[type="text"] {
-				width: 100%;
-				padding: 10px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				font-family: monospace;
-				margin-bottom: 10px;
-				box-sizing: border-box;
-			}
-			.buttons {
-				display: flex;
-				gap: 10px;
-				margin-bottom: 20px;
-			}
-			button {
-				padding: 10px 15px;
-				background-color: #0e4174;
-				color: white;
-				border: none;
-				border-radius: 4px;
-				cursor: pointer;
-				flex-grow: 1;
-			}
-			button:hover {
-				background-color: #0a325e;
-			}
-			.loading {
-				text-align: center;
-				padding: 20px;
-				display: none;
-			}
-			.htmx-request .loading {
-				display: block;
-			}
-			.results {
-				margin-top: 20px;
-			}
-			.result-section {
-				background-color: #f5f5f5;
-				border-radius: 4px;
-				padding: 15px;
-				margin-bottom: 15px;
-			}
-			.result-title {
-				font-weight: bold;
-				margin-bottom: 10px;
-				color: #0e4174;
-			}
-			.result-content {
-				background-color: white;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				padding: 10px;
-				font-family: monospace;
-				white-space: pre-wrap;
-				word-break: break-all;
-			}
-			.error {
-				background-color: #ffebee;
-				border-left: 5px solid #f44336;
-				padding: 15px;
-				border-radius: 5px;
-			}
-			.copy-button {
-				margin-top: 10px;
-				background-color: #eee;
-				color: #333;
-				padding: 5px 10px;
-				border: none;
-				border-radius: 4px;
-				cursor: pointer;
-				font-size: 12px;
-			}
-			.copy-button:hover {
-				background-color: #ddd;
-			}
-			.color-format-selector {
-				display: flex;
-				gap: 10px;
-				margin-bottom: 15px;
-			}
-			.format-option {
-				flex: 1;
-				text-align: center;
-				padding: 10px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				cursor: pointer;
-			}
-			.format-option.active {
-				background-color: #e8f4fd;
-				border-color: #0e4174;
-				color: #0e4174;
-				font-weight: bold;
-			}
-			.color-preview {
-				width: 100%;
-				height: 80px;
-				border-radius: 4px;
-				border: 1px solid #ddd;
-				margin-bottom: 15px;
-			}
-			.color-table {
-				width: 100%;
-				border-collapse: collapse;
-				margin-top: 10px;
-			}
-			.color-table th, .color-table td {
-				padding: 8px;
-				text-align: left;
-				border-bottom: 1px solid #eee;
-			}
-			.color-table th {
-				font-weight: bold;
-				color: #0e4174;
-				width: 30%;
-			}
-			.color-table td {
-				font-family: monospace;
-				word-break: break-all;
-			}
-			.copy-cell {
-				width: 60px;
-				text-align: center !important;
-			}
-			.table-copy-btn {
-				background-color: #eee;
-				color: #333;
-				border: none;
-				border-radius: 4px;
-				padding: 3px 8px;
-				font-size: 12px;
-				cursor: pointer;
-			}
-			.table-copy-btn:hover {
-				background-color: #ddd;
-			}
-			.color-info {
-				margin-top: 15px;
-				display: flex;
-				gap: 15px;
-			}
-			.color-info-item {
-				flex: 1;
-				text-align: center;
-			}
-			.color-info-label {
-				font-size: 12px;
-				color: #666;
-				margin-bottom: 5px;
-			}
-			.color-value {
-				font-family: monospace;
-				padding: 5px;
-				background-color: #f5f5f5;
-				border-radius: 4px;
-				border: 1px solid #ddd;
-			}
-			.random-color-btn {
-				background-color: #4caf50;
-				margin-top: 20px;
-			}
-			.random-color-btn:hover {
-				background-color: #388e3c;
-			}
-			.info-box {
-				background-color: #e8f4fd;
-				border-left: 5px solid #0e4174;
-				padding: 15px;
-				margin-bottom: 20px;
-				font-size: 14px;
-				line-height: 1.5;
-			}
-			.popular-colors {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 8px;
-				margin-top: 15px;
-			}
-			.color-swatch {
-				width: 30px;
-				height: 30px;
-				border-radius: 4px;
-				border: 1px solid #ddd;
-				cursor: pointer;
-			}
-			.color-swatch:hover {
-				transform: scale(1.1);
-			}
-		</style>
+				@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+				body {
+					font-family: 'Inter', sans-serif;
+				}
+
+				.glassmorphic {
+					backdrop-filter: blur(16px);
+					-webkit-backdrop-filter: blur(16px);
+				}
+
+				.animate-float {
+					animation: float 6s ease-in-out infinite;
+				}
+
+				.animate-float-delayed {
+					animation: float 6s ease-in-out infinite;
+					animation-delay: 2s;
+				}
+
+				.animate-float-delayed-2 {
+					animation: float 6s ease-in-out infinite;
+					animation-delay: 4s;
+				}
+
+				@keyframes float {
+					0%, 100% { transform: translateY(0px); }
+					50% { transform: translateY(-20px); }
+				}
+
+				.loading-spinner {
+					animation: spin 1s linear infinite;
+				}
+
+				@keyframes spin {
+					from { transform: rotate(0deg); }
+					to { transform: rotate(360deg); }
+				}
+
+				.htmx-request .loading {
+					display: flex !important;
+				}
+			</style>
 		</head>
-		<body>
-			<div class="card">
-				<h1>Color Converter</h1>
-				<p class="description">Convert between HEX, RGB, and HSL color formats.</p>
-				<div class="info-box">
-					Color conversion tools help web developers and designers work with different color formats:
-					<br/>
-					• <strong>HEX</strong> (#RRGGBB) - Commonly used in CSS and HTML
-					<br/>
-					• <strong>RGB</strong> (rgb(r, g, b)) - Used in CSS and graphics programming
-					<br/>
-					• <strong>HSL</strong> (hsl(h, s%, l%)) - Intuitive for adjusting hue, saturation, and lightness
-				</div>
-				<div class="form-container">
-					<div class="color-format-selector">
-						<div class="format-option active" onclick="selectFormat('hex', this)">HEX</div>
-						<div class="format-option" onclick="selectFormat('rgb', this)">RGB</div>
-						<div class="format-option" onclick="selectFormat('hsl', this)">HSL</div>
-					</div>
-					<form
-						id="color-form"
-						hx-post="/color/convert"
-						hx-target="#results"
-						hx-indicator=".loading"
-					>
-						<input type="hidden" name="from" id="from-format" value="hex"/>
-						<input
-							type="text"
-							name="color"
-							id="color-input"
-							placeholder="Enter a color (e.g., #3366ff)"
-							required
-							onkeyup="updatePattern()"
-						/>
-						<div style="margin-bottom: 10px;">
-							<strong>Format Help:</strong>
-							<span id="format-help">HEX format: #RGB, #RGBA, #RRGGBB, or #RRGGBBAA</span>
+		<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+			<!-- Floating orbital background elements -->
+			<div class="fixed inset-0 overflow-hidden pointer-events-none">
+				<div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-float"></div>
+				<div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-float-delayed"></div>
+				<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gray-150/20 rounded-full blur-3xl animate-float-delayed-2"></div>
+				<div class="absolute top-1/2 right-1/3 w-28 h-28 bg-gray-100/20 rounded-full blur-2xl animate-float"></div>
+			</div>
+
+			<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+				<!-- Header Section -->
+				<div class="text-center mb-12">
+					<div class="glassmorphic bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl max-w-2xl mx-auto">
+						<!-- Tool Icon -->
+						<div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+							<svg class="h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21a4 4 0 004-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4M7 21a4 4 0 004-4"></path>
+							</svg>
 						</div>
-						<button type="submit">Convert</button>
-					</form>
-					<button
-						class="random-color-btn"
-						hx-get="/color/random"
-						hx-target="#results"
-						hx-indicator=".loading"
-					>
-						Generate Random Color
-					</button>
-					<div style="margin-top: 20px;">
-						<div class="result-title">Popular Colors:</div>
-						<div class="popular-colors">
-							<div class="color-swatch" style="background-color: #ff0000;" title="Red" onclick="setColor('#ff0000')"></div>
-							<div class="color-swatch" style="background-color: #00ff00;" title="Green" onclick="setColor('#00ff00')"></div>
-							<div class="color-swatch" style="background-color: #0000ff;" title="Blue" onclick="setColor('#0000ff')"></div>
-							<div class="color-swatch" style="background-color: #ffff00;" title="Yellow" onclick="setColor('#ffff00')"></div>
-							<div class="color-swatch" style="background-color: #ff00ff;" title="Magenta" onclick="setColor('#ff00ff')"></div>
-							<div class="color-swatch" style="background-color: #00ffff;" title="Cyan" onclick="setColor('#00ffff')"></div>
-							<div class="color-swatch" style="background-color: #000000;" title="Black" onclick="setColor('#000000')"></div>
-							<div class="color-swatch" style="background-color: #ffffff;" title="White" onclick="setColor('#ffffff')"></div>
-							<div class="color-swatch" style="background-color: #ff8000;" title="Orange" onclick="setColor('#ff8000')"></div>
-							<div class="color-swatch" style="background-color: #8000ff;" title="Purple" onclick="setColor('#8000ff')"></div>
-							<div class="color-swatch" style="background-color: #808080;" title="Gray" onclick="setColor('#808080')"></div>
-							<div class="color-swatch" style="background-color: #008080;" title="Teal" onclick="setColor('#008080')"></div>
-						</div>
+
+						<h1 class="text-4xl sm:text-5xl font-extrabold text-black mb-4">
+							Color Converter
+						</h1>
+						<p class="text-xl text-black/80">
+							Convert between HEX, RGB, and HSL color formats with live preview
+						</p>
 					</div>
 				</div>
-				<div class="loading">
-					<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#0e4174">
-						<g fill="none" fill-rule="evenodd">
-							<g transform="translate(1 1)" stroke-width="2">
-								<circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
-								<path d="M36 18c0-9.94-8.06-18-18-18">
-									<animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
-								</path>
-							</g>
-						</g>
-					</svg>
+
+				<!-- Main Color Converter Section -->
+				<div class="max-w-6xl mx-auto">
+					<div class="glassmorphic bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl">
+						<!-- Info Box -->
+						<div class="glassmorphic bg-blue-50/80 border border-blue-200/50 rounded-2xl p-6 shadow-xl mb-8">
+							<div class="flex items-start space-x-3">
+								<div class="w-8 h-8 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+									<svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+									</svg>
+								</div>
+								<div class="text-sm text-blue-800 leading-relaxed">
+									<strong>Color Format Guide:</strong><br/>
+									<strong>HEX</strong> (#RRGGBB) - Commonly used in CSS and HTML<br/>
+									<strong>RGB</strong> (rgb(r, g, b)) - Used in CSS and graphics programming<br/>
+									<strong>HSL</strong> (hsl(h, s%, l%)) - Intuitive for adjusting hue, saturation, and lightness
+								</div>
+							</div>
+						</div>
+
+						<!-- Format Selector Tabs -->
+						@components.SwitchTabs("format-tabs", []components.TabItem{
+							{ID: "hex-tab", Label: "HEX", Icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21a4 4 0 004-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4", Active: true},
+							{ID: "rgb-tab", Label: "RGB", Icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21a4 4 0 004-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"},
+							{ID: "hsl-tab", Label: "HSL", Icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21a4 4 0 004-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"},
+						})
+
+						<!-- Tab Contents -->
+						<div class="tab-contents mt-8">
+							<!-- HEX Tab -->
+							<div id="hex-tab" class="tab-content active">
+								<div class="grid lg:grid-cols-2 gap-8">
+									<!-- Input Section -->
+									<div class="space-y-6">
+										<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+											<h3 class="text-lg font-bold text-black mb-4">HEX Color Input</h3>
+
+											<form id="hex-form" hx-post="/color/convert" hx-target="#results" hx-indicator=".loading">
+												<input type="hidden" name="from" value="hex"/>
+												<input
+													type="text"
+													name="color"
+													placeholder="Enter HEX color (e.g., #3366ff)"
+													class="w-full p-4 glassmorphic bg-white/60 border border-gray-200/50 rounded-xl text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/20 font-mono text-lg mb-4"
+													required
+												/>
+												<div class="text-sm text-black/60 mb-4">
+													<strong>Format Help:</strong> HEX format: #RGB, #RGBA, #RRGGBB, or #RRGGBBAA
+												</div>
+												<button type="submit" class="w-full bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+													<span class="flex items-center justify-center">
+														<svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+														</svg>
+														Convert Color
+													</span>
+												</button>
+											</form>
+										</div>
+									</div>
+
+									<!-- Preview Section -->
+									<div class="space-y-6">
+										<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+											<h3 class="text-lg font-bold text-black mb-4">Color Preview</h3>
+											<div id="hex-preview" class="h-32 glassmorphic bg-white/60 border border-gray-200/50 rounded-xl overflow-hidden">
+												<div class="flex items-center justify-center h-full text-black/40">
+													<div class="text-center">
+														<svg class="h-12 w-12 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+														</svg>
+														<p>Color preview will appear here</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- RGB Tab -->
+							<div id="rgb-tab" class="tab-content hidden">
+								<div class="grid lg:grid-cols-2 gap-8">
+									<!-- Input Section -->
+									<div class="space-y-6">
+										<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+											<h3 class="text-lg font-bold text-black mb-4">RGB Color Input</h3>
+
+											<form id="rgb-form" hx-post="/color/convert" hx-target="#results" hx-indicator=".loading">
+												<input type="hidden" name="from" value="rgb"/>
+												<input
+													type="text"
+													name="color"
+													placeholder="Enter RGB color (e.g., rgb(51, 102, 255))"
+													class="w-full p-4 glassmorphic bg-white/60 border border-gray-200/50 rounded-xl text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/20 font-mono text-lg mb-4"
+													required
+												/>
+												<div class="text-sm text-black/60 mb-4">
+													<strong>Format Help:</strong> RGB format: rgb(r, g, b) or rgba(r, g, b, a) where r,g,b are 0-255 and a is 0-1
+												</div>
+												<button type="submit" class="w-full bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+													<span class="flex items-center justify-center">
+														<svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+														</svg>
+														Convert Color
+													</span>
+												</button>
+											</form>
+										</div>
+									</div>
+
+									<!-- Preview Section -->
+									<div class="space-y-6">
+										<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+											<h3 class="text-lg font-bold text-black mb-4">Color Preview</h3>
+											<div id="rgb-preview" class="h-32 glassmorphic bg-white/60 border border-gray-200/50 rounded-xl overflow-hidden">
+												<div class="flex items-center justify-center h-full text-black/40">
+													<div class="text-center">
+														<svg class="h-12 w-12 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+														</svg>
+														<p>Color preview will appear here</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- HSL Tab -->
+							<div id="hsl-tab" class="tab-content hidden">
+								<div class="grid lg:grid-cols-2 gap-8">
+									<!-- Input Section -->
+									<div class="space-y-6">
+										<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+											<h3 class="text-lg font-bold text-black mb-4">HSL Color Input</h3>
+
+											<form id="hsl-form" hx-post="/color/convert" hx-target="#results" hx-indicator=".loading">
+												<input type="hidden" name="from" value="hsl"/>
+												<input
+													type="text"
+													name="color"
+													placeholder="Enter HSL color (e.g., hsl(220, 100%, 60%))"
+													class="w-full p-4 glassmorphic bg-white/60 border border-gray-200/50 rounded-xl text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/20 font-mono text-lg mb-4"
+													required
+												/>
+												<div class="text-sm text-black/60 mb-4">
+													<strong>Format Help:</strong> HSL format: hsl(h, s%, l%) or hsla(h, s%, l%, a) where h is 0-360, s,l are 0-100%, and a is 0-1
+												</div>
+												<button type="submit" class="w-full bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+													<span class="flex items-center justify-center">
+														<svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+														</svg>
+														Convert Color
+													</span>
+												</button>
+											</form>
+										</div>
+									</div>
+
+									<!-- Preview Section -->
+									<div class="space-y-6">
+										<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+											<h3 class="text-lg font-bold text-black mb-4">Color Preview</h3>
+											<div id="hsl-preview" class="h-32 glassmorphic bg-white/60 border border-gray-200/50 rounded-xl overflow-hidden">
+												<div class="flex items-center justify-center h-full text-black/40">
+													<div class="text-center">
+														<svg class="h-12 w-12 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+														</svg>
+														<p>Color preview will appear here</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Random Color & Popular Colors Section -->
+						<div class="mt-8 grid md:grid-cols-2 gap-6">
+							<!-- Random Color -->
+							<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+								<h3 class="text-lg font-bold text-black mb-4">Random Color</h3>
+								<button
+									class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+									hx-get="/color/random"
+									hx-target="#results"
+									hx-indicator=".loading"
+								>
+									<span class="flex items-center justify-center">
+										<svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+										</svg>
+										Generate Random Color
+									</span>
+								</button>
+							</div>
+
+							<!-- Popular Colors -->
+							<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+								<h3 class="text-lg font-bold text-black mb-4">Popular Colors</h3>
+								<div class="grid grid-cols-6 gap-2">
+									<div class="w-12 h-12 bg-red-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Red" onclick="setColor('#ff0000')"></div>
+									<div class="w-12 h-12 bg-green-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Green" onclick="setColor('#00ff00')"></div>
+									<div class="w-12 h-12 bg-blue-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Blue" onclick="setColor('#0000ff')"></div>
+									<div class="w-12 h-12 bg-yellow-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Yellow" onclick="setColor('#ffff00')"></div>
+									<div class="w-12 h-12 bg-purple-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Purple" onclick="setColor('#8000ff')"></div>
+									<div class="w-12 h-12 bg-cyan-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Cyan" onclick="setColor('#00ffff')"></div>
+									<div class="w-12 h-12 bg-black rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Black" onclick="setColor('#000000')"></div>
+									<div class="w-12 h-12 bg-white rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-gray-300 shadow-lg" title="White" onclick="setColor('#ffffff')"></div>
+									<div class="w-12 h-12 bg-orange-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Orange" onclick="setColor('#ff8000')"></div>
+									<div class="w-12 h-12 bg-pink-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Pink" onclick="setColor('#ff00ff')"></div>
+									<div class="w-12 h-12 bg-gray-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Gray" onclick="setColor('#808080')"></div>
+									<div class="w-12 h-12 bg-teal-500 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-200 border-2 border-white shadow-lg" title="Teal" onclick="setColor('#008080')"></div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Loading State -->
+						<div class="loading hidden items-center justify-center py-8">
+							<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+								<div class="flex items-center space-x-3">
+									<div class="loading-spinner w-6 h-6 border-2 border-black/20 border-t-black rounded-full"></div>
+									<span class="text-black font-medium">Converting color...</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Results Section -->
+						<div id="results" class="mt-8">
+							<!-- Results will be loaded here -->
+						</div>
+					</div>
 				</div>
-				<div id="results">
-					<!-- Results will be loaded here -->
+
+				<!-- Features Section -->
+				<div class="mt-16 max-w-4xl mx-auto">
+					<div class="glassmorphic bg-white/40 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+						<h2 class="text-2xl font-bold text-black mb-6 text-center">Color Conversion Features</h2>
+						<div class="grid md:grid-cols-3 gap-6">
+							<div class="text-center">
+								<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+									<svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4"></path>
+									</svg>
+								</div>
+								<h3 class="font-bold text-black mb-2">Multiple Formats</h3>
+								<p class="text-black/70 text-sm">HEX, RGB, and HSL support</p>
+							</div>
+							<div class="text-center">
+								<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+									<svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+									</svg>
+								</div>
+								<h3 class="font-bold text-black mb-2">Live Preview</h3>
+								<p class="text-black/70 text-sm">See colors in real-time</p>
+							</div>
+							<div class="text-center">
+								<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+									<svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+									</svg>
+								</div>
+								<h3 class="font-bold text-black mb-2">Copy Ready</h3>
+								<p class="text-black/70 text-sm">CSS-ready color values</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+
+			@components.CopyToClipboardScript()
+			@components.SwitchTabsScript()
 			<script>
-			function selectFormat(format, element) {
-				// Update hidden input
-				document.getElementById('from-format').value = format;
+				function setColor(color) {
+					// Get the active tab and set the color in its input
+					const activeTab = document.querySelector('.tab-content.active');
+					const input = activeTab.querySelector('input[name="color"]');
+					const form = activeTab.querySelector('form');
 
-				// Update active class
-				document.querySelectorAll('.format-option').forEach(el => {
-					el.classList.remove('active');
-				});
-				element.classList.add('active');
-
-				// Update placeholder and help text
-				const input = document.getElementById('color-input');
-				const help = document.getElementById('format-help');
-
-				switch(format) {
-					case 'hex':
-						input.placeholder = 'Enter a color (e.g., #3366ff)';
-						help.textContent = 'HEX format: #RGB, #RGBA, #RRGGBB, or #RRGGBBAA';
-						break;
-					case 'rgb':
-						input.placeholder = 'Enter a color (e.g., rgb(51, 102, 255))';
-						help.textContent = 'RGB format: rgb(r, g, b) or rgba(r, g, b, a) where r,g,b are 0-255 and a is 0-1';
-						break;
-					case 'hsl':
-						input.placeholder = 'Enter a color (e.g., hsl(220, 100%, 60%))';
-						help.textContent = 'HSL format: hsl(h, s%, l%) or hsla(h, s%, l%, a) where h is 0-360, s,l are 0-100%, and a is 0-1';
-						break;
+					if (input && form) {
+						input.value = color;
+						form.requestSubmit();
+					}
 				}
-			}
-
-			function updatePattern() {
-				// Could add validation here
-			}
-
-			function copyColorValue(value) {
-				navigator.clipboard.writeText(value);
-				alert("Color value copied to clipboard!");
-			}
-
-			function setColor(color) {
-				const input = document.getElementById('color-input');
-				input.value = color;
-
-				// Select HEX format
-				selectFormat('hex', document.querySelector('.format-option:first-child'));
-
-				// Submit the form
-				document.getElementById('color-form').requestSubmit();
-			}
-		</script>
+			</script>
 		</body>
 	</html>
 }
 
 templ Results(result ConversionResult) {
-	<div class="results">
+	<div class="space-y-6">
 		if result.Error != "" {
-			<div class="error">
-				<p>Error: { result.Error }</p>
+			<div class="glassmorphic bg-red-50/80 border border-red-200/50 rounded-2xl p-6 shadow-xl">
+				<div class="flex items-start space-x-3">
+					<div class="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center flex-shrink-0">
+						<svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+						</svg>
+					</div>
+					<div>
+						<h4 class="font-bold text-red-800 mb-2">Color Conversion Error</h4>
+						<p class="text-red-700 font-mono text-sm">{ result.Error }</p>
+					</div>
+				</div>
 			</div>
 		} else {
-			<div class="result-title">Color Preview:</div>
-			<div class="color-preview" style={ "background-color: " + result.PreviewColor }></div>
-			<div class="color-info">
-				<div class="color-info-item">
-					<div class="color-info-label">HEX</div>
-					<div class="color-value">{ result.HexColor }</div>
-				</div>
-				<div class="color-info-item">
-					<div class="color-info-label">RGB</div>
-					<div class="color-value">{ result.RGBColor }</div>
-				</div>
-				<div class="color-info-item">
-					<div class="color-info-label">HSL</div>
-					<div class="color-value">{ result.HSLColor }</div>
+			<!-- Color Preview -->
+			<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+				<h4 class="font-bold text-black mb-4">Color Preview</h4>
+				<div class="h-32 rounded-xl border border-gray-200/50 shadow-inner overflow-hidden" style={ "background-color: " + result.PreviewColor }></div>
+			</div>
+
+			<!-- Color Values -->
+			<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+				<h4 class="font-bold text-black mb-4">Color Values</h4>
+				<div class="grid md:grid-cols-3 gap-4">
+					<div class="glassmorphic bg-white/40 rounded-xl p-4 border border-gray-200/50">
+						<div class="flex items-center justify-between mb-2">
+							<span class="text-sm font-medium text-black/70">HEX</span>
+							@components.CopyButton(result.HexColor, "Copy")
+						</div>
+						<div class="font-mono text-black">{ result.HexColor }</div>
+					</div>
+					<div class="glassmorphic bg-white/40 rounded-xl p-4 border border-gray-200/50">
+						<div class="flex items-center justify-between mb-2">
+							<span class="text-sm font-medium text-black/70">RGB</span>
+							@components.CopyButton(result.RGBColor, "Copy")
+						</div>
+						<div class="font-mono text-black">{ result.RGBColor }</div>
+					</div>
+					<div class="glassmorphic bg-white/40 rounded-xl p-4 border border-gray-200/50">
+						<div class="flex items-center justify-between mb-2">
+							<span class="text-sm font-medium text-black/70">HSL</span>
+							@components.CopyButton(result.HSLColor, "Copy")
+						</div>
+						<div class="font-mono text-black">{ result.HSLColor }</div>
+					</div>
 				</div>
 			</div>
-			<div class="result-section">
-				<div class="result-title">Color Values:</div>
-				<table class="color-table">
-					<thead>
-						<tr>
-							<th>Format</th>
-							<th>Value</th>
-							<th class="copy-cell">Copy</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th>HEX</th>
-							<td>{ result.HexColor }</td>
-							<td class="copy-cell">
-								<button class="table-copy-btn" onclick="copyColorValue('{result.HexColor}')">Copy</button>
-							</td>
-						</tr>
-						<tr>
-							<th>RGB</th>
-							<td>{ result.RGBColor }</td>
-							<td class="copy-cell">
-								<button class="table-copy-btn" onclick="copyColorValue('{result.RGBColor}')">Copy</button>
-							</td>
-						</tr>
-						<tr>
-							<th>HSL</th>
-							<td>{ result.HSLColor }</td>
-							<td class="copy-cell">
-								<button class="table-copy-btn" onclick="copyColorValue('{result.HSLColor}')">Copy</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="result-section">
-				<div class="result-title">CSS Examples:</div>
-				<div class="result-content">
-					<div><strong>HEX:</strong> color: { result.HexColor };</div>
+
+			<!-- CSS Examples -->
+			<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+				<div class="flex items-center justify-between mb-4">
+					<h4 class="font-bold text-black">CSS Examples</h4>
+					@components.CopyButton("color: " + result.HexColor + ";\nbackground-color: " + result.HexColor + ";\nborder-color: " + result.HexColor + ";", "Copy All CSS")
+				</div>
+				<div class="glassmorphic bg-white/60 border border-gray-200/50 rounded-xl p-4 font-mono text-sm text-black space-y-2">
+					<div><strong>Color:</strong> color: { result.HexColor };</div>
+					<div><strong>Background:</strong> background-color: { result.HexColor };</div>
+					<div><strong>Border:</strong> border-color: { result.HexColor };</div>
 					<div><strong>RGB:</strong> color: { result.RGBColor };</div>
 					<div><strong>HSL:</strong> color: { result.HSLColor };</div>
-					<div><strong>Background:</strong> background-color: { result.HexColor };</div>
+				</div>
+			</div>
+
+			<!-- Color Table -->
+			<div class="glassmorphic bg-white/60 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+				<h4 class="font-bold text-black mb-4">Color Format Table</h4>
+				<div class="overflow-x-auto">
+					<table class="w-full">
+						<thead>
+							<tr class="border-b border-gray-200/50">
+								<th class="text-left py-3 px-4 font-bold text-black">Format</th>
+								<th class="text-left py-3 px-4 font-bold text-black">Value</th>
+								<th class="text-center py-3 px-4 font-bold text-black">Copy</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="border-b border-gray-100/50">
+								<td class="py-3 px-4 font-medium text-black">HEX</td>
+								<td class="py-3 px-4 font-mono text-black">{ result.HexColor }</td>
+								<td class="py-3 px-4 text-center">
+									@components.CopyButton(result.HexColor, "Copy")
+								</td>
+							</tr>
+							<tr class="border-b border-gray-100/50">
+								<td class="py-3 px-4 font-medium text-black">RGB</td>
+								<td class="py-3 px-4 font-mono text-black">{ result.RGBColor }</td>
+								<td class="py-3 px-4 text-center">
+									@components.CopyButton(result.RGBColor, "Copy")
+								</td>
+							</tr>
+							<tr>
+								<td class="py-3 px-4 font-medium text-black">HSL</td>
+								<td class="py-3 px-4 font-mono text-black">{ result.HSLColor }</td>
+								<td class="py-3 px-4 text-center">
+									@components.CopyButton(result.HSLColor, "Copy")
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		}

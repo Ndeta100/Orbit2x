@@ -54,6 +54,9 @@ func main() {
 	router.Post("/color/convert", handlers.Make(handlers.HandleColorConvert))
 	router.Get("/color/random", handlers.Make(handlers.HandleRandomColor))
 
+	//home page routes and others
+	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
+
 	// Category routes
 	router.Get("/dns-tools", handlers.Make(handlers.HandleDNSToolsCategory))
 	router.Get("/dev-tools", handlers.Make(handlers.HandleDeveloperToolsCategory))

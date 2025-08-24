@@ -1,0 +1,131 @@
+// views/components/switchtabs.templ
+package components
+
+type TabItem struct {
+	ID     string
+	Label  string
+	Icon   string // SVG path data
+	Active bool
+}
+
+// SwitchTabs creates a reusable tab navigation component
+templ SwitchTabs(containerId string, tabs []TabItem) {
+	<div id={ containerId } class="tab-container">
+		<div class="flex space-x-1 glassmorphic bg-white/30 rounded-2xl border border-gray-200/50 p-2 shadow-xl">
+			for _, tab := range tabs {
+				<button
+					type="button"
+					class={
+						"tab-button flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105",
+						templ.KV("text-black bg-white/80 shadow-lg", tab.Active),
+						templ.KV("text-black/60 hover:text-black hover:bg-white/40", !tab.Active),
+					}
+					data-container={ containerId }
+					data-tab={ tab.ID }
+				>
+					if tab.Icon != "" {
+						<svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ tab.Icon }></path>
+						</svg>
+					}
+					{ tab.Label }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// Compact version without icons
+templ SwitchTabsCompact(containerId string, tabs []TabItem) {
+	<div id={ containerId } class="tab-container">
+		<div class="flex glassmorphic bg-white/30 rounded-xl border border-gray-200/50 p-1 shadow-xl">
+			for _, tab := range tabs {
+				<button
+					type="button"
+					class={
+						"tab-button px-4 py-2 rounded-lg font-medium transition-all duration-300 flex-1",
+						templ.KV("text-black bg-white/80 shadow-md", tab.Active),
+						templ.KV("text-black/60 hover:text-black hover:bg-white/40", !tab.Active),
+					}
+					data-container={ containerId }
+					data-tab={ tab.ID }
+				>
+					{ tab.Label }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// Vertical tabs version
+templ SwitchTabsVertical(containerId string, tabs []TabItem) {
+	<div id={ containerId } class="tab-container">
+		<div class="flex flex-col space-y-2 glassmorphic bg-white/30 rounded-2xl border border-gray-200/50 p-3 shadow-xl">
+			for _, tab := range tabs {
+				<button
+					type="button"
+					class={
+						"tab-button flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-300 text-left",
+						templ.KV("text-black bg-white/80 shadow-lg transform scale-105", tab.Active),
+						templ.KV("text-black/60 hover:text-black hover:bg-white/40 hover:scale-105", !tab.Active),
+					}
+					data-container={ containerId }
+					data-tab={ tab.ID }
+				>
+					if tab.Icon != "" {
+						<svg class="h-5 w-5 mr-3 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ tab.Icon }></path>
+						</svg>
+					}
+					{ tab.Label }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// SwitchTabsScript provides the JavaScript functionality for the SwitchTabs components
+templ SwitchTabsScript() {
+	<script>
+		// Tab switching functionality using event delegation
+		document.addEventListener('DOMContentLoaded', function() {
+			document.addEventListener('click', function(e) {
+				if (e.target.matches('.tab-button') || e.target.closest('.tab-button')) {
+					const button = e.target.matches('.tab-button') ? e.target : e.target.closest('.tab-button');
+					const containerId = button.getAttribute('data-container');
+					const tabId = button.getAttribute('data-tab');
+
+					if (containerId && tabId) {
+						switchTab(containerId, tabId, button);
+					}
+				}
+			});
+		});
+
+		// Tab switching functionality
+		function switchTab(containerId, tabId, tabElement) {
+			const container = document.getElementById(containerId);
+
+			// Hide all tab contents
+			document.querySelectorAll('.tab-content').forEach(tab => {
+				tab.classList.add('hidden');
+				tab.classList.remove('active');
+			});
+
+			// Remove active class from all tabs in this container
+			container.querySelectorAll('.tab-button').forEach(tab => {
+				tab.classList.remove('active');
+				tab.classList.add('text-black/60');
+				tab.classList.remove('text-black', 'bg-white/80', 'shadow-lg');
+			});
+
+			// Show the selected tab content
+			document.getElementById(tabId).classList.remove('hidden');
+			document.getElementById(tabId).classList.add('active');
+
+			// Add active class to the clicked tab
+			tabElement.classList.add('active', 'text-black', 'bg-white/80', 'shadow-lg');
+			tabElement.classList.remove('text-black/60');
+		}
+	</script>
+}
