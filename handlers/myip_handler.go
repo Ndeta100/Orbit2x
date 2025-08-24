@@ -3,15 +3,21 @@ package handlers
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/Ndeta100/orbit2x/internal/resolver"
-	"github.com/Ndeta100/orbit2x/views/headers"
-	"github.com/Ndeta100/orbit2x/views/my_ip"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Ndeta100/orbit2x/internal/resolver"
+	"github.com/Ndeta100/orbit2x/views/headers"
+	"github.com/Ndeta100/orbit2x/views/my_ip"
 )
+
+// HandleHeadersIndex renders the HTTP Headers analyzer page
+func HandleHeadersIndex(w http.ResponseWriter, r *http.Request) error {
+	return headers.Index().Render(r.Context(), w)
+}
 
 // HandleMyIP handles the What Is My IP? page request
 func HandleMyIP(w http.ResponseWriter, r *http.Request) error {
@@ -46,12 +52,7 @@ func HandleMyIP(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	// Render the page with all the information
-	return my_ip.MyIp(ipInfo).Render(r.Context(), w)
-}
-
-// HandleHeadersIndex renders the HTTP Headers analyzer page
-func HandleHeadersIndex(w http.ResponseWriter, r *http.Request) error {
-	return headers.Index().Render(r.Context(), w)
+	return my_ip.MyIP(ipInfo).Render(r.Context(), w)
 }
 
 // HandleHeadersAnalyze analyzes HTTP _headers for a given URL

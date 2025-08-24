@@ -1,5 +1,9 @@
 package my_ip
 
+import (
+	"github.com/Ndeta100/orbit2x/views/components"
+	"github.com/Ndeta100/orbit2x/views/layout"
+)
 type IPInfo struct {
 	IPv4     string
 	IPv6     string
@@ -7,155 +11,155 @@ type IPInfo struct {
 	ISP      string
 }
 
-templ MyIp(info IPInfo) {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>What Is My IP?</title>
-			<style>
-            body {
-                font-family: Arial, sans-serif;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                line-height: 1.6;
-                color: #333;
-            }
-            .ip-card {
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                padding: 30px;
-                margin-bottom: 30px;
-            }
-            h1 {
-                color: #0e4174;
-                text-align: center;
-                margin-bottom: 10px;
-                font-size: 32px;
-            }
-            .description {
-                text-align: center;
-                color: #666;
-                margin-bottom: 20px;
-            }
-            .info-header {
-                background-color: #e9f1fd;
-                color: #0e4174;
-                text-align: center;
-                padding: 10px;
-                margin: 20px 0;
-                border-radius: 4px;
-                font-weight: bold;
-            }
-            .info-row {
-                display: flex;
-                border-bottom: 1px solid #eee;
-                padding: 15px 0;
-                align-items: center;
-            }
-            .info-row:last-child {
-                border-bottom: none;
-            }
-            .info-label {
-                width: 150px;
-                font-weight: bold;
-                color: #555;
-            }
-            .info-value {
-                flex-grow: 1;
-                word-break: break-all;
-            }
-            .copy-button {
-                display: inline-flex;
-                align-items: center;
-                background: none;
-                border: none;
-                color: #0e4174;
-                cursor: pointer;
-                margin-left: 10px;
-                padding: 0;
-            }
-            .copy-button:hover {
-                color: #1e71d0;
-            }
-            .copied-message {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 4px;
-                display: none;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            }
-        </style>
-		</head>
-		<body>
-			<div class="ip-card">
-				<h1>What Is My IP?</h1>
-				<p class="description">Your IP address is a numerical label that identifies your device and location on the internet.</p>
-				<div class="info-header">YOUR CURRENT IP INFO</div>
-				<div>
-					<div class="info-row">
-						<div class="info-label">My Public IPv4:</div>
-						<div class="info-value">{ info.IPv4 }</div>
-						<button class="copy-button" onclick="copyToClipboard('{info.IPv4}')">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-								<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
-								<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
-							</svg>
-						</button>
-					</div>
-					if info.IPv6 != "" {
-						<div class="info-row">
-							<div class="info-label">My Public IPv6:</div>
-							<div class="info-value">{ info.IPv6 }</div>
-							<button class="copy-button" onclick="copyToClipboard('{info.IPv6}')">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-									<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
-									<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
-								</svg>
-							</button>
-						</div>
-					}
-					<div class="info-row">
-						<div class="info-label">My IP Location:</div>
-						<div class="info-value">{ info.Location }</div>
-						<button class="copy-button" onclick="copyToClipboard('{info.Location}')">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-								<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
-								<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
-							</svg>
-						</button>
-					</div>
-					<div class="info-row">
-						<div class="info-label">My ISP:</div>
-						<div class="info-value">{ info.ISP }</div>
-						<button class="copy-button" onclick="copyToClipboard('{info.ISP}')">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-								<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
-								<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
-							</svg>
-						</button>
-					</div>
+templ MyIP(info IPInfo) {
+	@layout.Base("What Is My IP Address? | Orbit2x") {
+		@MyIPContent(info)
+		@components.CopyToClipboardScript()
+	}
+}
+
+templ MyIPContent(info IPInfo) {
+	<section class="bg-white py-16 md:py-20 relative overflow-hidden min-h-screen">
+		<!-- Glassmorphism background elements -->
+		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+
+		<!-- Floating orbital elements -->
+		<div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
+		<div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+		<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gray-150/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+		<div class="absolute bottom-20 right-1/3 w-28 h-28 bg-gray-100/25 rounded-full blur-2xl animate-pulse" style="animation-delay: 0.5s;"></div>
+
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+			<!-- Breadcrumb -->
+			<div class="mb-8">
+				<div class="backdrop-blur-sm bg-white/30 px-4 py-2 rounded-full border border-gray-200/50 inline-flex items-center text-sm">
+					<a href="/" class="text-black/60 hover:text-black transition-colors">Home</a>
+					<svg class="mx-2 h-4 w-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+					</svg>
+					<span class="text-black font-medium">My IP Address</span>
 				</div>
 			</div>
-			<div id="copied-message" class="copied-message">Copied to clipboard!</div>
-			<script>
-            function copyToClipboard(text) {
-                navigator.clipboard.writeText(text).then(() => {
-                    const message = document.getElementById('copied-message');
-                    message.style.display = 'block';
-                    setTimeout(() => {
-                        message.style.display = 'none';
-                    }, 2000);
-                });
-            }
-        </script>
-		</body>
-	</html>
+
+			<div class="max-w-4xl mx-auto">
+				<!-- Header -->
+				<div class="text-center mb-12">
+					<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl">
+						<div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+							<svg class="h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+							</svg>
+						</div>
+						<h1 class="text-4xl sm:text-5xl font-extrabold text-black mb-4">
+							What Is My IP Address?
+						</h1>
+						<p class="text-xl text-black/80">
+							Your IP address identifies your device and location on the internet
+						</p>
+					</div>
+				</div>
+
+				<!-- IP Information Card -->
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 md:p-12 shadow-2xl mb-8">
+					<div class="text-center mb-8">
+						<div class="inline-block backdrop-blur-sm bg-black/90 text-white px-6 py-3 rounded-2xl font-bold text-lg">
+							YOUR CURRENT IP INFORMATION
+						</div>
+					</div>
+
+					<div class="space-y-6">
+						<!-- IPv4 Address -->
+						<div class="backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 p-6 hover:bg-white/60 transition-all duration-300">
+							<div class="flex items-center justify-between">
+								<div class="flex-grow">
+									<h3 class="text-lg font-bold text-black mb-2">My Public IPv4 Address</h3>
+									<p class="text-2xl font-mono text-black/90 break-all">{ info.IPv4 }</p>
+								</div>
+								<div class="ml-4">
+									@components.CopyButton(info.IPv4, "Copy IPv4")
+								</div>
+							</div>
+						</div>
+
+						<!-- IPv6 Address (if available) -->
+						if info.IPv6 != "" {
+							<div class="backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 p-6 hover:bg-white/60 transition-all duration-300">
+								<div class="flex items-center justify-between">
+									<div class="flex-grow">
+										<h3 class="text-lg font-bold text-black mb-2">My Public IPv6 Address</h3>
+										<p class="text-lg font-mono text-black/90 break-all">{ info.IPv6 }</p>
+									</div>
+									<div class="ml-4">
+										@components.CopyButton(info.IPv6, "Copy IPv6")
+									</div>
+								</div>
+							</div>
+						}
+
+						<!-- Location -->
+						<div class="backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 p-6 hover:bg-white/60 transition-all duration-300">
+							<div class="flex items-center justify-between">
+								<div class="flex-grow">
+									<h3 class="text-lg font-bold text-black mb-2">My IP Location</h3>
+									<p class="text-xl text-black/90">{ info.Location }</p>
+								</div>
+								<div class="ml-4">
+									@components.CopyButton(info.Location, "Copy Location")
+								</div>
+							</div>
+						</div>
+
+						<!-- ISP -->
+						<div class="backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 p-6 hover:bg-white/60 transition-all duration-300">
+							<div class="flex items-center justify-between">
+								<div class="flex-grow">
+									<h3 class="text-lg font-bold text-black mb-2">My Internet Service Provider</h3>
+									<p class="text-xl text-black/90">{ info.ISP }</p>
+								</div>
+								<div class="ml-4">
+									@components.CopyButton(info.ISP, "Copy ISP")
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Information Section -->
+				<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl mb-8">
+					<h2 class="text-2xl font-bold text-black mb-6">About IP Addresses</h2>
+					<div class="grid gap-6 grid-cols-1 md:grid-cols-2">
+						<div class="backdrop-blur-sm bg-white/30 rounded-2xl border border-gray-200/50 p-6">
+							<h3 class="text-lg font-bold text-black mb-3">What is an IP Address?</h3>
+							<p class="text-black/70 leading-relaxed">
+								An IP address is a unique identifier assigned to every device connected to the internet. It allows devices to communicate with each other across networks.
+							</p>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 rounded-2xl border border-gray-200/50 p-6">
+							<h3 class="text-lg font-bold text-black mb-3">IPv4 vs IPv6</h3>
+							<p class="text-black/70 leading-relaxed">
+								IPv4 uses 32-bit addresses (like 192.168.1.1) while IPv6 uses 128-bit addresses. IPv6 provides more available addresses as IPv4 addresses are running out.
+							</p>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 rounded-2xl border border-gray-200/50 p-6">
+							<h3 class="text-lg font-bold text-black mb-3">Privacy & Security</h3>
+							<p class="text-black/70 leading-relaxed">
+								Your IP address can reveal your approximate location and ISP. Use a VPN if you want to mask your real IP address for privacy protection.
+							</p>
+						</div>
+						<div class="backdrop-blur-sm bg-white/30 rounded-2xl border border-gray-200/50 p-6">
+							<h3 class="text-lg font-bold text-black mb-3">Dynamic vs Static</h3>
+							<p class="text-black/70 leading-relaxed">
+								Most home users have dynamic IP addresses that change periodically, while businesses often use static IP addresses that never change.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Back to Tools -->
+				<div class="text-center">
+					@components.SecondaryButton("/", "Back to Home")
+				</div>
+			</div>
+		</div>
+	</section>
 }

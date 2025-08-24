@@ -3,23 +3,24 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/Ndeta100/orbit2x/internal"
 	"net/http"
 	"strings"
+
+	"github.com/Ndeta100/orbit2x/internal"
 
 	"github.com/Ndeta100/orbit2x/views/ssl"
 )
 
 // HandleSSLIndex renders the SSL Certificate checker page
 func HandleSSLIndex(w http.ResponseWriter, r *http.Request) error {
-	return ssl.Index().Render(r.Context(), w)
+	return ssl.SSLChecker().Render(r.Context(), w)
 }
 
 // HandleSSLCheck analyzes SSL certificates for a given hostname
 func HandleSSLCheck(w http.ResponseWriter, r *http.Request) error {
 	// Parse form data
 	if err := r.ParseForm(); err != nil {
-		return ssl.CertificateResult(ssl.CertificateInfo{
+		return ssl.SSLCertificateResult(ssl.CertificateInfo{
 			Error: "Failed to parse form data",
 		}).Render(r.Context(), w)
 	}
@@ -27,7 +28,7 @@ func HandleSSLCheck(w http.ResponseWriter, r *http.Request) error {
 	// Get hostname from form
 	hostname := r.FormValue("hostname")
 	if hostname == "" {
-		return ssl.CertificateResult(ssl.CertificateInfo{
+		return ssl.SSLCertificateResult(ssl.CertificateInfo{
 			Error: "Hostname is required",
 		}).Render(r.Context(), w)
 	}
@@ -43,7 +44,7 @@ func HandleSSLCheck(w http.ResponseWriter, r *http.Request) error {
 	// Get certificate details
 	certDetails, err := internal.GetCertificateDetails(hostname, timeout)
 	if err != nil {
-		return ssl.CertificateResult(ssl.CertificateInfo{
+		return ssl.SSLCertificateResult(ssl.CertificateInfo{
 			Error: fmt.Sprintf("Failed to check certificate: %v", err),
 		}).Render(r.Context(), w)
 	}
@@ -65,5 +66,5 @@ func HandleSSLCheck(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	// Render the result
-	return ssl.CertificateResult(certInfo).Render(r.Context(), w)
+	return ssl.SSLCertificateResult(certInfo).Render(r.Context(), w)
 }

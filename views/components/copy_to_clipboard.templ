@@ -1,0 +1,207 @@
+package components
+
+// CopyButton creates a copy to clipboard button with glassmorphism styling
+templ CopyButton(text string, label string) {
+	<button
+		type="button"
+		class="copy-btn group inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-xl text-black backdrop-blur-xl bg-white/60 hover:bg-white/80 border border-gray-200/50 hover:border-gray-300/50 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden"
+		onclick="copyToClipboard(this.dataset.text, this)"
+		data-text={ text }
+	>
+		<!-- Shine effect -->
+		<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl"></div>
+
+		<!-- Copy icon -->
+		<svg class="copy-icon h-4 w-4 mr-2 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+		</svg>
+
+		<!-- Success icon (hidden by default) -->
+		<svg class="success-icon h-4 w-4 mr-2 relative z-10 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+		</svg>
+
+		<span class="button-text relative z-10">{ label }</span>
+	</button>
+}
+
+// CopyTextArea creates a copy button specifically for textarea content
+templ CopyTextArea(textAreaId string, label string) {
+	<button
+		type="button"
+		class="copy-btn group inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-xl text-black backdrop-blur-xl bg-white/60 hover:bg-white/80 border border-gray-200/50 hover:border-gray-300/50 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden"
+		onclick="copyTextAreaContent(this.dataset.textareaId, this)"
+		data-textarea-id={ textAreaId }
+	>
+		<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl"></div>
+
+		<svg class="copy-icon h-4 w-4 mr-2 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+		</svg>
+
+		<svg class="success-icon h-4 w-4 mr-2 relative z-10 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+		</svg>
+
+		<span class="button-text relative z-10">{ label }</span>
+	</button>
+}
+
+// CopyInputField creates a copy button for input field content
+templ CopyInputField(inputId string, label string) {
+	<button
+		type="button"
+		class="copy-btn group inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-xl text-black backdrop-blur-xl bg-white/60 hover:bg-white/80 border border-gray-200/50 hover:border-gray-300/50 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden"
+		onclick="copyInputContent(this.dataset.inputId, this)"
+		data-input-id={ inputId }
+	>
+		<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl"></div>
+
+		<svg class="copy-icon h-4 w-4 mr-2 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+		</svg>
+
+		<svg class="success-icon h-4 w-4 mr-2 relative z-10 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+		</svg>
+
+		<span class="button-text relative z-10">{ label }</span>
+	</button>
+}
+
+// CopyToClipboardScript provides the JavaScript functionality
+templ CopyToClipboardScript() {
+	<script>
+		// Performance-optimized clipboard functionality
+		const ClipboardManager = {
+			// Cache for debouncing
+			timeouts: new Map(),
+
+			// Main copy function with fallback support
+			async copyText(text, button) {
+				try {
+					// Modern Clipboard API (preferred)
+					if (navigator.clipboard && window.isSecureContext) {
+						await navigator.clipboard.writeText(text);
+						this.showSuccess(button);
+						return true;
+					} else {
+						// Fallback for older browsers or non-HTTPS
+						return this.fallbackCopy(text, button);
+					}
+				} catch (error) {
+					console.warn('Clipboard API failed, trying fallback:', error);
+					return this.fallbackCopy(text, button);
+				}
+			},
+
+			// Fallback copy method for older browsers
+			fallbackCopy(text, button) {
+				try {
+					const textArea = document.createElement('textarea');
+					textArea.value = text;
+					textArea.style.position = 'fixed';
+					textArea.style.left = '-9999px';
+					textArea.style.top = '-9999px';
+					document.body.appendChild(textArea);
+
+					textArea.focus();
+					textArea.select();
+
+					const successful = document.execCommand('copy');
+					document.body.removeChild(textArea);
+
+					if (successful) {
+						this.showSuccess(button);
+						return true;
+					} else {
+						this.showError(button, 'Copy failed');
+						return false;
+					}
+				} catch (error) {
+					this.showError(button, 'Copy not supported');
+					return false;
+				}
+			},
+
+			// Visual feedback for successful copy
+			showSuccess(button) {
+				const copyIcon = button.querySelector('.copy-icon');
+				const successIcon = button.querySelector('.success-icon');
+				const buttonText = button.querySelector('.button-text');
+				const originalText = buttonText.textContent;
+
+				// Clear any existing timeout
+				const timeoutId = this.timeouts.get(button);
+				if (timeoutId) {
+					clearTimeout(timeoutId);
+				}
+
+				// Show success state
+				copyIcon.classList.add('hidden');
+				successIcon.classList.remove('hidden');
+				buttonText.textContent = 'Copied!';
+				button.classList.add('bg-green-100', 'border-green-300');
+
+				// Reset after 2 seconds
+				const newTimeoutId = setTimeout(() => {
+					copyIcon.classList.remove('hidden');
+					successIcon.classList.add('hidden');
+					buttonText.textContent = originalText;
+					button.classList.remove('bg-green-100', 'border-green-300');
+					this.timeouts.delete(button);
+				}, 2000);
+
+				this.timeouts.set(button, newTimeoutId);
+			},
+
+			// Visual feedback for errors
+			showError(button, message) {
+				const buttonText = button.querySelector('.button-text');
+				const originalText = buttonText.textContent;
+
+				buttonText.textContent = message;
+				button.classList.add('bg-red-100', 'border-red-300');
+
+				setTimeout(() => {
+					buttonText.textContent = originalText;
+					button.classList.remove('bg-red-100', 'border-red-300');
+				}, 2000);
+			}
+		};
+
+		// Global functions for template usage
+		function copyToClipboard(text, button) {
+			ClipboardManager.copyText(text, button);
+		}
+
+		function copyTextAreaContent(textAreaId, button) {
+			const textArea = document.getElementById(textAreaId);
+			if (textArea) {
+				ClipboardManager.copyText(textArea.value, button);
+			} else {
+				ClipboardManager.showError(button, 'Text area not found');
+			}
+		}
+
+		function copyInputContent(inputId, button) {
+			const input = document.getElementById(inputId);
+			if (input) {
+				ClipboardManager.copyText(input.value, button);
+			} else {
+				ClipboardManager.showError(button, 'Input not found');
+			}
+		}
+
+		// Copy content of any element by selector
+		function copyElementContent(selector, button) {
+			const element = document.querySelector(selector);
+			if (element) {
+				const text = element.textContent || element.innerText || '';
+				ClipboardManager.copyText(text, button);
+			} else {
+				ClipboardManager.showError(button, 'Element not found');
+			}
+		}
+	</script>
+}

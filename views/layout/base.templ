@@ -2,65 +2,286 @@
 package layout
 
 templ Base(title string) {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>{ title } | DevToolsHub</title>
-			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"/>
-			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-			<script src="https://cdn.tailwindcss.com"></script>
-			<style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    <!DOCTYPE html>
+    <html lang="en">
+       <head>
+          <meta charset="UTF-8"/>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+          <title>{ title }</title>
 
-            body {
-                font-family: 'Inter', system-ui, sans-serif;
+          <!-- Preload critical resources -->
+          <link rel="preconnect" href="https://fonts.googleapis.com"/>
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+          <!-- Meta tags for SEO and social sharing -->
+          <meta name="description" content="Orbit2x - Your complete digital toolkit with 50+ professional tools across 9 categories. DNS tools, developer utilities, security checkers and more."/>
+          <meta name="keywords" content="developer tools, DNS lookup, SSL checker, IP tools, web tools, utilities"/>
+          <meta name="author" content="Orbit2x"/>
+
+          <!-- Open Graph / Facebook -->
+          <meta property="og:type" content="website"/>
+          <meta property="og:title" content={ title }/>
+          <meta property="og:description" content="Professional digital tools for developers, webmasters, and digital professionals"/>
+          <meta property="og:image" content="/og-image.jpg"/>
+
+          <!-- Twitter -->
+          <meta name="twitter:card" content="summary_large_image"/>
+          <meta name="twitter:title" content={ title }/>
+          <meta name="twitter:description" content="Professional digital tools for developers, webmasters, and digital professionals"/>
+
+          <!-- Favicon -->
+          <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+
+          <!-- External Libraries - Optimized loading -->
+          <script defer src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+          <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" integrity="sha384-w3DZZ8YnlXAqhZN+6LdCFRhc3pqnhGzz8hP4e4k9nqCsRb3v6Z5lNnY7WGf0qN1k" crossorigin="anonymous"></script>
+
+          <!-- Tailwind CSS with JIT -->
+          <script src="https://cdn.tailwindcss.com"></script>
+          <script>
+            tailwind.config = {
+              theme: {
+                extend: {
+                  fontFamily: {
+                    sans: ['Inter', 'system-ui', 'sans-serif'],
+                  },
+                  animation: {
+                    'fade-in': 'fadeIn 0.5s ease-in-out',
+                    'slide-up': 'slideUp 0.3s ease-out',
+                    'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                  },
+                  keyframes: {
+                    fadeIn: {
+                      '0%': { opacity: '0' },
+                      '100%': { opacity: '1' }
+                    },
+                    slideUp: {
+                      '0%': { transform: 'translateY(10px)', opacity: '0' },
+                      '100%': { transform: 'translateY(0)', opacity: '1' }
+                    }
+                  },
+                  backdropBlur: {
+                    xs: '2px',
+                  }
+                }
+              }
+            }
+          </script>
+
+          <!-- Custom Styles -->
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+            /* Performance optimizations */
+            * {
+                box-sizing: border-box;
             }
 
+            html {
+                scroll-behavior: smooth;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            body {
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                line-height: 1.6;
+                overflow-x: hidden;
+            }
+
+            /* Enhanced glassmorphism utilities */
+            .glass {
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+
+            .glass-light {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+
+            .glass-strong {
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+            }
+
+            /* Enhanced animations */
             .tool-card {
-                transition: all 0.2s ease-in-out;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                will-change: transform;
             }
 
             .tool-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
             }
 
+            /* Navigation enhancements */
             .nav-link {
                 position: relative;
+                transition: all 0.3s ease;
             }
 
-            .nav-link::after {
+            .nav-link::before {
                 content: '';
                 position: absolute;
-                width: 0;
-                height: 2px;
-                bottom: -2px;
+                top: 0;
                 left: 0;
-                background-color: #3B82F6;
-                transition: width 0.3s ease;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+                border-radius: 12px;
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
 
-            .nav-link:hover::after, .nav-link.active::after {
-                width: 100%;
+            .nav-link:hover::before {
+                opacity: 1;
             }
 
+            /* Button enhancements */
             .btn-primary {
-                transition: all 0.2s ease;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn-primary::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+
+            .btn-primary:hover::before {
+                left: 100%;
             }
 
             .btn-primary:hover {
                 transform: translateY(-2px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
             }
-        </style>
-		</head>
-		<body class="bg-gray-50 min-h-screen flex flex-col">
-			@Header()
-			<main class="flex-grow">
-				{ children... }
-			</main>
-			@Footer()
-		</body>
-	</html>
+
+            /* Loading states */
+            .htmx-request .loading {
+                display: block !important;
+            }
+
+            .htmx-request .htmx-indicator {
+                opacity: 1;
+            }
+
+            /* Focus states for accessibility */
+            .focus\:ring-glass:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+            }
+
+            /* Scroll enhancements */
+            .smooth-scroll {
+                scroll-behavior: smooth;
+            }
+
+            /* Custom scrollbar */
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            /* Reduce motion for accessibility */
+            @media (prefers-reduced-motion: reduce) {
+                *, *::before, *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+                }
+            }
+
+            /* Print styles */
+            @media print {
+                .no-print { display: none !important; }
+                body { background: white !important; }
+                .backdrop-blur-xl { backdrop-filter: none !important; }
+            }
+          </style>
+       </head>
+       <body class="bg-white min-h-screen flex flex-col smooth-scroll">
+          <!-- Skip to content for accessibility -->
+          <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded-lg z-50">
+            Skip to main content
+          </a>
+
+          @Header()
+
+          <main id="main-content" class="flex-grow" role="main">
+             { children... }
+          </main>
+
+          @Footer()
+
+          <!-- Performance and Analytics Scripts -->
+          <script>
+            // Basic error tracking
+            window.addEventListener('error', function(e) {
+                console.warn('JavaScript error:', e.error);
+            });
+
+            // HTMX configuration
+            document.addEventListener('DOMContentLoaded', function() {
+                // Configure HTMX
+                if (typeof htmx !== 'undefined') {
+                    htmx.config.globalViewTransitions = true;
+                    htmx.config.scrollBehavior = 'smooth';
+                }
+
+                // Add loading states to all forms
+                document.querySelectorAll('form[hx-post], form[hx-get]').forEach(form => {
+                    form.addEventListener('htmx:beforeSend', function() {
+                        form.style.opacity = '0.7';
+                    });
+
+                    form.addEventListener('htmx:afterSettle', function() {
+                        form.style.opacity = '1';
+                    });
+                });
+            });
+
+            // Lazy loading images
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+          </script>
+       </body>
+    </html>
 }
