@@ -58,7 +58,7 @@ func main() {
 	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
 	router.Get("/about", handlers.Make(handlers.AboutHandler))
 
-	//Faq
+	//Faq route
 	router.Get("/faq", handlers.Make(handlers.FAQHandler))
 	router.Get("/contact", handlers.Make(handlers.ContactHandler))
 
