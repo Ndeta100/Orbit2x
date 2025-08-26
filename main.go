@@ -71,6 +71,11 @@ func main() {
 	//	}
 	//	handlers.CategoryDetailHandler(w, r)
 	//})
+	http.HandleFunc("/google34ece54340b6c8d6.html", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("google-site-verification: google34ece54340b6c8d6.html"))
+	})
+
 	router.Get("/dns-tools", handlers.Make(handlers.HandleDNSToolsCategory))
 	router.Get("/dev-tools", handlers.Make(handlers.HandleDeveloperToolsCategory))
 	router.Get("/design-tools", handlers.Make(handlers.HandleDesignerToolsCategory))
