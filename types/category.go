@@ -1,6 +1,6 @@
 package types
 
-// CategoryTool represents a tool within a category
+// CategoryTool represents a tool within a tools
 type CategoryTool struct {
 	Name        string
 	Description string
@@ -11,7 +11,7 @@ type CategoryTool struct {
 	IsPopular   bool
 }
 
-// CategoryData represents the data for a category page
+// CategoryData represents the data for a tools page
 type CategoryData struct {
 	Name        string
 	Description string

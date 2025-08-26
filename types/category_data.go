@@ -1,6 +1,6 @@
 package types
 
-// GetDNSToolsCategory returns DNS & IP Tools category data
+// GetDNSToolsCategory returns DNS & IP Tools tools data
 func GetDNSToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "DNS & IP Tools",
@@ -31,7 +31,7 @@ func GetDNSToolsCategory() CategoryData {
 	}
 }
 
-// GetDeveloperToolsCategory returns Developer Tools category data
+// GetDeveloperToolsCategory returns Developer Tools tools data
 func GetDeveloperToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Developer Tools",
@@ -68,7 +68,7 @@ func GetDeveloperToolsCategory() CategoryData {
 	}
 }
 
-// GetDesignerToolsCategory returns Designer Tools category data (empty for now)
+// GetDesignerToolsCategory returns Designer Tools tools data (empty for now)
 func GetDesignerToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Designer Tools",
@@ -90,7 +90,7 @@ func GetDesignerToolsCategory() CategoryData {
 	}
 }
 
-// GetWebmasterToolsCategory returns Webmaster Tools category data (empty for now)
+// GetWebmasterToolsCategory returns Webmaster Tools tools data (empty for now)
 func GetWebmasterToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Webmaster Tools",
@@ -103,7 +103,7 @@ func GetWebmasterToolsCategory() CategoryData {
 	}
 }
 
-// GetNetworkToolsCategory returns Network Tools category data (empty for now)
+// GetNetworkToolsCategory returns Network Tools tools data (empty for now)
 func GetNetworkToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Network Tools",
@@ -116,7 +116,7 @@ func GetNetworkToolsCategory() CategoryData {
 	}
 }
 
-// GetSecurityToolsCategory returns Cybersecurity Tools category data
+// GetSecurityToolsCategory returns Cybersecurity Tools tools data
 func GetSecurityToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Cybersecurity Tools",
@@ -145,7 +145,7 @@ func GetSecurityToolsCategory() CategoryData {
 	}
 }
 
-// GetProductivityToolsCategory returns Productivity Tools category data
+// GetProductivityToolsCategory returns Productivity Tools tools data
 func GetProductivityToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Productivity Tools",
@@ -180,7 +180,7 @@ func GetProductivityToolsCategory() CategoryData {
 	}
 }
 
-// GetGamingToolsCategory returns Gaming Tools category data (empty for now)
+// GetGamingToolsCategory returns Gaming Tools tools data (empty for now)
 func GetGamingToolsCategory() CategoryData {
 	return CategoryData{
 		Name:        "Gaming Tools",
