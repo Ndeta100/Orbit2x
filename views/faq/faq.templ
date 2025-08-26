@@ -1,0 +1,287 @@
+package faq
+
+import (
+    "github.com/Ndeta100/orbit2x/views/layout"
+    "github.com/Ndeta100/orbit2x/views/components"
+)
+
+templ FAQPage() {
+    @layout.Base("Frequently Asked Questions | Orbit2x") {
+        @FAQHero()
+        @FAQSearch()
+        @FAQAccordion()
+        @FAQContact()
+    }
+}
+
+templ FAQHero() {
+    <section class="bg-white py-16 md:py-20 relative overflow-hidden">
+        <!-- Background orbital elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+        <div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
+        <div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Breadcrumb -->
+            <div class="mb-8">
+                <div class="backdrop-blur-sm bg-white/30 px-4 py-2 rounded-full border border-gray-200/50 inline-flex items-center text-sm">
+                    <a href="/" class="text-black/60 hover:text-black transition-colors">Home</a>
+                    <svg class="mx-2 h-4 w-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-black font-medium">FAQ</span>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl">
+                    <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-black leading-tight mb-6">
+                        Frequently Asked Questions
+                    </h1>
+                    <p class="text-xl text-black/80 max-w-3xl mx-auto leading-relaxed">
+                        Everything you need to know about using Orbit2x tools safely and effectively.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+templ FAQSearch() {
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="faq-search"
+                            placeholder="Search frequently asked questions..."
+                            class="w-full px-6 py-4 pl-12 rounded-xl backdrop-blur-sm bg-white/60 border border-gray-200/50 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/20"
+                        />
+                        <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-black/60">Popular searches: privacy, data storage, browser support, offline tools</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+templ FAQAccordion() {
+    <section class="py-16 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <!-- Privacy & Security Section -->
+                <div class="mb-12">
+                    <div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-6 shadow-xl mb-6">
+                        <h2 class="text-2xl font-bold text-black flex items-center">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            Privacy & Security
+                        </h2>
+                        <p class="text-black/70 mt-2">Questions about data handling and privacy protection</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        @FAQItem("privacy-1", "Do you really not store my data?", "Absolutely not. All tools process data directly in your browser using JavaScript. When you use our DNS lookup, JSON formatter, or any other tool, the data never leaves your device or reaches our servers. We designed it this way specifically to protect your privacy.")
+
+                        @FAQItem("privacy-2", "What happens to the data I input into tools?", "Your input data is processed locally in your browser's memory and automatically cleared when you close the tab or navigate away. We have no database, no user accounts, and no way to access what you're working on. It's the digital equivalent of using a calculator - private and temporary.")
+
+                        @FAQItem("privacy-3", "Can you see what I'm processing in the tools?", "No. Our servers only deliver the tool interface to your browser. All processing happens client-side using JavaScript. We can't see your DNS queries, JSON data, text conversions, or any other inputs. Our server logs only show basic access information like IP addresses and page requests, not tool usage.")
+
+                        @FAQItem("privacy-4", "Do you use cookies or tracking?", "We use minimal analytics cookies (Google Analytics) to understand which tools are popular and improve the site. You can opt-out anytime. We don't track individual tool usage or store personal information. No advertising cookies or third-party trackers beyond basic analytics.")
+                    </div>
+                </div>
+
+                <!-- Technical Questions Section -->
+                <div class="mb-12">
+                    <div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-6 shadow-xl mb-6">
+                        <h2 class="text-2xl font-bold text-black flex items-center">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            </svg>
+                            Technical Support
+                        </h2>
+                        <p class="text-black/70 mt-2">Browser compatibility and technical requirements</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        @FAQItem("tech-1", "Which browsers are supported?", "All modern browsers work great: Chrome, Firefox, Safari, Edge (2018+). We use standard JavaScript and HTML5, no plugins required. Some older browsers (IE11, very old mobile browsers) may have limited functionality, but 99%+ of users have full compatibility.")
+
+                        @FAQItem("tech-2", "Do the tools work offline?", "Most tools work offline once the page loads, since they run locally in your browser. However, tools that need external data (DNS lookup, SSL checker, URL analysis) require internet connection. We're working on a Progressive Web App version for better offline support.")
+
+                        @FAQItem("tech-3", "Are there file size limits?", "Since processing happens in your browser, limits depend on your device's memory. Most tools handle files up to 50MB without issues on modern devices. Very large files (100MB+) may be slow or cause browser tabs to freeze on older devices.")
+
+                        @FAQItem("tech-4", "Why do some tools need internet access?", "Tools like DNS lookup, SSL checker, and website analysis need to query external servers to get real-time information. These requests go directly from your browser to the target servers - our servers aren't involved in the data transfer.")
+                    </div>
+                </div>
+
+                <!-- Usage Questions Section -->
+                <div class="mb-12">
+                    <div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-6 shadow-xl mb-6">
+                        <h2 class="text-2xl font-bold text-black flex items-center">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Usage & Features
+                        </h2>
+                        <p class="text-black/70 mt-2">How to use the tools and platform features</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        @FAQItem("usage-1", "Can I use these tools for commercial projects?", "Yes, absolutely. All tools are free for personal and commercial use. No attribution required, though we appreciate it. You can use them for client work, internal business processes, or any professional application.")
+
+                        @FAQItem("usage-2", "Why are some categories marked 'Coming Soon'?", "We're actively developing new tools based on user demand and industry needs. Categories like Gaming Tools and Network Tools are planned but not yet built. We prioritize tools that provide the most value to our users.")
+
+                        @FAQItem("usage-3", "How often do you add new tools?", "We aim to release 2-3 new tools each month. Follow us on social media or check back regularly. We prioritize tools based on user requests, so let us know what you need most.")
+
+                        @FAQItem("usage-4", "Can I suggest new tools or features?", "Definitely! Use our contact form or email suggestions@orbit2x.com. We track all requests and build the most requested tools first. Include specific use cases to help us understand your needs better.")
+                    </div>
+                </div>
+
+                <!-- Business Model Section -->
+                <div class="mb-12">
+                    <div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-6 shadow-xl mb-6">
+                        <h2 class="text-2xl font-bold text-black flex items-center">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                            About Orbit2x
+                        </h2>
+                        <p class="text-black/70 mt-2">Questions about our platform and business model</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        @FAQItem("business-1", "Why is Orbit2x completely free?", "We believe essential developer and professional tools should be accessible to everyone. Our current model is supported by optional donations and minimal advertising. We may introduce premium features in the future, but core tools will always remain free.")
+
+                        @FAQItem("business-2", "Will you always be free?", "Core tools will always be free. We might add premium features like tool history, cloud sync, or advanced analytics in the future, but the essential functionality you use today will never be behind a paywall.")
+
+                        @FAQItem("business-3", "How do you make money?", "Currently through optional donations and minimal advertising revenue. Our costs are low since we don't store user data or run complex backend services. We're exploring sustainable models that don't compromise our privacy-first approach.")
+
+                        @FAQItem("business-4", "Who built Orbit2x?", "We're a small team of developers and designers who were frustrated with scattered tool websites and poor privacy practices. We built Orbit2x to solve our own problems and decided to share it with the community.")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+templ FAQItem(id, question, answer string) {
+    <div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 shadow-xl overflow-hidden faq-item">
+        <button
+            class="w-full text-left p-6 hover:bg-white/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-black/20 faq-button"
+            data-faq-id={ id }
+        >
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-black pr-4">{ question }</h3>
+                <div class="flex-shrink-0">
+                    <svg
+                        class="w-5 h-5 text-black transition-transform duration-300 faq-icon"
+                        id={ "icon-" + id }
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            </div>
+        </button>
+        <div
+            class="faq-answer overflow-hidden transition-all duration-300 max-h-0"
+            id={ "answer-" + id }
+        >
+            <div class="p-6 pt-0 text-black/80 leading-relaxed">
+                { answer }
+            </div>
+        </div>
+    </div>
+}
+
+templ FAQContact() {
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto text-center">
+                <div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl">
+                    <h2 class="text-3xl font-bold text-black mb-4">
+                        Still have questions?
+                    </h2>
+                    <p class="text-lg text-black/70 mb-8">
+                        Can't find what you're looking for? We're here to help.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        @components.PrimaryButton("/contact", "Contact Support")
+                        @components.SecondaryButton("mailto:help@orbit2x.com", "Email Us")
+                    </div>
+                    <p class="text-sm text-black/60 mt-6">
+                        Average response time: 24 hours
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ accordion functionality
+            document.querySelectorAll('.faq-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-faq-id');
+                    const answer = document.getElementById('answer-' + id);
+                    const icon = document.getElementById('icon-' + id);
+                    const isOpen = !answer.classList.contains('max-h-0');
+
+                    // Close all other FAQs
+                    document.querySelectorAll('.faq-answer').forEach(item => {
+                        item.classList.add('max-h-0');
+                        item.classList.remove('max-h-96');
+                    });
+                    document.querySelectorAll('.faq-icon').forEach(icon => {
+                        icon.classList.remove('transform', 'rotate-180');
+                    });
+
+                    // Toggle current FAQ
+                    if (!isOpen) {
+                        answer.classList.remove('max-h-0');
+                        answer.classList.add('max-h-96');
+                        icon.classList.add('transform', 'rotate-180');
+                    }
+                });
+            });
+
+            // FAQ search functionality
+            const searchInput = document.getElementById('faq-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const faqItems = document.querySelectorAll('.faq-item');
+
+                    faqItems.forEach(item => {
+                        const question = item.querySelector('h3').textContent.toLowerCase();
+                        const answer = item.querySelector('.faq-answer div').textContent.toLowerCase();
+
+                        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+}
+
+
