@@ -41,9 +41,10 @@ templ Header() {
              <!-- Desktop Navigation with liquid glass -->
              <nav class="hidden lg:flex items-center space-x-1">
                 @NavItem("/", "Home", true)
-                @NavItem("/about", "About", false)
                 @NavItem("/categories", "Categories", false)
+                @NavItem("/about", "About", false)
                 @NavItem("/blog", "Blog", false)
+                @NavItem("/faq", "FAQ", false)
              </nav>
 
              <!-- Mobile menu button with glass effect -->
@@ -123,9 +124,10 @@ templ MobileMenu() {
 
        <nav class="space-y-2 relative z-10">
           @MobileNavItem("/", "Home", true)
-          @MobileNavItem("/about", "About", false)
           @MobileNavItem("/categories", "Categories", false)
+          @MobileNavItem("/about", "About", false)
           @MobileNavItem("/blog", "Blog", false)
+          @MobileNavItem("/faq", "FAQ", false)
        </nav>
     </div>
 }
