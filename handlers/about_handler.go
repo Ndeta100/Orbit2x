@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"github.com/Ndeta100/orbit2x/views/about"
 	"net/http"
+
+	"github.com/Ndeta100/orbit2x/views/about"
 )
 
 // AboutHandler handles the about page
