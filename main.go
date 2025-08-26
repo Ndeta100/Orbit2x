@@ -62,8 +62,8 @@ func main() {
 	router.Get("/faq", handlers.Make(handlers.FAQHandler))
 	router.Get("/contact", handlers.Make(handlers.ContactHandler))
 
-	// Category routes
-	router.Get("/categories", handlers.Make(handlers.CategoriesOverviewHandler))
+	// tools routes
+	router.Get("/tools", handlers.Make(handlers.ToolsHandler))
 	//http.HandleFunc("/categories/", func(w http.ResponseWriter, r *http.Request) {
 	//	if r.URL.Path == "/categories/" {
 	//		http.Redirect(w, r, "/categories", http.StatusMovedPermanently)
