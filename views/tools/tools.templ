@@ -1,0 +1,265 @@
+package tools
+
+import (
+    "github.com/Ndeta100/orbit2x/views/layout"
+    "github.com/Ndeta100/orbit2x/views/components"
+)
+
+templ ToolsPage() {
+    @layout.Base("All Developer Tools | Orbit2x - 50+ Free Digital Utilities") {
+        @ToolsHero()
+        @AllToolsGrid()
+        @ToolsFeatures()
+        @ToolsCTA()
+    }
+}
+
+templ ToolsHero() {
+    <section class="bg-white py-16 md:py-20 relative overflow-hidden">
+        <!-- Background orbital elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+        <div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
+        <div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Breadcrumb -->
+            <div class="mb-8">
+                <div class="backdrop-blur-sm bg-white/30 px-4 py-2 rounded-full border border-gray-200/50 inline-flex items-center text-sm">
+                    <a href="/" class="text-black/60 hover:text-black transition-colors">Home</a>
+                    <svg class="mx-2 h-4 w-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-black font-medium">All Tools</span>
+                </div>
+            </div>
+
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 md:p-16 shadow-2xl">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-black leading-tight mb-6">
+                        Complete Digital Toolkit
+                    </h1>
+                    <p class="text-xl md:text-2xl text-black/80 max-w-4xl mx-auto leading-relaxed mb-8">
+                        50+ professional-grade tools { "for" } developers, designers, and IT professionals.
+                        DNS utilities, code formatters, security checkers, and productivity tools - all free and privacy-focused.
+                    </p>
+
+                    <!-- Key Benefits -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                        <div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+                            <div class="text-2xl font-bold text-black">50+</div>
+                            <div class="text-sm text-black/70">Free Tools</div>
+                        </div>
+                        <div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+                            <div class="text-2xl font-bold text-black">0ms</div>
+                            <div class="text-sm text-black/70">Data Stored</div>
+                        </div>
+                        <div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+                            <div class="text-2xl font-bold text-black">100%</div>
+                            <div class="text-sm text-black/70">Browser-Based</div>
+                        </div>
+                        <div class="backdrop-blur-sm bg-white/30 px-4 py-3 rounded-xl border border-gray-200/50">
+                            <div class="text-2xl font-bold text-black">9</div>
+                            <div class="text-sm text-black/70">Categories</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+templ AllToolsGrid() {
+    <section class="py-20 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Section Header -->
+            <div class="text-center max-w-4xl mx-auto mb-16">
+                <div class="backdrop-blur-lg bg-white/30 rounded-2xl border border-gray-200/50 p-8 shadow-xl">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-black mb-4">
+                        All Available Tools
+                    </h2>
+                    <p class="text-lg text-black/70">
+                        Professional utilities organized by function. No accounts required, no data collection.
+                    </p>
+                </div>
+            </div>
+
+            <!-- DNS & Network Tools Section -->
+            <div class="mb-16">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-black">DNS & Network Tools</h3>
+                        <p class="text-black/60">Domain lookups, IP analysis, and network diagnostics</p>
+                    </div>
+                </div>
+                <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    @components.ToolCard("/lookup", "DNS Lookup", "Perform comprehensive DNS record lookups for any domain including A, AAAA, MX, NS, TXT, and WHOIS information", "M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9")
+                    @components.ToolCard("/myip", "My IP Address", "View your current public IP address, location, ISP information, and connection details", "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7")
+                    @components.ToolCard("/ssl", "SSL Certificate Checker", "Verify SSL certificates, check expiration dates, and analyze security configurations for any website", "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z")
+                    @components.ToolCard("/subnet", "Subnet Calculator", "Calculate network addresses, subnet masks, CIDR notation, and IP ranges for network planning", "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z")
+                </div>
+            </div>
+
+            <!-- Developer Tools Section -->
+            <div class="mb-16">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-black">Developer Tools</h3>
+                        <p class="text-black/60">Code formatters, validators, and development utilities</p>
+                    </div>
+                </div>
+                <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    @components.ToolCard("/formatter", "JSON Formatter", "Format, validate, and beautify JSON data with syntax highlighting and error detection", "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4")
+                    @components.ToolCard("/encoder", "Text Encoder/Decoder", "Encode and decode text in various formats including Base64, URL encoding, HTML entities, and more", "M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z")
+                    @components.ToolCard("/converter", "File Format Converter", "Convert between different file formats including CSV to JSON, XML transformations, and data format conversions", "M8 7H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h6a2 2 0 002-2V9a2 2 0 00-2-2h-6a2 2 0 00-2 2v10a2 2 0 002 2zm8-12V7a2 2 0 00-2-2h-2a2 2 0 00-2 2v8a2 2 0 002 2h2a2 2 0 002-2z")
+                    @components.ToolCard("/hash", "Hash Generator", "Generate MD5, SHA1, SHA256, and other cryptographic hash functions for text and files", "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z")
+                </div>
+            </div>
+
+            <!-- Design & Media Tools Section -->
+            <div class="mb-16">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-black">Design & Media Tools</h3>
+                        <p class="text-black/60">Color converters, image processors, and design utilities</p>
+                    </div>
+                </div>
+                <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    @components.ToolCard("/color", "Color Converter", "Convert colors between HEX, RGB, HSL, and other formats. Generate color palettes and accessibility checks", "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4z")
+                    @components.ToolCard("/imagebase64", "Image to Base64", "Convert images to Base64 encoding for embedding in HTML, CSS, or applications. Supports multiple formats", "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z")
+                </div>
+            </div>
+
+            <!-- Productivity Tools Section -->
+            <div class="mb-16">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-black">Productivity Tools</h3>
+                        <p class="text-black/60">Text processing, calculators, and workflow utilities</p>
+                    </div>
+                </div>
+                <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    @components.ToolCard("/useragent", "User Agent Parser", "Parse and analyze user agent strings to identify browsers, devices, and operating systems", "M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2")
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+templ ToolsFeatures() {
+    <section class="py-16 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-black mb-4">Why Developers Choose Orbit2x</h2>
+                    <p class="text-lg text-black/70 max-w-3xl mx-auto">
+                        Built by developers { "for" } developers. Every tool is optimized { "for" } professional workflows and privacy protection.
+                    </p>
+                </div>
+
+                <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-3">Privacy First</h3>
+                        <p class="text-black/70">All processing happens locally in your browser. No data collection, no tracking, no storage of sensitive information.</p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-3">Lightning Fast</h3>
+                        <p class="text-black/70">No server delays or API limits. Tools work instantly without internet connectivity dependencies where possible.</p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-3">Professional Quality</h3>
+                        <p class="text-black/70">Built to enterprise standards with comprehensive error handling and robust functionality.</p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-3">Mobile Optimized</h3>
+                        <p class="text-black/70">All tools work seamlessly on desktop, tablet, and mobile devices with responsive interfaces.</p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-3">Always Free</h3>
+                        <p class="text-black/70">No subscriptions, no premium tiers, no hidden costs. Essential tools should be accessible to everyone.</p>
+                    </div>
+
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-3">Regular Updates</h3>
+                        <p class="text-black/70">New tools added monthly based on user feedback and industry needs. Existing tools constantly improved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+templ ToolsCTA() {
+    <section class="py-16 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-12 shadow-2xl max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-black mb-6">
+                    Ready to boost your productivity?
+                </h2>
+                <p class="text-xl text-black/70 mb-8 max-w-2xl mx-auto">
+                    Join thousands of developers and IT professionals who trust Orbit2x { "for" } their daily workflow tools.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                    @components.PrimaryButton("/formatter", "Try JSON Formatter")
+                    @components.SecondaryButton("/about", "Learn More")
+                </div>
+                <p class="text-sm text-black/60">
+                    No sign-up required • All tools work instantly • Complete privacy protection
+                </p>
+            </div>
+        </div>
+    </section>
+}
