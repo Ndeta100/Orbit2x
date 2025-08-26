@@ -58,7 +58,19 @@ func main() {
 	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
 	router.Get("/about", handlers.Make(handlers.AboutHandler))
 
+	//Faq
+	router.Get("/faq", handlers.Make(handlers.FAQHandler))
+	router.Get("/contact", handlers.Make(handlers.ContactHandler))
+
 	// Category routes
+	router.Get("/categories", handlers.Make(handlers.CategoriesOverviewHandler))
+	//http.HandleFunc("/categories/", func(w http.ResponseWriter, r *http.Request) {
+	//	if r.URL.Path == "/categories/" {
+	//		http.Redirect(w, r, "/categories", http.StatusMovedPermanently)
+	//		return
+	//	}
+	//	handlers.CategoryDetailHandler(w, r)
+	//})
 	router.Get("/dns-tools", handlers.Make(handlers.HandleDNSToolsCategory))
 	router.Get("/dev-tools", handlers.Make(handlers.HandleDeveloperToolsCategory))
 	router.Get("/design-tools", handlers.Make(handlers.HandleDesignerToolsCategory))
