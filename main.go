@@ -55,7 +55,10 @@ func main() {
 	router.Get("/color", handlers.Make(handlers.HandleColorIndex))
 	router.Post("/color/convert", handlers.Make(handlers.HandleColorConvert))
 	router.Get("/color/random", handlers.Make(handlers.HandleRandomColor))
-
+	//qr_code generator
+	router.Get("/qr", handlers.Make(handlers.ShowQRTool))
+	router.Post("/qr/generate", handlers.Make(handlers.GenerateQR))
+	router.Post("/qr/preview", handlers.Make(handlers.PreviewQR))
 	//home page routes and others
 	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
 	router.Get("/about", handlers.Make(handlers.AboutHandler))
