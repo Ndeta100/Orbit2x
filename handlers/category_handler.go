@@ -21,8 +21,8 @@ func FAQHandler(w http.ResponseWriter, r *http.Request) error {
 
 // HandleDNSToolsCategory handles /dns-tools route
 func HandleDNSToolsCategory(w http.ResponseWriter, r *http.Request) error {
-	category_1 := types.GetDNSToolsCategory()
-	return components.CategoryPage(category_1).Render(r.Context(), w)
+	category1 := types.GetDNSToolsCategory()
+	return components.CategoryPage(category1).Render(r.Context(), w)
 }
 
 // HandleDeveloperToolsCategory handles /dev-tools route
