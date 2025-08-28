@@ -22,6 +22,8 @@ func main() {
 		log.Println("No .env file found, using environment variables")
 	}
 	router := chi.NewMux()
+
+	//Tools
 	router.Get("/", handlers.Make(handlers.HandleHomeIndex))
 	router.Get("/lookup", handlers.Make(handlers.HandleDNSLookupIndex))
 	router.Post("/lookup", handlers.Make(handlers.HandleDNSLookup))
