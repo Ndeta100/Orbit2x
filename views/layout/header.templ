@@ -104,14 +104,14 @@ templ Header() {
 templ NavItem(href string, label string, isActive bool) {
     if isActive {
        <a href={ templ.SafeURL(href) } class="nav-link group relative px-4 py-2 rounded-xl backdrop-blur-lg bg-black text-white font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border border-gray-200/30">
-          <!-- Active liquid shimmer effect -->
-          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl"></div>
+          <!-- Active liquid shimmer effect - FIXED: Added pointer-events-none -->
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl pointer-events-none"></div>
           <span class="relative z-10">{ label }</span>
        </a>
     } else {
        <a href={ templ.SafeURL(href) } class="nav-link group relative px-4 py-2 rounded-xl backdrop-blur-lg bg-white/30 hover:bg-white/50 text-black font-medium transition-all duration-300 border border-gray-200/40 hover:border-gray-300/60 shadow-lg hover:shadow-xl transform hover:scale-105">
-          <!-- Hover liquid shimmer effect -->
-          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl"></div>
+          <!-- Hover liquid shimmer effect - FIXED: Added pointer-events-none -->
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 rounded-xl pointer-events-none"></div>
           <span class="relative z-10 group-hover:text-gray-800 transition-colors duration-300">{ label }</span>
        </a>
     }
