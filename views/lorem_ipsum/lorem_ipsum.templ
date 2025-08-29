@@ -1,0 +1,350 @@
+package lorem_ipsum
+
+import (
+	"fmt"
+	"strings"
+	"github.com/Ndeta100/orbit2x/views/layout"
+	"github.com/Ndeta100/orbit2x/internal/lorem"
+)
+
+// LoremPageData holds data for the main Lorem Ipsum page
+type LoremPageData struct {
+	Title string
+}
+
+// Main Lorem Ipsum Generator Page using base layout
+templ LoremGeneratorPage(data LoremPageData) {
+	@layout.Base(data.Title) {
+		@LoremHero()
+		@LoremInputForm()
+		@LoremResultSection()
+		@LoremScript()
+		@LoremContentSection()
+	}
+}
+
+// Hero Section
+templ LoremHero() {
+	<section class="py-16">
+		<div class="container mx-auto px-4 text-center">
+			<h1 class="text-5xl font-bold text-gray-800 mb-4">
+				Lorem Ipsum Generator
+			</h1>
+			<p class="text-xl text-gray-600 mb-2 max-w-2xl mx-auto">
+				Generate professional placeholder text instantly for your designs, mockups, and development projects
+			</p>
+			<p class="text-sm text-gray-500">
+				Powered by <span class="font-semibold">orbit2x.com</span>
+			</p>
+		</div>
+	</section>
+}
+
+// Input Form Section
+templ LoremInputForm() {
+	<section class="py-12">
+		<div class="container mx-auto px-4 max-w-4xl">
+			<div class="glass bg-white/30 rounded-3xl shadow-2xl border border-gray-200/50 p-8">
+				<h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Generate Lorem Ipsum Text</h2>
+
+				<!-- Lorem Generation Form -->
+				<form id="lorem-form"
+					  hx-post="/lorem/generate"
+					  hx-target="#lorem-result-container"
+					  hx-indicator="#lorem-loading"
+					  hx-on::before-request="hideError()">
+
+					<!-- Type Selection -->
+					<div class="mb-6">
+						<label class="block text-sm font-semibold text-gray-700 mb-3">Text Type:</label>
+						<div class="flex flex-wrap gap-3">
+							<label class="flex items-center cursor-pointer">
+								<input type="radio" name="type" value="paragraphs" checked class="sr-only peer"/>
+								<div class="flex items-center px-4 py-2 rounded-lg border border-gray-300 peer-checked:bg-black peer-checked:text-white peer-checked:border-black transition-all duration-300 hover:border-gray-400">
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+									</svg>
+									Paragraphs
+								</div>
+							</label>
+							<label class="flex items-center cursor-pointer">
+								<input type="radio" name="type" value="sentences" class="sr-only peer"/>
+								<div class="flex items-center px-4 py-2 rounded-lg border border-gray-300 peer-checked:bg-black peer-checked:text-white peer-checked:border-black transition-all duration-300 hover:border-gray-400">
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+									</svg>
+									Sentences
+								</div>
+							</label>
+							<label class="flex items-center cursor-pointer">
+								<input type="radio" name="type" value="words" class="sr-only peer"/>
+								<div class="flex items-center px-4 py-2 rounded-lg border border-gray-300 peer-checked:bg-black peer-checked:text-white peer-checked:border-black transition-all duration-300 hover:border-gray-400">
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+									</svg>
+									Words
+								</div>
+							</label>
+						</div>
+					</div>
+
+					<!-- Count Input -->
+					<div class="mb-6">
+						<label class="block text-sm font-semibold text-gray-700 mb-3">
+							<span id="count-label">Number of Paragraphs:</span>
+						</label>
+						<div class="relative">
+							<input type="number"
+								   id="count-input"
+								   name="count"
+								   value="3"
+								   min="1"
+								   max="500"
+								   class="w-full px-4 py-3 glass-light bg-white/50 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 focus:ring-glass"/>
+							<div class="absolute right-3 top-3 text-sm text-gray-500">
+								<span id="limit-text">Max: 500</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Start with Lorem Ipsum Option -->
+					<div class="mb-8">
+						<label class="flex items-center cursor-pointer">
+							<input type="checkbox" name="start_with" value="true" class="sr-only peer"/>
+							<div class="w-5 h-5 border-2 border-gray-300 rounded peer-checked:bg-black peer-checked:border-black transition-all duration-300 flex items-center justify-center">
+								<svg class="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+								</svg>
+							</div>
+							<span class="ml-3 text-gray-700 font-medium">Start with "Lorem ipsum dolor sit amet..."</span>
+						</label>
+						<p class="text-sm text-gray-500 mt-2 ml-8">Begin your text with the traditional Lorem Ipsum opening phrase</p>
+					</div>
+
+					<!-- Generate Button -->
+					<div class="flex justify-center">
+						<button type="submit" class="group inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-2xl text-white bg-black hover:bg-gray-800 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm border border-gray-200/20 relative overflow-hidden">
+							<!-- Shimmer effect -->
+							<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000"></div>
+
+							<!-- Loading state -->
+							<span id="lorem-loading" class="htmx-indicator absolute inset-0 flex items-center justify-center relative z-10" style="display: none;">
+								<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+								</svg>
+								Generating...
+							</span>
+
+							<!-- Normal state -->
+							<span class="htmx-indicator:not(.htmx-request) relative z-10">Generate Lorem Ipsum</span>
+							<svg class="htmx-indicator:not(.htmx-request) relative z-10 ml-3 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+							</svg>
+						</button>
+					</div>
+				</form>
+
+				<!-- Error Message -->
+				<div id="error-message" class="mt-6 p-4 glass bg-red-50/80 border border-red-200/50 rounded-xl text-red-700 hidden max-w-2xl mx-auto">
+					<div class="flex items-center">
+						<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+						</svg>
+						<span id="error-text"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+// Lorem Result Section
+templ LoremResultSection() {
+	<section class="py-12">
+		<div class="container mx-auto px-4 max-w-4xl">
+			<div class="glass bg-white/30 rounded-3xl shadow-2xl border border-gray-200/50 p-8">
+				<h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Generated Text</h2>
+
+				<!-- Result Area -->
+				<div id="lorem-result-container">
+					@LoremInitialState()
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+// Initial state component
+templ LoremInitialState() {
+	<div class="text-center py-12">
+		<div class="w-24 h-24 mx-auto mb-4 glass bg-white/40 rounded-2xl flex items-center justify-center border border-gray-200/50">
+			<svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+			</svg>
+		</div>
+		<p class="text-gray-500 text-sm">Click generate to create your Lorem Ipsum text</p>
+	</div>
+}
+
+// Lorem Result component
+templ LoremResult(data lorem.LoremResponse) {
+	if data.Success {
+		<div>
+			<!-- Stats Bar -->
+			<div class="flex flex-wrap justify-center gap-4 mb-6 p-4 glass bg-white/40 rounded-xl border border-gray-200/50">
+				<div class="text-center">
+					<div class="text-2xl font-bold text-gray-800">{ strings.ToUpper(data.Type) }</div>
+					<div class="text-sm text-gray-600">Type</div>
+				</div>
+				<div class="text-center">
+					<div class="text-2xl font-bold text-gray-800">{ fmt.Sprintf("%d", data.Count) }</div>
+					<div class="text-sm text-gray-600">Count</div>
+				</div>
+				<div class="text-center">
+					<div class="text-2xl font-bold text-gray-800">{ fmt.Sprintf("%d", data.WordCount) }</div>
+					<div class="text-sm text-gray-600">Words</div>
+				</div>
+				<div class="text-center">
+					<div class="text-2xl font-bold text-gray-800">{ fmt.Sprintf("%d", data.CharCount) }</div>
+					<div class="text-sm text-gray-600">Characters</div>
+				</div>
+			</div>
+
+			<!-- Generated Text Display -->
+			<div class="mb-6">
+				<div class="glass bg-white/40 rounded-2xl p-6 border border-gray-200/50">
+					<textarea
+						id="generated-text"
+						readonly
+						class="w-full h-64 p-4 bg-transparent border-none resize-none focus:outline-none text-gray-700 leading-relaxed"
+						style="font-family: 'Georgia', serif;"
+					>{ data.Content }</textarea>
+				</div>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="flex flex-wrap justify-center gap-4">
+				<button onclick="copyToClipboard()"
+						class="group inline-flex items-center px-8 py-4 text-base font-bold rounded-2xl text-white bg-black hover:bg-gray-800 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm border border-gray-200/20 relative overflow-hidden">
+					<!-- Shimmer effect -->
+					<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000"></div>
+
+					<svg class="w-5 h-5 mr-2 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+					</svg>
+					<span class="relative z-10">Copy to Clipboard</span>
+				</button>
+
+				<button onclick="generateAnother()"
+						class="group inline-flex items-center px-8 py-4 text-base font-bold rounded-2xl text-black backdrop-blur-xl bg-white/60 hover:bg-white/80 border border-gray-200/50 hover:border-gray-300/50 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden">
+					<!-- Glass shine effect -->
+					<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white via-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000"></div>
+
+					<span class="relative z-10">Generate Another</span>
+				</button>
+			</div>
+		</div>
+	} else {
+		@LoremError(data.Message)
+	}
+}
+
+// Error component
+templ LoremError(message string) {
+	<div class="glass bg-red-50/80 border border-red-200/50 rounded-2xl p-6 max-w-md mx-auto">
+		<div class="flex">
+			<div class="flex-shrink-0">
+				<svg class="h-6 w-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+				</svg>
+			</div>
+			<div class="ml-4">
+				<h3 class="text-base font-semibold text-red-800">Error</h3>
+				<div class="mt-2 text-sm text-red-700">
+					<p>{ message }</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+// JavaScript functionality
+templ LoremScript() {
+	<script>
+		// Handle radio button changes
+		document.addEventListener('DOMContentLoaded', function() {
+			const radioButtons = document.querySelectorAll('input[name="type"]');
+			const countLabel = document.getElementById('count-label');
+			const countInput = document.getElementById('count-input');
+			const limitText = document.getElementById('limit-text');
+
+			// Limits for each type
+			const limits = {
+				'paragraphs': 500,
+				'sentences': 1000,
+				'words': 10000
+			};
+
+			radioButtons.forEach(radio => {
+				radio.addEventListener('change', function() {
+					updateFormLabels(this.value);
+				});
+			});
+
+			function updateFormLabels(type) {
+				const typeCapitalized = type.charAt(0).toUpperCase() + type.slice(1);
+				countLabel.textContent = `Number of ${typeCapitalized}:`;
+				countInput.max = limits[type];
+				limitText.textContent = `Max: ${limits[type].toLocaleString()}`;
+
+				// Reset count if it exceeds new limit
+				if (parseInt(countInput.value) > limits[type]) {
+					countInput.value = type === 'words' ? '50' : type === 'sentences' ? '10' : '3';
+				}
+			}
+		});
+
+		// Copy to clipboard functionality
+		function copyToClipboard() {
+			const textarea = document.getElementById('generated-text');
+			textarea.select();
+			document.execCommand('copy');
+
+			// Visual feedback
+			const button = event.target.closest('button');
+			const originalText = button.innerHTML;
+			button.innerHTML = button.innerHTML.replace('Copy to Clipboard', 'Copied!');
+
+			setTimeout(() => {
+				button.innerHTML = originalText;
+			}, 2000);
+		}
+
+		// Generate another
+		function generateAnother() {
+			document.getElementById('lorem-result-container').innerHTML = `
+				<div class="text-center py-12">
+					<div class="w-24 h-24 mx-auto mb-4 glass bg-white/40 rounded-2xl flex items-center justify-center border border-gray-200/50">
+						<svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+						</svg>
+					</div>
+					<p class="text-gray-500 text-sm">Click generate to create your Lorem Ipsum text</p>
+				</div>
+			`;
+		}
+
+		// Error handling
+		function showError(message) {
+			const errorDiv = document.getElementById('error-message');
+			const errorText = document.getElementById('error-text');
+			errorText.textContent = message;
+			errorDiv.classList.remove('hidden');
+		}
+
+		function hideError() {
+			document.getElementById('error-message').classList.add('hidden');
+		}
+	</script>
+}
