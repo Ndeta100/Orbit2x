@@ -59,6 +59,13 @@ func main() {
 	router.Get("/qr", handlers.Make(handlers.ShowQRTool))
 	router.Post("/qr/generate", handlers.Make(handlers.GenerateQR))
 	router.Post("/qr/preview", handlers.Make(handlers.PreviewQR))
+
+	//lorem route
+	router.Get("/lorem", handlers.Make(handlers.HandleLoremMainPage))
+	router.Get("/lorem/limits", handlers.Make(handlers.HandleLoremLimits))
+	router.Post("/lorem/generate", handlers.Make(handlers.HandleLoremGenerate))
+	router.Post("/lorem/api/generate", handlers.Make(handlers.HandleLoremAPIGenerate))
+
 	//home page routes and others
 	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
 	router.Get("/about", handlers.Make(handlers.AboutHandler))
