@@ -66,6 +66,10 @@ func main() {
 	router.Post("/lorem/generate", handlers.Make(handlers.HandleLoremGenerate))
 	router.Post("/lorem/api/generate", handlers.Make(handlers.HandleLoremAPIGenerate))
 
+	//Word counter
+	router.Get("/word-counter", handlers.Make(handlers.ShowWordCounterPage))
+	router.Post("/word-count", handlers.Make(handlers.CountWords))
+
 	//home page routes and others
 	router.Get("/privacy", handlers.Make(handlers.PrivacyHandler))
 	router.Get("/about", handlers.Make(handlers.AboutHandler))
