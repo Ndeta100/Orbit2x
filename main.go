@@ -44,6 +44,7 @@ func main() {
 	router.Get("/converter", handlers.Make(handlers.HandleConverterIndex))
 	router.Post("/converter/csv-to-json", handlers.Make(handlers.HandleCSVToJSON))
 	router.Post("/converter/json-to-csv", handlers.Make(handlers.HandleJSONToCSV))
+	//User agent
 	router.Get("/useragent", handlers.Make(handlers.HandleUserAgentIndex))
 	router.Post("/useragent/parse", handlers.Make(handlers.HandleUserAgentParse))
 	router.Get("/useragent/detect", handlers.Make(handlers.HandleDetectUserAgent))
