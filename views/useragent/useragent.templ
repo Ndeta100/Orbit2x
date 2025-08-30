@@ -1,7 +1,9 @@
-// views/useragent/useragent.templ
 package useragent
 
-import "sort"
+import (
+	"sort"
+	"github.com/Ndeta100/orbit2x/views/layout"
+)
 
 type BrowserInfo struct {
 	Name    string
@@ -22,395 +24,426 @@ type ParsingResult struct {
 	IsTablet    bool
 	IsDesktop   bool
 	IsBot       bool
-	BotName     string // Keeping this for compatibility, though it will be empty
+	BotName     string
 	FullDetails map[string]string
 	Error       string
 }
 
-templ Index() {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>User Agent Parser</title>
-			<script src="https://unpkg.com/htmx.org@1.9.6"></script>
-			<style>
-			body {
-				font-family: Arial, sans-serif;
-				max-width: 800px;
-				margin: 0 auto;
-				padding: 20px;
-				color: #333;
-			}
-			.card {
-				background-color: white;
-				border-radius: 8px;
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-				padding: 30px;
-				margin-bottom: 30px;
-			}
-			h1 {
-				color: #0e4174;
-				text-align: center;
-				margin-bottom: 10px;
-			}
-			.description {
-				text-align: center;
-				color: #666;
-				margin-bottom: 20px;
-			}
-			.form-container {
-				margin-bottom: 20px;
-			}
-			textarea {
-				width: 100%;
-				padding: 10px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				min-height: 80px;
-				font-family: monospace;
-				resize: vertical;
-				margin-bottom: 10px;
-			}
-			.buttons {
-				display: flex;
-				gap: 10px;
-				margin-bottom: 20px;
-			}
-			button {
-				padding: 10px 15px;
-				background-color: #0e4174;
-				color: white;
-				border: none;
-				border-radius: 4px;
-				cursor: pointer;
-				flex-grow: 1;
-			}
-			button:hover {
-				background-color: #0a325e;
-			}
-			.loading {
-				text-align: center;
-				padding: 20px;
-				display: none;
-			}
-			.htmx-request .loading {
-				display: block;
-			}
-			.results {
-				margin-top: 20px;
-			}
-			.result-section {
-				background-color: #f5f5f5;
-				border-radius: 4px;
-				padding: 15px;
-				margin-bottom: 15px;
-			}
-			.result-title {
-				font-weight: bold;
-				margin-bottom: 10px;
-				color: #0e4174;
-			}
-			.result-content {
-				background-color: white;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				padding: 10px;
-				font-family: monospace;
-				white-space: pre-wrap;
-				word-break: break-all;
-				overflow-y: auto;
-			}
-			.error {
-				background-color: #ffebee;
-				border-left: 5px solid #f44336;
-				padding: 15px;
-				border-radius: 5px;
-			}
-			.copy-button {
-				margin-top: 10px;
-				background-color: #eee;
-				color: #333;
-				padding: 5px 10px;
-				border: none;
-				border-radius: 4px;
-				cursor: pointer;
-				font-size: 12px;
-			}
-			.copy-button:hover {
-				background-color: #ddd;
-			}
-			.tab-container {
-				margin-bottom: 20px;
-			}
-			.tabs {
-				display: flex;
-				border-bottom: 1px solid #ddd;
-			}
-			.tab {
-				padding: 10px 15px;
-				cursor: pointer;
-				border: 1px solid transparent;
-				border-bottom: none;
-				border-radius: 4px 4px 0 0;
-				margin-right: 5px;
-			}
-			.tab.active {
-				background-color: #f5f5f5;
-				border-color: #ddd;
-				border-bottom-color: #f5f5f5;
-			}
-			.tab-content {
-				display: none;
-				padding: 20px;
-				border: 1px solid #ddd;
-				border-top: none;
-				background-color: #f5f5f5;
-			}
-			.tab-content.active {
-				display: block;
-			}
-			.detect-button {
-				background-color: #4caf50;
-				margin-top: 20px;
-			}
-			.detect-button:hover {
-				background-color: #388e3c;
-			}
-			.info-section {
-				display: flex;
-				margin-bottom: 15px;
-			}
-			.info-box {
-				flex: 1;
-				background-color: white;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				padding: 15px;
-				margin-right: 10px;
-			}
-			.info-box:last-child {
-				margin-right: 0;
-			}
-			.info-box-title {
-				font-weight: bold;
-				color: #0e4174;
-				margin-bottom: 8px;
-				font-size: 14px;
-			}
-			.info-box-content {
-				font-size: 13px;
-			}
-			.detail-table {
-				width: 100%;
-				border-collapse: collapse;
-				margin-top: 15px;
-			}
-			.detail-table th, .detail-table td {
-				padding: 8px;
-				text-align: left;
-				border-bottom: 1px solid #eee;
-				font-size: 13px;
-			}
-			.detail-table th {
-				font-weight: bold;
-				color: #0e4174;
-				width: 40%;
-			}
-			.examples {
-				margin-top: 30px;
-			}
-			.example-title {
-				font-weight: bold;
-				margin-bottom: 10px;
-				color: #0e4174;
-			}
-			.example-list {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 10px;
-				margin-bottom: 20px;
-			}
-			.example-button {
-				background-color: #f5f5f5;
-				color: #333;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				padding: 8px 12px;
-				font-size: 12px;
-				cursor: pointer;
-			}
-			.example-button:hover {
-				background-color: #e0e0e0;
-			}
-		</style>
-		</head>
-		<body>
-			<div class="card">
-				<h1>User Agent Parser</h1>
-				<p class="description">Analyze and extract information from browser user agent strings.</p>
-				<div class="tab-container">
-					<div class="tabs">
-						<div class="tab active" onclick="switchTab('parse-tab', this)">Parse User Agent</div>
-						<div class="tab" onclick="switchTab('detect-tab', this)">Detect My Browser</div>
-					</div>
-					<div id="parse-tab" class="tab-content active">
-						<div class="form-container">
-							<form id="user-agent-form" hx-post="/useragent/parse" hx-target="#results" hx-indicator=".loading">
-								<textarea name="userAgent" placeholder="Paste a User Agent string here..." required></textarea>
-								<button type="submit">Parse User Agent</button>
-							</form>
-							<div class="examples">
-								<div class="example-title">Example User Agents:</div>
-								<div class="example-list">
-									<button type="button" class="example-button" onclick="setExampleUserAgent('chrome-desktop')">Chrome Desktop</button>
-									<button type="button" class="example-button" onclick="setExampleUserAgent('firefox-desktop')">Firefox Desktop</button>
-									<button type="button" class="example-button" onclick="setExampleUserAgent('safari-desktop')">Safari Desktop</button>
-									<button type="button" class="example-button" onclick="setExampleUserAgent('edge-desktop')">Edge Desktop</button>
-									<button type="button" class="example-button" onclick="setExampleUserAgent('chrome-android')">Chrome Android</button>
-									<button type="button" class="example-button" onclick="setExampleUserAgent('safari-ios')">Safari iOS</button>
-									<button type="button" class="example-button" onclick="setExampleUserAgent('googlebot')">Googlebot</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="detect-tab" class="tab-content">
-						<p>Click the button below to analyze your current browser's user agent string:</p>
-						<button
-							class="detect-button"
-							hx-get="/useragent/detect"
-							hx-target="#results"
-							hx-indicator=".loading"
-						>
-							Detect My Browser
-						</button>
-					</div>
-				</div>
-				<div class="loading">
-					<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#0e4174">
-						<g fill="none" fill-rule="evenodd">
-							<g transform="translate(1 1)" stroke-width="2">
-								<circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
-								<path d="M36 18c0-9.94-8.06-18-18-18">
-									<animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
-								</path>
-							</g>
-						</g>
+// Main User Agent Page using base layout
+templ UserAgentPage() {
+	@layout.Base("User Agent Analyzer - Free for developers and everyone (orbit2x.com)") {
+		@UserAgentHero()
+		@UserAgentTabs()
+		@UserAgentLoadingIndicator()
+		@UserAgentResultsContainer()
+		@UserAgentScript()
+		@UserAgentContent()
+	}
+}
+
+// Hero section with title and description
+templ UserAgentHero() {
+	<section class="relative overflow-hidden py-16 md:py-20">
+		<!-- Glassmorphism background elements -->
+		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
+		<div class="absolute top-20 left-10 w-32 h-32 bg-blue-100/30 rounded-full blur-2xl animate-float"></div>
+		<div class="absolute top-40 right-20 w-24 h-24 bg-purple-100/25 rounded-full blur-xl animate-float-delayed"></div>
+		<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-indigo-100/20 rounded-full blur-3xl animate-float-delayed-2"></div>
+		<div class="absolute bottom-20 right-1/3 w-28 h-28 bg-gray-100/25 rounded-full blur-2xl animate-float"></div>
+
+			<!-- Breadcrumb -->
+			<div class="mb-8">
+				<div class="backdrop-blur-sm bg-white/30 px-4 py-2 rounded-full border border-gray-200/50 inline-flex items-center text-sm">
+					<a href="/" class="text-black/60 hover:text-black transition-colors">Home</a>
+					<svg class="mx-2 h-4 w-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
 					</svg>
-				</div>
-				<div id="results">
-					<!-- Results will be loaded here -->
+					<span class="text-black font-medium">User Agent</span>
 				</div>
 			</div>
-			<script>
-			function switchTab(tabId, tabElement) {
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+			<div class="text-center mb-12 fade-in">
+				<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl max-w-4xl mx-auto">
+					<h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">User Agent Analyzer</h1>
+					<p class="text-lg text-gray-600 mb-4">Parse and analyze browser user agent strings with detailed information extraction</p>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+// Tab navigation and content section
+templ UserAgentTabs() {
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+		<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto mb-8">
+			<div class="flex border-b border-gray-200/50 p-6 pb-0">
+				<button
+					class="tab-button px-6 py-3 mr-2 mb-4 rounded-lg font-semibold text-sm glassmorphism bg-black text-white border border-gray-200/50 transition-all duration-200"
+					data-tab="parse-tab"
+					id="tab-parse"
+				>
+					Parse User Agent
+				</button>
+				<button
+					class="tab-button px-6 py-3 mr-2 mb-4 rounded-lg font-semibold text-sm glassmorphism bg-white/60 text-black border border-gray-200/50 hover:bg-white/80 transition-all duration-200"
+					data-tab="detect-tab"
+					id="tab-detect"
+				>
+					Detect My Browser
+				</button>
+			</div>
+
+			<!-- Tab Contents -->
+			<div class="p-6">
+				@UserAgentParseTab()
+				@UserAgentDetectTab()
+			</div>
+		</div>
+	</div>
+}
+
+// Parse user agent tab content
+templ UserAgentParseTab() {
+	<div id="parse-tab" class="tab-content">
+		<form id="user-agent-form" hx-post="/useragent/parse" hx-target="#results" hx-indicator=".loading">
+			<div class="mb-6">
+				<label class="block text-sm font-medium text-gray-700 mb-2">User Agent String</label>
+				<textarea
+					name="userAgent"
+					class="w-full p-4 border border-gray-200/50 rounded-xl glassmorphism bg-white/60 focus:bg-white/80 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all duration-200 font-mono text-sm resize-y min-h-[100px]"
+					placeholder="Paste a User Agent string here..."
+					required
+				></textarea>
+			</div>
+			<button
+				type="submit"
+				class="w-full bg-black text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-800 transition-all duration-200 shadow-lg"
+			>
+				Parse User Agent
+			</button>
+		</form>
+
+		<!-- Example User Agents -->
+		<div class="mt-8">
+			<h3 class="text-lg font-semibold text-black mb-4">Example User Agents</h3>
+			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+				@UserAgentExampleButtons()
+			</div>
+		</div>
+	</div>
+}
+
+// Example user agent buttons
+templ UserAgentExampleButtons() {
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('chrome-desktop')">
+		Chrome Desktop
+	</button>
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('firefox-desktop')">
+		Firefox Desktop
+	</button>
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('safari-desktop')">
+		Safari Desktop
+	</button>
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('edge-desktop')">
+		Edge Desktop
+	</button>
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('chrome-android')">
+		Chrome Android
+	</button>
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('safari-ios')">
+		Safari iOS
+	</button>
+	<button type="button" class="example-button glassmorphism bg-white/60 hover:bg-white/80 border border-gray-200/50 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200" onclick="setExampleUserAgent('googlebot')">
+		Googlebot
+	</button>
+}
+
+// Detect user agent tab content
+templ UserAgentDetectTab() {
+	<div id="detect-tab" class="tab-content hidden">
+		<div class="text-center py-8">
+			<div class="glassmorphism bg-white/60 rounded-2xl border border-gray-200/50 p-8 max-w-2xl mx-auto">
+				<div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-4">
+					<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+					</svg>
+				</div>
+				<h3 class="text-xl font-bold text-black mb-3">Detect Your Browser</h3>
+				<p class="text-gray-600 mb-6">Click the button below to analyze your current browser's user agent string and get detailed information about your setup.</p>
+				<button
+					class="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition-all duration-200 shadow-lg"
+					hx-get="/useragent/detect"
+					hx-target="#results"
+					hx-indicator=".loading"
+				>
+					Analyze My Browser
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
+// Loading indicator component
+templ UserAgentLoadingIndicator() {
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+		<div class="loading hidden">
+			<div class="glassmorphism bg-white/40 rounded-2xl border border-gray-200/50 p-8 shadow-xl max-w-md mx-auto text-center">
+				<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto mb-4"></div>
+				<p class="text-gray-600">Analyzing user agent...</p>
+			</div>
+		</div>
+	</div>
+}
+
+// Results container
+templ UserAgentResultsContainer() {
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+		<div id="results" class="fade-in">
+			<!-- Results will be loaded here -->
+		</div>
+	</div>
+}
+
+// JavaScript for user agent functionality
+templ UserAgentScript() {
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			function showTab(tabName) {
 				// Hide all tab contents
-				document.querySelectorAll('.tab-content').forEach(tab => {
-					tab.classList.remove('active');
-				});
+				const contents = document.querySelectorAll('.tab-content');
+				contents.forEach(content => content.classList.add('hidden'));
 
 				// Remove active class from all tabs
-				document.querySelectorAll('.tab').forEach(tab => {
-					tab.classList.remove('active');
+				const tabs = document.querySelectorAll('.tab-button');
+				tabs.forEach(tab => {
+					tab.classList.remove('bg-black', 'text-white');
+					tab.classList.add('bg-white/60', 'text-black');
 				});
 
-				// Show the selected tab content
-				document.getElementById(tabId).classList.add('active');
-
-				// Add active class to the clicked tab
-				tabElement.classList.add('active');
-			}
-
-			function setExampleUserAgent(type) {
-				const textarea = document.querySelector('textarea[name="userAgent"]');
-
-				switch(type) {
-					case 'chrome-desktop':
-						textarea.value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-						break;
-					case 'firefox-desktop':
-						textarea.value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0";
-						break;
-					case 'safari-desktop':
-						textarea.value = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15";
-						break;
-					case 'edge-desktop':
-						textarea.value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0";
-						break;
-					case 'chrome-android':
-						textarea.value = "Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36";
-						break;
-					case 'safari-ios':
-						textarea.value = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
-						break;
-					case 'googlebot':
-						textarea.value = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
-						break;
+				// Show selected content
+				const targetContent = document.getElementById(tabName);
+				if (targetContent) {
+					targetContent.classList.remove('hidden');
 				}
 
+				// Mark selected tab as active
+				const activeTab = document.getElementById('tab-' + tabName.replace('-tab', ''));
+				if (activeTab) {
+					activeTab.classList.remove('bg-white/60', 'text-black');
+					activeTab.classList.add('bg-black', 'text-white');
+				}
+			}
+
+			// Add click handlers to tab buttons
+			document.querySelectorAll('[data-tab]').forEach(element => {
+				element.addEventListener('click', function() {
+					const tabName = this.getAttribute('data-tab');
+					showTab(tabName);
+				});
+			});
+
+			// Initialize first tab
+			showTab('parse-tab');
+
+			// Show/hide loading indicator
+			document.body.addEventListener('htmx:beforeRequest', function() {
+				document.querySelector('.loading').classList.remove('hidden');
+			});
+
+			document.body.addEventListener('htmx:afterRequest', function() {
+				document.querySelector('.loading').classList.add('hidden');
+			});
+		});
+
+		function setExampleUserAgent(type) {
+			const textarea = document.querySelector('textarea[name="userAgent"]');
+
+			const examples = {
+				'chrome-desktop': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+				'firefox-desktop': "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
+				'safari-desktop': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15",
+				'edge-desktop': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0",
+				'chrome-android': "Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+				'safari-ios': "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+				'googlebot': "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+			};
+
+			if (examples[type]) {
+				textarea.value = examples[type];
 				// Auto-submit the form
 				document.getElementById('user-agent-form').requestSubmit();
 			}
-		</script>
-		</body>
-	</html>
+		}
+	</script>
+
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+		body {
+			font-family: 'Inter', sans-serif;
+		}
+
+		.glassmorphism {
+			backdrop-filter: blur(16px);
+			-webkit-backdrop-filter: blur(16px);
+		}
+
+		.animate-float {
+			animation: float 6s ease-in-out infinite;
+		}
+
+		.animate-float-delayed {
+			animation: float 6s ease-in-out infinite;
+			animation-delay: 2s;
+		}
+
+		.animate-float-delayed-2 {
+			animation: float 6s ease-in-out infinite;
+			animation-delay: 4s;
+		}
+
+		@keyframes float {
+			0%, 100% { transform: translateY(0px); }
+			50% { transform: translateY(-20px); }
+		}
+
+		.fade-in {
+			animation: fadeIn 0.8s ease-out;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(20px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+	</style>
 }
 
+// Results component (unchanged from your original)
 templ Results(result ParsingResult) {
-	<div class="results">
+	<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-8">
 		if result.Error != "" {
-			<div class="error">
-				<p>Error: { result.Error }</p>
+			<div class="glassmorphism bg-red-100/60 border border-red-300/50 rounded-xl p-6">
+				<div class="flex items-center">
+					<svg class="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+					<p class="text-red-800 font-medium">{ result.Error }</p>
+				</div>
 			</div>
 		} else {
-			<div class="result-section">
-				<div class="result-title">User Agent String:</div>
-				<div class="result-content">{ result.OriginalUA }</div>
-			</div>
-			<div class="info-section">
-				<div class="info-box">
-					<div class="info-box-title">Browser</div>
-					<div class="info-box-content">
-						<strong>{ result.Browser.Name }</strong>
-						if result.Browser.Version != "" {
-							<span>v{ result.Browser.Version }</span>
-						}
-					</div>
-				</div>
-				<div class="info-box">
-					<div class="info-box-title">Operating System</div>
-					<div class="info-box-content">
-						<strong>{ result.Device.OS }</strong>
-						if result.Device.OSVersion != "" {
-							<span>{ result.Device.OSVersion }</span>
-						}
-					</div>
-				</div>
-				<div class="info-box">
-					<div class="info-box-title">Device Type</div>
-					<div class="info-box-content">
-						<strong>{ result.Device.Type }</strong>
-					</div>
-				</div>
-			</div>
-			<div class="result-section">
-				<div class="result-title">Detailed Information:</div>
-				<table class="detail-table">
-					<tbody>
-						@detailTableRows(result.FullDetails)
-					</tbody>
-				</table>
-			</div>
+			@UserAgentStringDisplay(result.OriginalUA)
+			@UserAgentSummaryCards(result)
+			@UserAgentDetailedAnalysis(result.FullDetails)
 		}
+	</div>
+}
+
+// User agent string display
+templ UserAgentStringDisplay(originalUA string) {
+	<div class="mb-8">
+		<h2 class="text-2xl font-bold text-black mb-4 flex items-center">
+			<div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center mr-3">
+				<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+				</svg>
+			</div>
+			User Agent String
+		</h2>
+		<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-4">
+			<code class="text-sm text-black break-all font-mono">{ originalUA }</code>
+		</div>
+	</div>
+}
+
+// Summary cards section
+templ UserAgentSummaryCards(result ParsingResult) {
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+		<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+			<div class="flex items-center mb-3">
+				<div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+					<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+					</svg>
+				</div>
+				<h3 class="text-lg font-semibold text-black">Browser</h3>
+			</div>
+			<p class="text-2xl font-bold text-black">{ result.Browser.Name }</p>
+			if result.Browser.Version != "" {
+				<p class="text-gray-600">Version { result.Browser.Version }</p>
+			}
+		</div>
+
+		<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+			<div class="flex items-center mb-3">
+				<div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+					<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+					</svg>
+				</div>
+				<h3 class="text-lg font-semibold text-black">Operating System</h3>
+			</div>
+			<p class="text-2xl font-bold text-black">{ result.Device.OS }</p>
+			if result.Device.OSVersion != "" {
+				<p class="text-gray-600">{ result.Device.OSVersion }</p>
+			}
+		</div>
+
+		<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+			<div class="flex items-center mb-3">
+				<div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
+					<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+					</svg>
+				</div>
+				<h3 class="text-lg font-semibold text-black">Device Type</h3>
+			</div>
+			<p class="text-2xl font-bold text-black">{ result.Device.Type }</p>
+			<div class="flex gap-2 mt-2">
+				if result.IsMobile {
+					<span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Mobile</span>
+				}
+				if result.IsTablet {
+					<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Tablet</span>
+				}
+				if result.IsDesktop {
+					<span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Desktop</span>
+				}
+				if result.IsBot {
+					<span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">Bot</span>
+				}
+			</div>
+		</div>
+	</div>
+}
+
+// Detailed analysis table
+templ UserAgentDetailedAnalysis(fullDetails map[string]string) {
+	<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 overflow-hidden">
+		<div class="p-6 border-b border-gray-200/50">
+			<h3 class="text-xl font-bold text-black flex items-center">
+				<div class="w-6 h-6 bg-black rounded-lg flex items-center justify-center mr-3">
+					<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+				</div>
+				Detailed Analysis
+			</h3>
+		</div>
+		<div class="overflow-x-auto">
+			<table class="w-full">
+				<tbody class="divide-y divide-gray-200/50">
+					@detailTableRows(fullDetails)
+				</tbody>
+			</table>
+		</div>
 	</div>
 }
 
 templ detailTableRows(details map[string]string) {
 	for _, key := range sortedKeys(details) {
-		<tr>
-			<th>{ key }</th>
-			<td>{ details[key] }</td>
+		<tr class="hover:bg-white/40 transition-colors duration-150">
+			<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">{ key }</td>
+			<td class="px-6 py-3 text-sm text-black font-mono">{ details[key] }</td>
 		</tr>
 	}
 }

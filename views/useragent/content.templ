@@ -1,0 +1,409 @@
+package useragent
+
+import "github.com/Ndeta100/orbit2x/views/components"
+
+// SEO-focused content section for user agent analyzer
+templ UserAgentContent() {
+	<section class="relative py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+			<!-- What is User Agent Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-12">
+				<div class="text-center mb-8">
+					<h2 class="text-3xl md:text-4xl font-bold text-black mb-4">What is a User Agent?</h2>
+					<div class="w-20 h-1 bg-black mx-auto rounded-full"></div>
+				</div>
+
+				<div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+					<p class="text-xl mb-6">A user agent is a computer program that acts as an intermediary between you and the internet. When your browser connects to a website, it sends a user agent string - a unique identifier that contains detailed technical information about your device, browser, and operating system.</p>
+
+					<p class="mb-6">This string of text serves as an "ID card" {"for"} your browser, helping websites deliver the most appropriate content and functionality
+                        {"for"} your specific setup. Every HTTP request includes this User-Agent header, enabling seamless communication between browsers and web servers.</p>
+				</div>
+
+				<div class="text-center mt-8">
+					@components.PrimaryButton("/useragent", "Analyze Your User Agent")
+				</div>
+			</div>
+
+			<!-- How User Agent Works Section -->
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+				<div class="glassmorphism bg-white/40 rounded-2xl border border-gray-200/50 shadow-xl p-8">
+					<div class="flex items-center mb-6">
+						<div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+							<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+							</svg>
+						</div>
+						<h3 class="text-2xl font-bold text-black">Browser Identification</h3>
+					</div>
+					<p class="text-gray-700 mb-4">User agents help websites identify your browser type and version, ensuring compatibility and optimal rendering. This prevents broken layouts and missing features on websites.</p>
+					<p class="text-gray-700">Modern websites use this information to serve browser-specific CSS, JavaScript, and functionality, creating a seamless browsing experience.</p>
+				</div>
+
+				<div class="glassmorphism bg-white/40 rounded-2xl border border-gray-200/50 shadow-xl p-8">
+					<div class="flex items-center mb-6">
+						<div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mr-4">
+							<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+							</svg>
+						</div>
+						<h3 class="text-2xl font-bold text-black">Device Detection</h3>
+					</div>
+					<p class="text-gray-700 mb-4">User agent strings reveal whether you're using a mobile device, tablet, or desktop computer. This enables responsive design and mobile-optimized experiences.</p>
+					<p class="text-gray-700">Websites automatically serve mobile versions with touch-friendly interfaces and optimized layouts based on your device type.</p>
+				</div>
+			</div>
+
+			<!-- User Agent Components Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-12">
+				<h2 class="text-3xl font-bold text-black mb-8 text-center">Understanding User Agent Components</h2>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+					<div class="text-center">
+						<div class="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">Browser Name</h4>
+						<p class="text-gray-600 text-sm">Chrome, Firefox, Safari, Edge</p>
+					</div>
+
+					<div class="text-center">
+						<div class="w-16 h-16 bg-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">Version Number</h4>
+						<p class="text-gray-600 text-sm">120.0.0.0, 117.0, 16.6</p>
+					</div>
+
+					<div class="text-center">
+						<div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">Operating System</h4>
+						<p class="text-gray-600 text-sm">Windows, macOS, Linux, Android, iOS</p>
+					</div>
+
+					<div class="text-center">
+						<div class="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">Engine Details</h4>
+						<p class="text-gray-600 text-sm">WebKit, Gecko, Blink</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Why User Agents Matter Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-12">
+				<h2 class="text-3xl font-bold text-black mb-8 text-center">Why User Agent Detection Matters</h2>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div class="space-y-6">
+						<div class="flex items-start">
+							<div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-4 mt-1">
+								<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+								</svg>
+							</div>
+							<div>
+								<h4 class="text-lg font-semibold text-black mb-2">Web Development & Testing</h4>
+								<p class="text-gray-700">Developers use user agent analysis to test websites across different browsers and devices, ensuring consistent functionality and appearance.</p>
+							</div>
+						</div>
+
+						<div class="flex items-start">
+							<div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-4 mt-1">
+								<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+								</svg>
+							</div>
+							<div>
+								<h4 class="text-lg font-semibold text-black mb-2">Analytics & Statistics</h4>
+								<p class="text-gray-700">Website owners analyze user agent data to understand their audience's browser preferences and device usage patterns
+                                    {"for"} better optimization.</p>
+							</div>
+						</div>
+
+						<div class="flex items-start">
+							<div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mr-4 mt-1">
+								<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+								</svg>
+							</div>
+							<div>
+								<h4 class="text-lg font-semibold text-black mb-2">Security & Bot Detection</h4>
+								<p class="text-gray-700">User agent strings help identify legitimate browsers versus bots, crawlers, and potentially malicious automated traffic
+                                    {"for "} enhanced security.</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="space-y-6">
+						<div class="flex items-start">
+							<div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center mr-4 mt-1">
+								<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+								</svg>
+							</div>
+							<div>
+								<h4 class="text-lg font-semibold text-black mb-2">Content Optimization</h4>
+								<p class="text-gray-700">Websites use user agent information to serve mobile-optimized layouts, touch-friendly interfaces, and device-appropriate media formats.</p>
+							</div>
+						</div>
+
+						<div class="flex items-start">
+							<div class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center mr-4 mt-1">
+								<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+								</svg>
+							</div>
+							<div>
+								<h4 class="text-lg font-semibold text-black mb-2">Feature Detection</h4>
+								<p class="text-gray-700">When modern feature detection APIs aren't available, user agent parsing provides fallback methods
+                                    {"for"} determining browser capabilities.</p>
+							</div>
+						</div>
+
+						<div class="flex items-start">
+							<div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center mr-4 mt-1">
+								<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+								</svg>
+							</div>
+							<div>
+								<h4 class="text-lg font-semibold text-black mb-2">Localization</h4>
+								<p class="text-gray-700">User agents often include language preferences, helping websites automatically serve content in the user's preferred language.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- User Agent Examples Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-12">
+				<h2 class="text-3xl font-bold text-black mb-8 text-center">Common User Agent Examples</h2>
+
+				<div class="space-y-6">
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-lg font-semibold text-black mb-3 flex items-center">
+							<span class="w-6 h-6 bg-blue-500 rounded mr-3 flex items-center justify-center text-white text-xs">C</span>
+							Chrome on Windows
+						</h4>
+						<code class="block text-sm text-gray-700 bg-gray-50 p-3 rounded-lg break-all font-mono">
+							Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+						</code>
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-lg font-semibold text-black mb-3 flex items-center">
+							<span class="w-6 h-6 bg-orange-500 rounded mr-3 flex items-center justify-center text-white text-xs">F</span>
+							Firefox on Linux
+						</h4>
+						<code class="block text-sm text-gray-700 bg-gray-50 p-3 rounded-lg break-all font-mono">
+							Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0
+						</code>
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-lg font-semibold text-black mb-3 flex items-center">
+							<span class="w-6 h-6 bg-gray-500 rounded mr-3 flex items-center justify-center text-white text-xs">S</span>
+							Safari on iPhone
+						</h4>
+						<code class="block text-sm text-gray-700 bg-gray-50 p-3 rounded-lg break-all font-mono">
+							Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1
+						</code>
+					</div>
+				</div>
+			</div>
+
+			<!-- FAQ Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-12">
+				<h2 class="text-3xl font-bold text-black mb-8 text-center">Frequently Asked Questions</h2>
+
+				<div class="space-y-6">
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-xl font-semibold text-black mb-3">Can I change my user agent?</h4>
+						<p class="text-gray-700">Yes, you can modify your user agent string through browser developer tools, extensions, or specialized software. This process is called "user agent spoofing" and is commonly used
+                            {"for"} testing website compatibility across different browsers and devices.</p>
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-xl font-semibold text-black mb-3">Is my user agent unique?</h4>
+						<p class="text-gray-700">While user agent strings aren't completely unique, they can be combined with other browser fingerprinting techniques to create a relatively unique identifier. Popular browsers on common operating systems will share similar user agent strings.</p>
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-xl font-semibold text-black mb-3">Why do user agents mention multiple browsers?</h4>
+						<p class="text-gray-700">Modern user agent strings contain legacy compatibility tokens. {"For"} example, Chrome's user agent includes "Safari" and "Mozilla"
+                            {"for"} historical compatibility reasons, ensuring websites built {"for"} older browsers continue to work.</p>
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6">
+						<h4 class="text-xl font-semibold text-black mb-3">Do search engine bots have user agents?</h4>
+						<p class="text-gray-700">Yes, search engine crawlers like Googlebot, Bingbot, and others identify themselves through specific user agent strings. This helps websites provide appropriate content and follow robots.txt directives.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Tools and Resources Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8 mb-12">
+				<h2 class="text-3xl font-bold text-black mb-8 text-center">Related Tools & Resources</h2>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6 text-center hover:bg-white/80 transition-all duration-200">
+						<div class="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">DNS Lookup Tool</h4>
+						<p class="text-gray-600 text-sm mb-4">Analyze domain name system records and network infrastructure</p>
+						@components.SecondaryButton("/lookup", "Try DNS Tool")
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6 text-center hover:bg-white/80 transition-all duration-200">
+						<div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">IP Geolocation</h4>
+						<p class="text-gray-600 text-sm mb-4">Discover geographical location and ISP information from IP addresses</p>
+						@components.SecondaryButton("/myip", "Check IP Info")
+					</div>
+
+					<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-6 text-center hover:bg-white/80 transition-all duration-200">
+						<div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+							<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+							</svg>
+						</div>
+						<h4 class="text-lg font-semibold text-black mb-2">Website Speed Test</h4>
+						<p class="text-gray-600 text-sm mb-4">Analyze website performance and loading times across different devices</p>
+						@components.SecondaryButton("/speed", "Test Speed")
+					</div>
+				</div>
+			</div>
+
+			<!-- SEO-focused Bottom Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8">
+				<div class="text-center mb-8">
+					<h2 class="text-3xl font-bold text-black mb-4">Professional User Agent Analysis Tool</h2>
+					<p class="text-lg text-gray-600 max-w-3xl mx-auto">Our free online user agent parser provides comprehensive browser and device detection with detailed technical analysis. Perfect
+                        {"for"} web developers, SEO professionals, and system administrators who need accurate user agent string interpretation.</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold text-black">Key Features:</h3>
+						<ul class="space-y-2 text-gray-700">
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Instant browser identification and version detection
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Operating system and architecture analysis
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Mobile, tablet, and desktop device classification
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Bot and crawler detection capabilities
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Rendering engine identification
+							</li>
+						</ul>
+					</div>
+
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold text-black">Use Cases:</h3>
+						<ul class="space-y-2 text-gray-700">
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Cross-browser compatibility testing
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Website analytics and visitor insights
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Mobile responsiveness verification
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Security analysis and bot identification
+							</li>
+							<li class="flex items-center">
+								<div class="w-2 h-2 bg-black rounded-full mr-3"></div>
+								Technical support and troubleshooting
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="text-center">
+					<div class="flex flex-col sm:flex-row gap-4 justify-center">
+						@components.SecondaryButton("/tools", "More Tools")
+					</div>
+				</div>
+			</div>
+
+			<!-- Technical Details Section -->
+			<div class="glassmorphism bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto p-8">
+				<h2 class="text-3xl font-bold text-black mb-8 text-center">Technical Implementation</h2>
+
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div>
+						<h3 class="text-xl font-semibold text-black mb-4">HTTP Header Structure</h3>
+						<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-4 mb-6">
+							<code class="text-sm text-gray-700 block">
+								GET /page HTTP/1.1<br/>
+								Host: example.com<br/>
+								<span class="font-bold text-black">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</span><br/>
+								Accept: text/html,application/xhtml+xml<br/>
+								Accept-Language: en-US,en;q=0.9
+							</code>
+						</div>
+						<p class="text-gray-700">The User-Agent header is automatically included in every HTTP request your browser makes, providing essential information
+                            {"for"} content negotiation and compatibility.</p>
+					</div>
+
+					<div>
+						<h3 class="text-xl font-semibold text-black mb-4">JavaScript Access</h3>
+						<div class="glassmorphism bg-white/60 rounded-xl border border-gray-200/50 p-4 mb-6">
+							<code class="text-sm text-gray-700 block">
+								// Access user agent in JavaScript<br/>
+								<span class="font-bold text-black">const userAgent = navigator.userAgent;</span><br/>
+								console.log(userAgent);<br/><br/>
+								// Check for specific browsers<br/>
+								const isChrome = userAgent.includes('Chrome');<br/>
+								const isMobile = /Mobile|Android/.test(userAgent);
+							</code>
+						</div>
+						<p class="text-gray-700">Client-side JavaScript can access the user agent string through the navigator.userAgent property
+                            {"for"} dynamic feature detection and responsive behavior.</p>
+					</div>
+				</div>
+
+				<div class="text-center mt-8">
+					@components.PrimaryButton("/", "Back Home")
+				</div>
+			</div>
+		</div>
+	</section>
+}
