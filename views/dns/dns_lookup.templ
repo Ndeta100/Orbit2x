@@ -9,6 +9,7 @@ import (
 templ DNSLookup() {
 	@layout.Base("DNS Lookup Tool | Orbit2x") {
 		@DNSLookupForm()
+		@DNSLookupContentSEO()
 	}
 }
 
@@ -37,7 +38,7 @@ templ DNSLookupForm() {
 							DNS Lookup Tool
 						</h1>
 						<p class="text-xl text-black/80">
-							Get comprehensive DNS information for any domain
+							Get comprehensive DNS information {"for"} any domain
 						</p>
 					</div>
 				</div>

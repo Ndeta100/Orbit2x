@@ -4,20 +4,23 @@ import (
 	"github.com/Ndeta100/orbit2x/internal/resolver"
 	"github.com/Ndeta100/orbit2x/views/components"
 	"github.com/Ndeta100/orbit2x/views/layout"
+	"github.com/Ndeta100/orbit2x/internal/resolver"
+	"strings"
+	"fmt"
 )
 
 templ DNSResults(domain string, results resolver.DNSLookupResults) {
 	@layout.Base("DNS Results for " + domain + " | Orbit2x") {
 		@DNSResultsContent(domain, results)
+		@DNSLookupContentSEO()
 	}
 }
+
 
 templ DNSResultsContent(domain string, results resolver.DNSLookupResults) {
 	<section class="bg-white py-16 md:py-20 relative overflow-hidden min-h-screen">
 		<!-- Glassmorphism background elements -->
 		<div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30"></div>
-
-		<!-- Floating orbital elements -->
 		<div class="absolute top-20 left-10 w-32 h-32 bg-gray-100/30 rounded-full blur-2xl animate-pulse"></div>
 		<div class="absolute top-40 right-20 w-24 h-24 bg-gray-200/25 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
 		<div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gray-150/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
@@ -34,258 +37,57 @@ templ DNSResultsContent(domain string, results resolver.DNSLookupResults) {
 				</div>
 			</div>
 
-			<div class="grid gap-8 max-w-7xl mx-auto">
-				<!-- A Records -->
-				if aRecords, ok := results.Results["A"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
+			<!-- Summary Dashboard -->
+			<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 p-8 shadow-2xl mb-8 max-w-6xl mx-auto">
+				<h2 class="text-2xl font-bold text-black mb-6 text-center">DNS Records Summary</h2>
+				<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+					for recordType, recordData := range results.Results {
+						<div class="backdrop-blur-sm bg-white/60 rounded-xl p-4 border border-gray-200/50 text-center hover:bg-white/80 transition-all duration-200 cursor-pointer" data-tab={ strings.ToLower(recordType) }>
+							<div class="w-10 h-10 bg-black rounded-lg flex items-center justify-center mx-auto mb-2">
+								<span class="text-white text-xs font-bold">{ recordType }</span>
 							</div>
-							<h3 class="text-2xl font-bold text-black">A Records (IPv4)</h3>
+							if recordData.Error != "" {
+								<div class="w-3 h-3 bg-red-500 rounded-full mx-auto mb-1"></div>
+								<p class="text-xs text-red-600 font-medium">Error</p>
+							} else if len(recordData.Records) == 0 {
+								<div class="w-3 h-3 bg-yellow-500 rounded-full mx-auto mb-1"></div>
+								<p class="text-xs text-yellow-600 font-medium">None</p>
+							} else {
+								<div class="w-3 h-3 bg-green-500 rounded-full mx-auto mb-1"></div>
+								<p class="text-xs text-green-600 font-medium">{ fmt.Sprintf("%d", len(recordData.Records)) }</p>
+							}
 						</div>
-						if aRecords.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { aRecords.Error }</p>
-							</div>
-						} else if len(aRecords.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No A records found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range aRecords.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
+					}
+				</div>
+			</div>
 
-				<!-- AAAA Records -->
-				if aaaaRecords, ok := results.Results["AAAA"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">AAAA Records (IPv6)</h3>
-						</div>
-						if aaaaRecords.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { aaaaRecords.Error }</p>
-							</div>
-						} else if len(aaaaRecords.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No AAAA records found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range aaaaRecords.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
+			<!-- Tabbed Content -->
+			<div class="backdrop-blur-xl bg-white/40 rounded-3xl border border-gray-200/50 shadow-2xl max-w-6xl mx-auto">
+				<!-- Tab Headers -->
+				<div class="flex flex-wrap border-b border-gray-200/50 p-6 pb-0">
+					for recordType, _ := range results.Results {
+						<button
+							class="tab-button px-4 py-2 mr-2 mb-4 rounded-lg font-semibold text-sm backdrop-blur-sm bg-white/60 border border-gray-200/50 hover:bg-white/80 transition-all duration-200"
+							data-tab={ strings.ToLower(recordType) }
+							id={ "tab-" + strings.ToLower(recordType) }
+						>
+							{ recordType }
+						</button>
+					}
+				</div>
 
-				<!-- CNAME Record -->
-				if cnameRecord, ok := results.Results["CNAME"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">CNAME Record</h3>
+				<!-- Tab Content -->
+				<div class="p-6">
+					for recordType, recordData := range results.Results {
+						<div id={ "content-" + strings.ToLower(recordType) } class="tab-content hidden">
+							@DNSRecordDisplay(recordType, recordData)
 						</div>
-						if cnameRecord.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { cnameRecord.Error }</p>
-							</div>
-						} else if len(cnameRecord.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No CNAME record found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range cnameRecord.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
-
-				<!-- MX Records -->
-				if mxRecords, ok := results.Results["MX"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">MX Records (Mail Servers)</h3>
-						</div>
-						if mxRecords.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { mxRecords.Error }</p>
-							</div>
-						} else if len(mxRecords.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No MX records found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range mxRecords.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
-
-				<!-- NS Records -->
-				if nsRecords, ok := results.Results["NS"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v4a2 2 0 01-2 2H5z"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">NS Records (Name Servers)</h3>
-						</div>
-						if nsRecords.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { nsRecords.Error }</p>
-							</div>
-						} else if len(nsRecords.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No NS records found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range nsRecords.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
-
-				<!-- TXT Records -->
-				if txtRecords, ok := results.Results["TXT"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">TXT Records</h3>
-						</div>
-						if txtRecords.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { txtRecords.Error }</p>
-							</div>
-						} else if len(txtRecords.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No TXT records found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range txtRecords.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono text-sm break-all font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
-
-				<!-- SOA Record -->
-				if soaRecord, ok := results.Results["SOA"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">SOA Record</h3>
-						</div>
-						if soaRecord.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { soaRecord.Error }</p>
-							</div>
-						} else if len(soaRecord.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No SOA record found</p>
-							</div>
-						} else {
-							<div class="space-y-2">
-								for _, record := range soaRecord.Records {
-									<div class="bg-white/50 rounded-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-										<code class="text-black font-mono text-sm break-all font-medium">{ record }</code>
-									</div>
-								}
-							</div>
-						}
-					</div>
-				}
-
-				<!-- WHOIS Information -->
-				if whoisInfo, ok := results.Results["WHOIS"]; ok {
-					<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl hover:bg-white/50 transition-all duration-300">
-						<div class="flex items-center mb-4">
-							<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
-								<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-black">WHOIS Information</h3>
-						</div>
-						if whoisInfo.Error != "" {
-							<div class="bg-red-100/60 border border-red-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-red-800 font-medium">Error: { whoisInfo.Error }</p>
-							</div>
-						} else if len(whoisInfo.Records) == 0 {
-							<div class="bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-4 backdrop-blur-sm">
-								<p class="text-yellow-800 font-medium">No WHOIS information found</p>
-							</div>
-						} else {
-							<div class="bg-white/50 rounded-xl p-4 border border-gray-200/50 backdrop-blur-sm max-h-96 overflow-y-auto">
-								<pre class="text-black font-mono text-sm whitespace-pre-wrap">
-									for _, line := range whoisInfo.Records {
-										{ line }
-									}
-								</pre>
-							</div>
-						}
-					</div>
-				}
+					}
+				</div>
 			</div>
 
 			<!-- Actions -->
-			<div class="text-center mt-12 space-y-4">
+			<div class="text-center mt-12">
 				<div class="backdrop-blur-xl bg-white/40 rounded-2xl border border-gray-200/50 p-6 shadow-xl max-w-2xl mx-auto">
 					<h3 class="text-xl font-bold text-black mb-4">Perform Another Lookup</h3>
 					<div class="flex flex-col sm:flex-row justify-center gap-4">
@@ -294,5 +96,434 @@ templ DNSResultsContent(domain string, results resolver.DNSLookupResults) {
 				</div>
 			</div>
 		</div>
+
+		<!-- JavaScript -->
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				function showTab(tabName) {
+					// Hide all tab contents
+					const contents = document.querySelectorAll('.tab-content');
+					contents.forEach(content => content.classList.add('hidden'));
+
+					// Remove active class from all tabs
+					const tabs = document.querySelectorAll('.tab-button');
+					tabs.forEach(tab => {
+						tab.classList.remove('bg-black', 'text-white');
+						tab.classList.add('bg-white/60', 'text-black');
+					});
+
+					// Show selected content
+					const targetContent = document.getElementById('content-' + tabName);
+					if (targetContent) {
+						targetContent.classList.remove('hidden');
+					}
+
+					// Mark selected tab as active
+					const activeTab = document.getElementById('tab-' + tabName);
+					if (activeTab) {
+						activeTab.classList.remove('bg-white/60', 'text-black');
+						activeTab.classList.add('bg-black', 'text-white');
+					}
+				}
+
+				// Add click handlers to tab buttons and summary cards
+				document.querySelectorAll('[data-tab]').forEach(element => {
+					element.addEventListener('click', function() {
+						const tabName = this.getAttribute('data-tab');
+						showTab(tabName);
+					});
+				});
+
+				// Initialize first tab
+				const firstTab = document.querySelector('.tab-button');
+				if (firstTab) {
+					const tabName = firstTab.getAttribute('data-tab');
+					showTab(tabName);
+				}
+			});
+
+			function toggleTXTRecord(button) {
+				const container = button.closest('.txt-record-item');
+				const preview = container.querySelector('.txt-preview');
+				const full = container.querySelector('.txt-full');
+
+				if (full.classList.contains('hidden')) {
+					preview.classList.add('hidden');
+					full.classList.remove('hidden');
+					button.textContent = 'Show preview';
+				} else {
+					preview.classList.remove('hidden');
+					full.classList.add('hidden');
+					button.textContent = 'Show full record';
+				}
+			}
+
+			function toggleWHOIS() {
+				const content = document.getElementById('whois-content');
+				content.classList.toggle('whois-collapsed');
+				content.classList.toggle('whois-expanded');
+			}
+		</script>
+
+		<style>
+			.tab-button.active {
+				background: black;
+				color: white;
+			}
+
+			.whois-collapsed .max-h-40 {
+				max-height: 10rem;
+				overflow: hidden;
+			}
+
+			.whois-expanded .max-h-40 {
+				max-height: none;
+				overflow: visible;
+			}
+		</style>
 	</section>
+}
+
+// Component for displaying different record types with appropriate formatting
+templ DNSRecordDisplay(recordType string, recordData resolver.DNSResult) {
+	<div class="space-y-4">
+		<div class="flex items-center mb-6">
+			<div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center mr-4 shadow-lg">
+				<span class="text-white text-sm font-bold">{ recordType }</span>
+			</div>
+			<div>
+				<h3 class="text-2xl font-bold text-black">{ getRecordTitle(recordType) }</h3>
+				<p class="text-gray-600">{ getRecordDescription(recordType) }</p>
+			</div>
+		</div>
+
+		if recordData.Error != "" {
+			<div class="backdrop-blur-sm bg-red-100/60 border border-red-300/50 rounded-xl p-6">
+				<div class="flex items-center">
+					<svg class="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+					<p class="text-red-800 font-medium">{ recordData.Error }</p>
+				</div>
+			</div>
+		} else if len(recordData.Records) == 0 {
+			<div class="backdrop-blur-sm bg-yellow-100/60 border border-yellow-300/50 rounded-xl p-6">
+				<div class="flex items-center">
+					<svg class="w-6 h-6 text-yellow-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+					<p class="text-yellow-800 font-medium">No { recordType } records found {"for"} this domain</p>
+				</div>
+			</div>
+		} else {
+			switch recordType {
+				case "MX":
+					@MXRecordTable(recordData.Records)
+				case "TXT":
+					@TXTRecordList(recordData.Records)
+				case "WHOIS":
+					@WHOISDisplay(recordData.Records)
+				case "SOA":
+					@SOARecordTable(recordData.Records)
+				default:
+					@DefaultRecordList(recordData.Records)
+			}
+		}
+	</div>
+}
+
+// MX Records with priority table
+templ MXRecordTable(records []string) {
+	<div class="backdrop-blur-sm bg-white/60 rounded-xl border border-gray-200/50 overflow-hidden">
+		<table class="w-full">
+			<thead class="bg-gray-50/50">
+				<tr>
+					<th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Priority</th>
+					<th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Mail Server</th>
+				</tr>
+			</thead>
+			<tbody class="divide-y divide-gray-200/50">
+				for _, record := range records {
+					<tr class="hover:bg-white/40 transition-colors duration-150">
+						<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
+							{ getMXPriority(record) }
+						</td>
+						<td class="px-6 py-4 text-sm text-black font-mono">
+							{ getMXServer(record) }
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+// TXT Records with collapsible long content
+templ TXTRecordList(records []string) {
+	<div class="space-y-3">
+		for i, record := range records {
+			<div class="backdrop-blur-sm bg-white/60 rounded-xl border border-gray-200/50">
+				<div class="p-4">
+					<div class="flex items-start justify-between">
+						<div class="flex-1">
+							<div class="flex items-center mb-2">
+								<span class="bg-black text-white text-xs px-2 py-1 rounded font-bold mr-2">TXT { fmt.Sprintf("%d", i+1) }</span>
+								<span class="text-xs text-gray-600">{ fmt.Sprintf("%d characters", len(record)) }</span>
+							</div>
+							if len(record) > 100 {
+								<div class="txt-record-item">
+									<div class="txt-preview">
+										<code class="text-sm text-black break-all">{ record[:100] }...</code>
+									</div>
+									<div class="txt-full hidden">
+										<code class="text-sm text-black break-all whitespace-pre-wrap">{ record }</code>
+									</div>
+									<button onclick="toggleTXTRecord(this)" class="mt-2 text-xs text-gray-600 hover:text-black underline">
+										Show full record
+									</button>
+								</div>
+							} else {
+								<code class="text-sm text-black break-all">{ record }</code>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+}
+
+// WHOIS with formatted display
+templ WHOISDisplay(records []string) {
+	<div class="backdrop-blur-sm bg-white/60 rounded-xl border border-gray-200/50">
+		<div class="p-4">
+			<div class="flex items-center justify-between mb-4">
+				<h4 class="font-semibold text-black">Domain Registration Information</h4>
+				<button onclick="toggleWHOIS()" class="text-sm text-gray-600 hover:text-black underline">
+					Expand/Collapse
+				</button>
+			</div>
+			<div id="whois-content" class="whois-collapsed">
+				<div class="max-h-40 overflow-hidden">
+					<pre class="text-sm text-black font-mono whitespace-pre-wrap leading-relaxed">{ strings.Join(records, "\n") }</pre>
+				</div>
+				<div class="mt-2 text-center">
+					<div class="text-xs text-gray-500">Showing first few lines - click expand to see full WHOIS data</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+// SOA Record formatted as key-value table
+templ SOARecordTable(records []string) {
+	<div class="backdrop-blur-sm bg-white/60 rounded-xl border border-gray-200/50 overflow-hidden">
+		for _, record := range records {
+			@SOARecordParsed(record)
+		}
+	</div>
+}
+
+// Parse and display SOA record components
+templ SOARecordParsed(record string) {
+	<table class="w-full">
+		<tbody class="divide-y divide-gray-200/50">
+			<tr class="hover:bg-white/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Primary Name Server</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "mname") }</td>
+			</tr>
+			<tr class="hover:bg-white/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Responsible Email</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "rname") }</td>
+			</tr>
+			<tr class="hover:bg-white/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Serial Number</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "serial") }</td>
+			</tr>
+			<tr class="hover:bg-world/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Refresh Interval</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "refresh") } seconds</td>
+			</tr>
+			<tr class="hover:bg-white/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Retry Interval</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "retry") } seconds</td>
+			</tr>
+			<tr class="hover:bg-white/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Expire Time</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "expire") } seconds</td>
+			</tr>
+			<tr class="hover:bg-white/40 transition-colors duration-150">
+				<td class="px-6 py-3 text-sm font-medium text-gray-700 w-1/3">Minimum TTL</td>
+				<td class="px-6 py-3 text-sm text-black font-mono">{ getSOAField(record, "minimum") } seconds</td>
+			</tr>
+		</tbody>
+	</table>
+}
+
+// Default record list for simple record types
+templ DefaultRecordList(records []string) {
+	<div class="space-y-3">
+		for i, record := range records {
+			<div class="backdrop-blur-sm bg-white/60 rounded-xl p-4 border border-gray-200/50 hover:bg-white/80 transition-all duration-200">
+				<div class="flex items-center">
+					<span class="bg-black text-white text-xs px-3 py-1 rounded-full font-bold mr-3">{ fmt.Sprintf("%d", i+1) }</span>
+					<code class="text-black font-mono font-medium flex-1 break-all">{ record }</code>
+				</div>
+			</div>
+		}
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Tab functionality
+			function showTab(tabName) {
+				const contents = document.querySelectorAll('.tab-content');
+				contents.forEach(content => content.classList.add('hidden'));
+
+				const tabs = document.querySelectorAll('.tab-button');
+				tabs.forEach(tab => {
+					tab.classList.remove('bg-black', 'text-white');
+					tab.classList.add('bg-white/60', 'text-black');
+				});
+
+				const targetContent = document.getElementById('content-' + tabName);
+				if (targetContent) {
+					targetContent.classList.remove('hidden');
+				}
+
+				const activeTab = document.getElementById('tab-' + tabName);
+				if (activeTab) {
+					activeTab.classList.remove('bg-white/60', 'text-black');
+					activeTab.classList.add('bg-black', 'text-white');
+				}
+			}
+
+			// Add event listeners to elements with data-tab attributes
+			document.querySelectorAll('[data-tab]').forEach(element => {
+				element.addEventListener('click', function() {
+					const tabName = this.getAttribute('data-tab');
+					showTab(tabName);
+				});
+			});
+
+			// Initialize first tab
+			const firstTab = document.querySelector('.tab-button');
+			if (firstTab) {
+				const tabName = firstTab.getAttribute('data-tab');
+				showTab(tabName);
+			}
+
+			// TXT record toggle functionality
+			window.toggleTXTRecord = function(button) {
+				const container = button.closest('.txt-record-item');
+				const preview = container.querySelector('.txt-preview');
+				const full = container.querySelector('.txt-full');
+
+				if (full.classList.contains('hidden')) {
+					preview.classList.add('hidden');
+					full.classList.remove('hidden');
+					button.textContent = 'Show preview';
+				} else {
+					preview.classList.remove('hidden');
+					full.classList.add('hidden');
+					button.textContent = 'Show full record';
+				}
+			}
+
+			// WHOIS toggle functionality
+			window.toggleWHOIS = function() {
+				const content = document.getElementById('whois-content');
+				content.classList.toggle('whois-collapsed');
+				content.classList.toggle('whois-expanded');
+			}
+		});
+	</script>
+}
+
+// Helper functions for record parsing
+func getRecordTitle(recordType string) string {
+	switch recordType {
+	case "A":
+		return "A Records (IPv4 Addresses)"
+	case "AAAA":
+		return "AAAA Records (IPv6 Addresses)"
+	case "CNAME":
+		return "CNAME Record (Canonical Name)"
+	case "MX":
+		return "MX Records (Mail Servers)"
+	case "NS":
+		return "NS Records (Name Servers)"
+	case "TXT":
+		return "TXT Records (Text Data)"
+	case "SOA":
+		return "SOA Record (Start of Authority)"
+	case "WHOIS":
+		return "WHOIS Information"
+	default:
+		return recordType + " Records"
+	}
+}
+
+func getRecordDescription(recordType string) string {
+	switch recordType {
+	case "A":
+		return "Maps domain to IPv4 addresses"
+	case "AAAA":
+		return "Maps domain to IPv6 addresses"
+	case "CNAME":
+		return "Points domain to another domain name"
+	case "MX":
+		return "Specifies mail servers for email delivery"
+	case "NS":
+		return "Authoritative name servers for the domain"
+	case "TXT":
+		return "Text records for verification and policies"
+	case "SOA":
+		return "Authority and zone information"
+	case "WHOIS":
+		return "Domain registration and ownership details"
+	default:
+		return "DNS record information"
+	}
+}
+
+// Helper functions for MX record parsing
+func getMXPriority(record string) string {
+    // Parse MX record format: "host.com (Priority: 10)"
+    if idx := strings.Index(record, "(Priority: "); idx != -1 {
+        priority := strings.TrimSuffix(record[idx+11:], ")")
+        return priority
+    }
+    return "N/A"
+}
+
+func getMXServer(record string) string {
+    // Parse MX record format: "host.com (Priority: 10)"
+    if idx := strings.Index(record, " (Priority: "); idx != -1 {
+        return record[:idx]
+    }
+    return record
+}
+
+// Helper function for SOA field extraction
+func getSOAField(record string, field string) string {
+	// SOA format: "ns1.example.com admin.example.com 2024083001 7200 3600 604800 86400"
+	parts := strings.Fields(record)
+	switch field {
+	case "mname":
+		if len(parts) > 0 { return parts[0] }
+	case "rname":
+		if len(parts) > 1 { return parts[1] }
+	case "serial":
+		if len(parts) > 2 { return parts[2] }
+	case "refresh":
+		if len(parts) > 3 { return parts[3] }
+	case "retry":
+		if len(parts) > 4 { return parts[4] }
+	case "expire":
+		if len(parts) > 5 { return parts[5] }
+	case "minimum":
+		if len(parts) > 6 { return parts[6] }
+	}
+	return "N/A"
 }

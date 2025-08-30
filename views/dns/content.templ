@@ -1,0 +1,387 @@
+package dns
+
+// SEO-rich content section for DNS lookup tool - Glassmorphic design
+templ DNSLookupContentSEO() {
+	<!-- Main Content Section -->
+	<section class="py-16 bg-gray-50">
+		<div class="max-w-4xl mx-auto px-4">
+			<article class="prose prose-lg max-w-none">
+				<!-- What is DNS Lookup Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">What is DNS Lookup and Why Do You Need It?</h2>
+					<div class="backdrop-blur-lg bg-white/80 border border-white/20 shadow-xl p-6 mb-6 rounded-2xl">
+						<p class="text-lg text-gray-800 leading-relaxed mb-4">
+							DNS lookup is the process of querying the Domain Name System to retrieve information about a specific domain name.
+							Our advanced DNS lookup tool provides instant access to all DNS records including A, AAAA, MX, CNAME, TXT, NS, SOA, and more
+							across multiple global DNS servers including Google, Cloudflare, Quad9, and authoritative nameservers.
+						</p>
+						<p class="text-gray-700">
+							Whether you're troubleshooting connectivity issues, verifying domain configurations, or monitoring DNS propagation,
+							our tool delivers accurate results in seconds. No command-line expertise required—just enter a domain and get
+							comprehensive DNS information instantly.
+						</p>
+					</div>
+				</div>
+
+				<!-- How DNS Lookup Works Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">How Does DNS Resolution Work?</h2>
+					<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl mb-6">
+						<p class="text-gray-700 mb-4">
+							When you enter a domain name in your browser, a complex process happens behind the scenes to translate
+							that human-readable name into an IP address that computers can understand. This process involves multiple
+							steps and servers working together.
+						</p>
+						<div class="space-y-4">
+							<div class="flex items-start space-x-3">
+								<div class="w-8 h-8 backdrop-blur-lg bg-gray-900/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<span class="text-sm font-bold text-gray-700">1</span>
+								</div>
+								<div>
+									<h4 class="font-semibold text-gray-900">Initial Request</h4>
+									<p class="text-gray-700 text-sm">Your browser sends a DNS query to a recursive DNS resolver (usually your ISP's server)</p>
+								</div>
+							</div>
+							<div class="flex items-start space-x-3">
+								<div class="w-8 h-8 backdrop-blur-lg bg-gray-900/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<span class="text-sm font-bold text-gray-700">2</span>
+								</div>
+								<div>
+									<h4 class="font-semibold text-gray-900">Root Server Query</h4>
+									<p class="text-gray-700 text-sm">If not cached, the resolver queries one of 13 root nameservers worldwide</p>
+								</div>
+							</div>
+							<div class="flex items-start space-x-3">
+								<div class="w-8 h-8 backdrop-blur-lg bg-gray-900/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<span class="text-sm font-bold text-gray-700">3</span>
+								</div>
+								<div>
+									<h4 class="font-semibold text-gray-900">TLD Server Lookup</h4>
+									<p class="text-gray-700 text-sm">The root server directs to the appropriate top-level domain (TLD) server (.com, .org, etc.)</p>
+								</div>
+							</div>
+							<div class="flex items-start space-x-3">
+								<div class="w-8 h-8 backdrop-blur-lg bg-gray-900/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+									<span class="text-sm font-bold text-gray-700">4</span>
+								</div>
+								<div>
+									<h4 class="font-semibold text-gray-900">Authoritative Answer</h4>
+									<p class="text-gray-700 text-sm">The TLD server points to the domain's authoritative nameserver which provides the final answer</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- DNS Record Types Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">Understanding DNS Record Types</h2>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+								<span class="w-8 h-8 bg-gray-900 text-white rounded flex items-center justify-center text-sm font-bold mr-3">A</span>
+								Address Records
+							</h3>
+							<p class="text-gray-700 mb-3">Maps domain names to IPv4 addresses (32-bit). Most fundamental DNS record type.</p>
+							<p class="text-sm text-gray-600">Example: example.com → 93.184.216.34</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+								<span class="w-8 h-8 bg-gray-900 text-white rounded flex items-center justify-center text-xs font-bold mr-3">AAAA</span>
+								IPv6 Address Records
+							</h3>
+							<p class="text-gray-700 mb-3">Maps domain names to IPv6 addresses (128-bit). Essential {"for"} modern internet infrastructure.</p>
+							<p class="text-sm text-gray-600">Example: example.com → 2606:2800:220:1:248:1893:25c8:1946</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+								<span class="w-8 h-8 bg-gray-900 text-white rounded flex items-center justify-center text-sm font-bold mr-3">MX</span>
+								Mail Exchange Records
+							</h3>
+							<p class="text-gray-700 mb-3">Specifies mail servers responsible {"for"} accepting email
+                                {"for"} the domain.</p>
+							<p class="text-sm text-gray-600">Example: Priority 10: mail.example.com</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+								<span class="w-8 h-8 bg-gray-900 text-white rounded flex items-center justify-center text-xs font-bold mr-3">CNAME</span>
+								Canonical Name Records
+							</h3>
+							<p class="text-gray-700 mb-3">Creates aliases that point to other domain names. Useful {"for"} subdomains and CDNs.</p>
+							<p class="text-sm text-gray-600">Example: www.example.com → example.com</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+								<span class="w-8 h-8 bg-gray-900 text-white rounded flex items-center justify-center text-sm font-bold mr-3">TXT</span>
+								Text Records
+							</h3>
+							<p class="text-gray-700 mb-3">Contains arbitrary text data, often used {"for"} email security (SPF, DKIM, DMARC) and domain verification.</p>
+							<p class="text-sm text-gray-600">Example: "v=spf1 include:_spf.google.com ~all"</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+								<span class="w-8 h-8 bg-gray-900 text-white rounded flex items-center justify-center text-sm font-bold mr-3">NS</span>
+								Name Server Records
+							</h3>
+							<p class="text-gray-700 mb-3">Indicates which servers have authority over DNS records {"for"} the domain.</p>
+							<p class="text-sm text-gray-600">Example: ns1.example.com, ns2.example.com</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Use Cases Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">When to Use DNS Lookup Tools</h2>
+
+					<div class="space-y-8">
+						<!-- System Administrators -->
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+								<svg class="w-6 h-6 mr-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+								</svg>
+								System Administrators & DevOps
+							</h3>
+							<ul class="space-y-2 text-gray-700">
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Troubleshooting website connectivity and performance issues
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Verifying DNS propagation after configuration changes
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Monitoring domain security and email authentication settings
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Auditing DNS configurations {"for"} compliance and security
+								</li>
+							</ul>
+						</div>
+
+						<!-- Web Developers -->
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+								<svg class="w-6 h-6 mr-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+								</svg>
+								Web Developers & Designers
+							</h3>
+							<ul class="space-y-2 text-gray-700">
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Setting up custom domains {"for"} web applications and APIs
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Configuring CDN and load balancer DNS records
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Validating SSL certificate DNS verification records
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Testing subdomain configurations and redirects
+								</li>
+							</ul>
+						</div>
+
+						<!-- Business Owners -->
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+								<svg class="w-6 h-6 mr-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+								</svg>
+								Business Owners & Marketers
+							</h3>
+							<ul class="space-y-2 text-gray-700">
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Verifying email deliverability and spam protection settings
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Monitoring competitor domain configurations and hosting
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Planning domain migrations and hosting changes
+								</li>
+								<li class="flex items-start">
+									<span class="w-2 h-2 bg-gray-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+									Ensuring website uptime and performance optimization
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- DNS Servers We Query Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">Global DNS Servers
+                        {"for"} Accurate Results</h2>
+					<div class="backdrop-blur-lg bg-white/80 p-8 rounded-2xl border border-white/20 shadow-xl">
+						<div class="grid md:grid-cols-2 gap-8">
+							<div>
+								<h3 class="text-xl font-semibold text-gray-900 mb-4">Public DNS Providers</h3>
+								<ul class="space-y-3 text-gray-700">
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>Google DNS:</strong> 8.8.8.8, 8.8.4.4 - World's most popular public DNS
+									</li>
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>Cloudflare:</strong> 1.1.1.1, 1.0.0.1 - Privacy-focused with fast response times
+									</li>
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>Quad9:</strong> 9.9.9.9 - Security-focused DNS with threat blocking
+									</li>
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>OpenDNS:</strong> 208.67.222.222 - Enterprise-grade DNS solutions
+									</li>
+								</ul>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-gray-900 mb-4">Specialized Lookups</h3>
+								<ul class="space-y-3 text-gray-700">
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>Authoritative NS:</strong> Direct queries to domain's official nameservers
+									</li>
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>Regional Servers:</strong> Test DNS resolution from different geographic locations
+									</li>
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>DNSSEC Validation:</strong> Verify cryptographic DNS signatures {"for"} security
+									</li>
+									<li class="flex items-center">
+										<span class="w-3 h-3 bg-gray-600 rounded-full mr-3"></span>
+										<strong>Cache Bypass:</strong> Get real-time DNS data without cached responses
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Common DNS Issues Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">Common DNS Problems Our Tool Helps Diagnose</h2>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-lg font-semibold text-gray-900 mb-3">Configuration Issues</h3>
+							<ul class="space-y-2 text-gray-700 text-sm">
+								<li>• Missing or incorrect A/AAAA records causing website downtime</li>
+								<li>• Misconfigured MX records preventing email delivery</li>
+								<li>• Wrong CNAME settings breaking subdomain functionality</li>
+								<li>• Invalid TXT records failing domain verification</li>
+							</ul>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-lg font-semibold text-gray-900 mb-3">Propagation & Performance</h3>
+							<ul class="space-y-2 text-gray-700 text-sm">
+								<li>• Slow DNS propagation after recent changes</li>
+								<li>• Inconsistent records across different DNS servers</li>
+								<li>• TTL values causing caching issues</li>
+								<li>• Nameserver conflicts and authority problems</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- FAQ Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-gray-300 pb-2">DNS Lookup Frequently Asked Questions</h2>
+					<div class="space-y-6">
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-3">How long does DNS propagation take?</h3>
+							<p class="text-gray-700">DNS propagation typically takes 24-48 hours globally, but changes can be visible within minutes on some servers. Our tool helps you monitor this process across multiple DNS providers.</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-3">Can I check DNS records {"for"} subdomains?</h3>
+							<p class="text-gray-700">Yes! Simply enter the full subdomain (like blog.example.com or api.example.com) to check its specific DNS configuration and records.</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-3">What's the difference between authoritative and recursive DNS queries?</h3>
+							<p class="text-gray-700">Authoritative servers provide official answers {"for"} domains they manage, while recursive servers cache responses. Our tool queries both to give you comprehensive DNS information.</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-3">Is DNS lookup information private and secure?</h3>
+							<p class="text-gray-700">DNS queries are inherently public information. Our tool doesn't store your search history, and all queries are processed securely without logging personal data.</p>
+						</div>
+						<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+							<h3 class="text-xl font-semibold text-gray-900 mb-3">Why do I see different results from different DNS servers?</h3>
+							<p class="text-gray-700">DNS servers may have different cached information or update frequencies. Comparing results across servers helps identify propagation issues and ensures global accessibility.</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Best Practices Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">DNS Best Practices
+                        {"for"} 2025</h2>
+					<div class="backdrop-blur-lg bg-white/80 p-8 rounded-2xl border border-white/20 shadow-xl">
+						<div class="grid md:grid-cols-2 gap-8">
+							<div>
+								<h3 class="text-xl font-semibold text-gray-900 mb-4">Security & Performance</h3>
+								<ul class="space-y-2 text-gray-700">
+									<li>• Enable DNSSEC {"for"} cryptographic DNS validation</li>
+									<li>• Use multiple authoritative nameservers {"for"} redundancy</li>
+									<li>• Implement proper SPF, DKIM, and DMARC records</li>
+									<li>• Optimize TTL values {"for"} performance vs. flexibility</li>
+								</ul>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-gray-900 mb-4">Monitoring & Maintenance</h3>
+								<ul class="space-y-2 text-gray-700">
+									<li>• Regular DNS health checks across global servers</li>
+									<li>• Monitor certificate expiration through CAA records</li>
+									<li>• Track DNS response times and availability</li>
+									<li>• Document all DNS changes {"for"} audit trails</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Command Line Alternatives Section -->
+				<div class="mb-12">
+					<h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-gray-300 pb-2">Command Line DNS Lookup Alternatives</h2>
+					<div class="backdrop-blur-lg bg-white/80 p-6 rounded-2xl border border-white/20 shadow-xl">
+						<p class="text-gray-700 mb-4">
+							While our web-based tool offers convenience and visual results, you can also perform DNS lookups using command-line tools:
+						</p>
+						<div class="grid md:grid-cols-2 gap-6">
+							<div class="backdrop-blur-sm bg-gray-50/50 p-4 rounded-xl border border-gray-200/50">
+								<h4 class="font-semibold text-gray-900 mb-2">Windows (nslookup)</h4>
+								<code class="text-sm text-gray-600 bg-gray-100/50 p-2 rounded block">
+									nslookup example.com<br/>
+									nslookup -type=MX example.com
+								</code>
+							</div>
+							<div class="backdrop-blur-sm bg-gray-50/50 p-4 rounded-xl border border-gray-200/50">
+								<h4 class="font-semibold text-gray-900 mb-2">Linux/macOS (dig)</h4>
+								<code class="text-sm text-gray-600 bg-gray-100/50 p-2 rounded block">
+									dig example.com<br/>
+									dig MX example.com
+								</code>
+							</div>
+						</div>
+						<p class="text-gray-600 text-sm mt-4">
+							Our web tool provides the same functionality with additional features like multi-server comparison and visual formatting.
+						</p>
+					</div>
+				</div>
+
+			</article>
+		</div>
+	</section>
+}
